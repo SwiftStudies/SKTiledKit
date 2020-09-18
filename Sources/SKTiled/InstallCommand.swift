@@ -14,7 +14,14 @@
 
 import ArgumentParser
 
-struct SKTiled : ParsableCommand {
-    static var configuration =  CommandConfiguration(abstract:"Enables direct testing of levels and compilation of Tile Sets into XCode assets",subcommands: [Install.self, Run.self], defaultSubcommand: Run.self)
+struct Install : ParsableCommand {
+    static var configuration =  CommandConfiguration(abstract:"Copies the binary to a specified location or /usr/local/bin if no location specified")
     
+    @Option(name:.shortAndLong, help:"Location to install the command in. Default is XXX")
+    var path : String?
+    static let defaultPath = "/usr/local/bin"
+
+    func run() throws {
+        print("I would install into \(path ?? Install.defaultPath)")
+    }
 }

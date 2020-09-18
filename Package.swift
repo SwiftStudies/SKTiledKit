@@ -27,7 +27,7 @@ let package = Package(
             dependencies: ["TiledKit"]),
         .target(
             name: "SKTiled",
-            dependencies: ["SKTiledKit"]),
+            dependencies: ["SKTiledKit",.product(name: "ArgumentParser", package: "swift-argument-parser")]),
         .testTarget(
             name: "SKTiledKitTests",
             dependencies: ["SKTiledKit"],

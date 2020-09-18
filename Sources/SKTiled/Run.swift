@@ -14,7 +14,13 @@
 
 import ArgumentParser
 
-struct SKTiled : ParsableCommand {
-    static var configuration =  CommandConfiguration(abstract:"Enables direct testing of levels and compilation of Tile Sets into XCode assets",subcommands: [Install.self, Run.self], defaultSubcommand: Run.self)
+struct Run : ParsableCommand {
+    static var configuration =  CommandConfiguration(abstract:"Loads the specified level into a scene")
+
+    @Argument
+    var level : String
     
+    func run() throws {
+        print("OK Boomer \(level)")
+    }
 }
