@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="9">
+ <properties>
+  <property name="Boolean Property" type="bool" value="true"/>
+  <property name="Color Property" type="color" value="#ff0f80ff"/>
+  <property name="File Property" type="file" value="Test Map 1.tmx"/>
+  <property name="Float Property" type="float" value="42.1"/>
+  <property name="Int Property" type="int" value="42"/>
+  <property name="Object Property" type="object" value="3"/>
+  <property name="String Property" value="Test"/>
+ </properties>
+ <tileset firstgid="1" source="../Tilesets/SingleImageAutoTransparency.tsx"/>
+ <tileset firstgid="5" source="../Tilesets/SeparateSingleImage.tsx"/>
+ <layer id="6" name="Tile Layer 2" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <group id="4" name="Group">
+  <imagelayer id="5" name="Grouped Image Layer" offsetx="72" offsety="96">
+   <image source="../Images/Individual/F.png" width="16" height="16"/>
+  </imagelayer>
+ </group>
+ <layer id="1" name="Tile Layer" width="10" height="10">
+  <data encoding="csv">
+5,1,1,1,1,1,1,1,1,5,
+1,0,0,0,0,0,0,0,0,1,
+1,0,4,2,2,2,2,4,0,1,
+1,0,2,0,0,0,0,2,0,1,
+1,0,2,0,3,3,0,2,0,1,
+1,0,2,0,3,3,0,2,0,1,
+1,0,2,0,0,0,0,2,0,1,
+1,0,4,2,2,2,2,4,0,1,
+1,0,0,0,0,0,0,0,0,1,
+5,1,1,1,1,1,1,1,1,5
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer">
+  <object id="1" name="Elipse" x="32" y="32" width="96" height="96">
+   <ellipse/>
+  </object>
+  <object id="3" name="Point" x="23.5972" y="23.3462">
+   <point/>
+  </object>
+  <object id="4" name="Rectangle" x="128.027" y="19.5807" width="15.8151" height="12.3007"/>
+  <object id="5" name="Polygon" x="134.554" y="55.2275">
+   <polygon points="0,0 4.26758,9.79033 -4.51861,54.4744 -56.9847,83.3433 -97.4012,76.3144 -109.953,23.0951 -90.1212,-22.342 -110.455,-27.6137 -100.916,-36.3999 -83.0923,-26.6096 -23.5972,-28.1158"/>
+  </object>
+  <object id="6" name="Text" x="30.2858" y="138.186" width="89.5469" height="18.8438">
+   <text wrap="1">Hello World</text>
+  </object>
+  <object id="7" name="Tile" gid="1" x="13.2425" y="40.4335" width="16" height="16" rotation="45"/>
+  <object id="8" name="Polyline" x="106.689" y="23.3462">
+   <polyline points="0,0 14.56,-5.77378 13.8069,5.77378 13.8069,6.02482"/>
+  </object>
+ </objectgroup>
+ <imagelayer id="3" name="Image Layer" offsetx="72" offsety="48">
+  <image source="../Images/Individual/F.png" width="16" height="16"/>
+ </imagelayer>
+</map>
