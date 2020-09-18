@@ -11,7 +11,7 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
-
+import Foundation
 import ArgumentParser
 
 struct Install : ParsableCommand {
@@ -20,8 +20,15 @@ struct Install : ParsableCommand {
     @Option(name:.shortAndLong, help:"Location to install the command in. Default is XXX")
     var path : String?
     static let defaultPath = "/usr/local/bin"
+    static let executableName = "sktiled"
 
     func run() throws {
-        print("I would install into \(path ?? Install.defaultPath)")
+        let source = CommandLine.arguments[0]
+        var destination = path ?? Self.defaultPath
+        
+        destination = destination.hasSuffix("/") ? "\(destination)\(Self.executableName)" : "\(destination)/\(Self.executableName)"
+        
+        print("Installing \(Self.executableName) in \(path ?? Self.defaultPath)")
+        print( "\t\(bash(command: "cp", arguments: ["-v",source,destination]))" )
     }
 }

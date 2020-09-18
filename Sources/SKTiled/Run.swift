@@ -13,6 +13,8 @@
 //    limitations under the License.
 
 import ArgumentParser
+import SpriteKit
+import SKTiledKit
 
 struct Run : ParsableCommand {
     static var configuration =  CommandConfiguration(abstract:"Loads the specified level into a scene")
@@ -21,6 +23,12 @@ struct Run : ParsableCommand {
     var level : String
     
     func run() throws {
-        print("OK Boomer \(level)")
+        do {
+            let scene = try SKScene(tiledLevel: URL(fileURLWithPath: level, isDirectory: false, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath)))
+            
+        } catch {
+            print("Could not load level \"\(level)\":\t\(error)")
+            throw error
+        }
     }
 }
