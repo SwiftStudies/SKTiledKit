@@ -2,8 +2,17 @@
   "object": {
     "pins": [
       {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "92646c0cdbaca076c8d3d0207891785b3379cbff",
+          "version": "0.3.1"
+        }
+      },
+      {
         "package": "TiledKit",
-        "repositoryURL": "https://github.com/SwiftStudies/TiledKit.git",
+        "repositoryURL": "https://github.com/SwiftStudies/TiledKit",
         "state": {
           "branch": null,
           "revision": "73caf1f26d3c381d25463543a74a78bb8086a148",

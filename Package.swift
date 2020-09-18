@@ -10,10 +10,14 @@ let package = Package(
         .library(
             name: "SKTiledKit",
             targets: ["SKTiledKit"]),
+        .executable(
+            name: "sktiled",
+            targets: ["SKTiled"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/SwiftStudies/TiledKit.git", from: "0.0.1"),
+        .package(url: "https://github.com/SwiftStudies/TiledKit", from: "0.0.1"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.3"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -21,6 +25,9 @@ let package = Package(
         .target(
             name: "SKTiledKit",
             dependencies: ["TiledKit"]),
+        .target(
+            name: "SKTiled",
+            dependencies: ["SKTiledKit"]),
         .testTarget(
             name: "SKTiledKitTests",
             dependencies: ["SKTiledKit"],
