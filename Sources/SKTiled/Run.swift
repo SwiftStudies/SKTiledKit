@@ -22,9 +22,32 @@ struct Run : ParsableCommand {
     @Argument
     var level : String
     
+    @Option(name: [.customShort("w"), .long], help:"Specifies specific size of the window, defaults to the size of the level", transform: {(input:String) throws -> (Int,Int)? in
+        let dimensionComponents = input.trimmingCharacters(in: CharacterSet.whitespaces).split(separator: "x")
+        guard dimensionComponents.count == 2 else {
+            print("WARNING: Window size ignored, should be specified in form <width>x<height> (e.g. 1024x768)")
+            return nil
+        }
+        guard let x = Int(dimensionComponents[0]), let y = Int(dimensionComponents[1]) else {
+            print("WARNING: Window size ignored, should be specified in form <Integer>x<Integer> (e.g. 1024x768)")
+            return nil
+        }
+        return (x,y)
+    })
+    var windowSize : (x:Int,y:Int)?
+    
     func run() throws {
         do {
-            let scene = try SKScene(tiledLevel: URL(fileURLWithPath: level, isDirectory: false, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath)))
+            let url = URL(fileURLWithPath: level, isDirectory: false, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+            let scene = try SKScene(tiledLevel: url)
+            
+            scene.scaleMode = .aspectFit
+            
+            if let windowSize = windowSize {
+                start(scene, from:url, windowSize:CGSize(width: windowSize.x, height: windowSize.y))
+            } else {
+                start(scene, from: url)
+            }
             
         } catch {
             print("Could not load level \"\(level)\":\t\(error)")
