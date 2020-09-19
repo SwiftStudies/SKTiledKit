@@ -6,3 +6,10 @@ All types of properties are supported, but the following should be noted about s
  - __Color__ When added to [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) for a created node it will be converted into an [`SKColor`](https://developer.apple.com/documentation/spritekit/skcolor), if you are reading it directly at any point it is captured in a `TiledKit.Color` object, which has a `.skColor` property if you wish to manually convert it. 
  - __File__ These are just treated as `String`s with no special processing
 
+## SKTiledKit Interpretation of user defined properties
+
+For some TiledKit objects SKTiledKit objects has some special behaviour which are described in the specific pages for those objects
+
+ - [Tile Sets](Tile Sets.md)
+ 
+ 

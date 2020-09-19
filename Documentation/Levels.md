@@ -18,3 +18,7 @@ Not all kinds of level, or standard properties of levels are supported yet. The 
 
 No special interpretation of user specified properties is done at this time, however all properties are added to the loaded [`SKScene`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type. 
 
+### See also
+
+ - [Properties](Properties.md)
+
