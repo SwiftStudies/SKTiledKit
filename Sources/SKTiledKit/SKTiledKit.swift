@@ -148,23 +148,37 @@ extension SKScene : SpecializedLevel {
         node.apply(propertiesFrom: objects)
         
         for object in objects.objects {
+            
+            var node : SKNode? = nil
+            
             if let rectangle = object as? EllipseObject {
                 let elipse = SKShapeNode(ellipseIn: CGRect(x: rectangle.x.cgFloatValue, y: rectangle.y.cgFloatValue, width: rectangle.width.cgFloatValue, height: rectangle.height.cgFloatValue))
                 
-                elipse.name = object.name
-                elipse.isHidden = !object.visible
-                elipse.apply(propertiesFrom: object)
+                node = elipse
                 
-                container.addChild(elipse)
+            } else if let text = object as? TextObject {
+                let textNode = SKLabelNode(text: text.text.text)
+                
+                textNode.fontSize = CGFloat(text.text.fontSize)
+                textNode.fontColor = text.text.color.skColor
+                textNode.position.x = text.x.cgFloatValue
+                textNode.position.y = text.y.cgFloatValue
+
+                node = textNode
             } else if let rectangle = object as? RectangleObject {
                 let rectangle = SKShapeNode(rect: CGRect(x: rectangle.x.cgFloatValue, y: rectangle.y.cgFloatValue, width: rectangle.width.cgFloatValue, height: rectangle.height.cgFloatValue))
-                
-                rectangle.name = object.name
-                rectangle.isHidden = !object.visible
-                rectangle.apply(propertiesFrom: object)
-                
-                container.addChild(rectangle)
+
+                node = rectangle
             }
+            
+            if let node = node {
+                node.name = object.name
+                node.isHidden = !object.visible
+                node.apply(propertiesFrom: object)
+                
+                container.addChild(node)
+            }
+            
         }
     }
     
