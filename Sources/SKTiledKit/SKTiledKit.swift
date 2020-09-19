@@ -36,6 +36,29 @@ extension SKScene : SpecializedLevel {
 
     public func apply(tiledLevel level: Level) {
         scene?.size =  CGSize(width: CGFloat(level.width*level.tileWidth), height: CGFloat(level.height*level.tileHeight))
+        scene?.userData = NSMutableDictionary()
+        for property in level.properties {
+            switch property.value {
+            
+            case .string(let value):
+                scene?.userData?.setValue(value, forKey: property.key)
+            case .bool(let value):
+                scene?.userData?.setValue(value, forKey: property.key)
+            case .int(let value):
+                scene?.userData?.setValue(value, forKey: property.key)
+            case .float(let value):
+                scene?.userData?.setValue(value, forKey: property.key)
+            case .file(url: let url):
+                scene?.userData?.setValue(url, forKey: property.key)
+            case .color(color: let color):
+                scene?.userData?.setValue(color.skColor, forKey: property.key)
+            case .object(id: let id):
+                #warning("Should actually go an find the object")
+                scene?.userData?.setValue(id, forKey: property.key)
+            case .error(type: _, value: _):
+                break
+            }
+        }
     }
     public func create(tileSet: TileSet) throws {
         try SKTileSets.load(tileSet)        
