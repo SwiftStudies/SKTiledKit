@@ -27,6 +27,37 @@ public enum SKTiledKitError : Error {
     case noPositionForTile(identifier:Int, tileSet:String)
 }
 
+extension SKNode {
+    func apply(propertiesFrom object:Propertied){
+        if userData == nil {
+            userData = NSMutableDictionary()
+        }
+        
+        for property in object.properties {
+            switch property.value {
+            
+            case .string(let value):
+                userData?.setValue(value, forKey: property.key)
+            case .bool(let value):
+                userData?.setValue(value, forKey: property.key)
+            case .int(let value):
+                userData?.setValue(value, forKey: property.key)
+            case .float(let value):
+                userData?.setValue(value, forKey: property.key)
+            case .file(url: let url):
+                userData?.setValue(url, forKey: property.key)
+            case .color(color: let color):
+                userData?.setValue(color.skColor, forKey: property.key)
+            case .object(id: let id):
+                #warning("Should actually go an find the object")
+                userData?.setValue(id, forKey: property.key)
+            case .error(type: _, value: _):
+                break
+            }
+        }
+    }
+}
+
 extension SKScene : SpecializedLevel {
     public typealias Container = SKNode
     
@@ -37,29 +68,10 @@ extension SKScene : SpecializedLevel {
     public func apply(tiledLevel level: Level) {
         scene?.size =  CGSize(width: CGFloat(level.width*level.tileWidth), height: CGFloat(level.height*level.tileHeight))
         scene?.userData = NSMutableDictionary()
-        for property in level.properties {
-            switch property.value {
-            
-            case .string(let value):
-                scene?.userData?.setValue(value, forKey: property.key)
-            case .bool(let value):
-                scene?.userData?.setValue(value, forKey: property.key)
-            case .int(let value):
-                scene?.userData?.setValue(value, forKey: property.key)
-            case .float(let value):
-                scene?.userData?.setValue(value, forKey: property.key)
-            case .file(url: let url):
-                scene?.userData?.setValue(url, forKey: property.key)
-            case .color(color: let color):
-                scene?.userData?.setValue(color.skColor, forKey: property.key)
-            case .object(id: let id):
-                #warning("Should actually go an find the object")
-                scene?.userData?.setValue(id, forKey: property.key)
-            case .error(type: _, value: _):
-                break
-            }
-        }
+
+        apply(propertiesFrom: level)
     }
+    
     public func create(tileSet: TileSet) throws {
         try SKTileSets.load(tileSet)        
     }
@@ -73,6 +85,11 @@ extension SKScene : SpecializedLevel {
         
         let tileLayerNode = SKNode()
                 
+        tileLayerNode.name = tileLayer.name
+        tileLayerNode.isHidden = !tileLayer.visible
+        tileLayerNode.alpha = CGFloat(tileLayer.opacity)
+        tileLayerNode.apply(propertiesFrom: tileLayer)
+        
         for x in 0..<tileLayer.level.width {
             for y in 0..<tileLayer.level.height {
                 #warning("Forced unwrap")
@@ -100,6 +117,11 @@ extension SKScene : SpecializedLevel {
     public func add(group: GroupLayer, to container: Container) throws -> Container {
         let node = SKNode()
         
+        node.name = group.name
+        node.isHidden = !group.visible
+        node.alpha = CGFloat(group.opacity)
+        node.apply(propertiesFrom: group)
+        
         container.addChild(node)
         
         return container
@@ -117,12 +139,30 @@ extension SKScene : SpecializedLevel {
     }
     
     public func add(objects: ObjectLayer, to container: Container) throws {
+        let node = SKNode()
+        container.addChild(node)
+
+        node.name = objects.name
+        node.isHidden = !objects.visible
+        node.alpha = CGFloat(objects.opacity)
+        node.apply(propertiesFrom: objects)
+        
         for object in objects.objects {
             if let rectangle = object as? EllipseObject {
                 let elipse = SKShapeNode(ellipseIn: CGRect(x: rectangle.x.cgFloatValue, y: rectangle.y.cgFloatValue, width: rectangle.width.cgFloatValue, height: rectangle.height.cgFloatValue))
+                
+                elipse.name = object.name
+                elipse.isHidden = !object.visible
+                elipse.apply(propertiesFrom: object)
+                
                 container.addChild(elipse)
             } else if let rectangle = object as? RectangleObject {
                 let rectangle = SKShapeNode(rect: CGRect(x: rectangle.x.cgFloatValue, y: rectangle.y.cgFloatValue, width: rectangle.width.cgFloatValue, height: rectangle.height.cgFloatValue))
+                
+                rectangle.name = object.name
+                rectangle.isHidden = !object.visible
+                rectangle.apply(propertiesFrom: object)
+                
                 container.addChild(rectangle)
             }
         }
