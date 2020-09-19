@@ -24,16 +24,35 @@ internal extension TileSet.Tile {
     }
 }
 
+internal extension SKTextureFilteringMode {
+    init(stringValue:String){
+        if stringValue == "nearest" {
+            self = .nearest
+        } else {
+            self = .linear
+        }
+    }
+}
+
 internal class SKTileSets {
     static var tileTextureCache = [TileUUID:SKTexture]()
     static var tileCache = [Int:SKNode]()
 
-    static private func load(texture url:URL) throws -> SKTexture {
+    static private func load(texture url:URL, applying properties:[String:PropertyValue] = [String:PropertyValue]()) throws -> SKTexture {
         
         if let cachedTexture = tileTextureCache[url.path] {
             return cachedTexture
         }
         
+        
+        let filteringMode : SKTextureFilteringMode
+        switch properties["filteringMode"] ?? PropertyValue.bool(false) {
+        case .string(let filteringModeString):
+            filteringMode = SKTextureFilteringMode(stringValue: filteringModeString)
+        default:
+            filteringMode = .linear
+        }
+
         let provider : CGDataProvider
         
         if let directProvider = CGDataProvider(url: url as CFURL) {
@@ -59,6 +78,7 @@ internal class SKTileSets {
             
             
         let loadedTexture = SKTexture(cgImage: cgImage)
+        loadedTexture.filteringMode = filteringMode
 
         tileTextureCache[url.path] = loadedTexture
         
@@ -78,10 +98,10 @@ internal class SKTileSets {
                 guard let url = tile.path else {
                     throw SKTiledKitError.missingPathForTile(tile: "\(tileset.name) - \(tile.identifier)")
                 }
-                createTileNode(tile, from: tileset, with: try load(texture: url))
+                createTileNode(tile, from: tileset, with: try load(texture: url, applying: tileset.properties))
             }
         case .sheet(tileSheet: let tileSheet):
-            let parentTexture = try load(texture: tileSheet.imagePath)
+            let parentTexture = try load(texture: tileSheet.imagePath, applying: tileset.properties)
             for tile in tileset.tiles.values {
                 guard let position = tile.position else {
                     throw SKTiledKitError.noPositionForTile(identifier: tile.identifier.hashValue, tileSet: tileset.name)

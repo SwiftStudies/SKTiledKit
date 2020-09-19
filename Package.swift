@@ -22,7 +22,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/SwiftStudies/TiledKit", from: "0.0.1"),
+        .package(url: "https://github.com/SwiftStudies/TiledKit", from: "0.0.4"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.3"),
     ],
     targets: [
