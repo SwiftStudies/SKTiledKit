@@ -108,7 +108,7 @@ internal class SKTileSets {
                 }
                 let subTexture = SKTexture(
                     rect: CGRect(x: position.x.cgFloatValue / parentTexture.size().width,
-                                 y: position.y.cgFloatValue  / parentTexture.size().height,
+                                 y: (parentTexture.size().height - (position.y.cgFloatValue + tileset.tileHeight.cgFloatValue))  / parentTexture.size().height,
                                  width: tileset.tileWidth.cgFloatValue  / parentTexture.size().width,
                                  height: tileset.tileHeight.cgFloatValue  / parentTexture.size().height),
                     in: parentTexture )
