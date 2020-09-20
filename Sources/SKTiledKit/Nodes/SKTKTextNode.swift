@@ -15,6 +15,7 @@
 import SpriteKit
 import TiledKit
 
+@dynamicMemberLookup
 public class SKTKTextNode : SKShapeNode {
 }
 
@@ -52,10 +53,14 @@ public extension SKTKTextNode {
     }
         
     internal func add(_ text:String, applying style:TextObject.TextStyle){
+        strokeColor = SKColor.clear
+        fillColor = SKColor.clear
+
         removeAllChildren()
         let labelNode = SKLabelNode(text: text)
         labelNode.name = SKTKTextNode.textObjectNodeName
         addChild(labelNode)
+
         apply(style)
     }
     

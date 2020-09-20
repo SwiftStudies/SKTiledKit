@@ -55,7 +55,10 @@
   <object id="5" name="Polygon" x="134.554" y="55.2275">
    <polygon points="0,0 4.26758,9.79033 -4.51861,54.4744 -56.9847,83.3433 -97.4012,76.3144 -109.953,23.0951 -90.1212,-22.342 -110.455,-27.6137 -100.916,-36.3999 -83.0923,-26.6096 -23.5972,-28.1158"/>
   </object>
-  <object id="6" name="Text" x="30" y="138" width="90" height="19">
+  <object id="6" name="Text" x="65.396" y="147.539" width="31.5087" height="8.20547">
+   <properties>
+    <property name="showTextNodePath" type="bool" value="true"/>
+   </properties>
    <text fontfamily="Courier New" pixelsize="8" wrap="1" color="#20ffff" kerning="0">Bottom</text>
   </object>
   <object id="7" name="Tile" gid="1" x="13.2425" y="40.4335" width="16" height="16" rotation="45"/>

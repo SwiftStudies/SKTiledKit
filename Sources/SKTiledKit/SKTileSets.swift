@@ -87,7 +87,7 @@ internal class SKTileSets {
 
     fileprivate static func createTileNode(_ tile:TileSet.Tile, from tileset:TileSet, with texture:SKTexture) {
         #warning("Is not handling any layers on the tile")
-        let node = SKSpriteNode(texture: texture)
+        let node = SKTKSpriteNode(texture: texture)
         tileCache[tile.uuid] = node
     }
     

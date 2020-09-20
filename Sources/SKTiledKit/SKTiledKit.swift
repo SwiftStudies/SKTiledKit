@@ -45,36 +45,7 @@ extension SKNode {
     }
 }
 
-extension SKNode {
-    func apply(propertiesFrom object:Propertied){
-        if userData == nil {
-            userData = NSMutableDictionary()
-        }
-        
-        for property in object.properties {
-            switch property.value {
-            
-            case .string(let value):
-                userData?.setValue(value, forKey: property.key)
-            case .bool(let value):
-                userData?.setValue(value, forKey: property.key)
-            case .int(let value):
-                userData?.setValue(value, forKey: property.key)
-            case .double(let value):
-                userData?.setValue(value, forKey: property.key)
-            case .file(url: let url):
-                userData?.setValue(url, forKey: property.key)
-            case .color(color: let color):
-                userData?.setValue(color.skColor, forKey: property.key)
-            case .object(id: let id):
-                #warning("Should actually go an find the object")
-                userData?.setValue(id, forKey: property.key)
-            case .error(type: _, value: _):
-                break
-            }
-        }
-    }
-}
+
 
 extension SKScene : SpecializedLevel {
     public typealias Container = SKNode
@@ -101,7 +72,7 @@ extension SKScene : SpecializedLevel {
     
     public func add(tileLayer: TileLayer, to container: Container) throws {
         
-        let tileLayerNode = SKNode()
+        let tileLayerNode = SKTKNode()
                 
         tileLayerNode.name = tileLayer.name
         tileLayerNode.isHidden = !tileLayer.visible
@@ -136,7 +107,7 @@ extension SKScene : SpecializedLevel {
     }
     
     public func add(group: GroupLayer, to container: Container) throws -> Container {
-        let node = SKNode()
+        let node = SKTKNode()
         
         node.name = group.name
         node.isHidden = !group.visible
@@ -152,7 +123,7 @@ extension SKScene : SpecializedLevel {
     public func add(image: ImageLayer, to container: Container) throws {
         let emptyTextureNode = SKTexture()
         
-        let spriteNode = SKSpriteNode(texture: emptyTextureNode, color: SKColor.red, size: CGSize(width: 100, height: 100))
+        let spriteNode = SKTKSpriteNode(texture: emptyTextureNode, color: SKColor.red, size: CGSize(width: 100, height: 100))
         
         spriteNode.position = CGPoint(x: image.x, y: image.y)
         
@@ -175,22 +146,23 @@ extension SKScene : SpecializedLevel {
             if let elipse = object as? EllipseObject {
                 let rect = CGRect(origin: .zero, size: CGSize(width: elipse.width.cgFloatValue, height: -elipse.height.cgFloatValue))
 
-                let elipseNode = SKShapeNode(path: CGPath(ellipseIn: rect, transform: nil))
+                let elipseNode = SKTKShapeNode(path: CGPath(ellipseIn: rect, transform: nil))
                 
                 elipseNode.position.x = elipse.x.cgFloatValue
                 elipseNode.position.y = object.level.heightInPixels - elipse.y.cgFloatValue
-
                 elipseNode.zRotation = -elipse.rotation.radians.cgFloatValue
                 
                 node = elipseNode
-                
             } else if let tileObject = object as? TileObject {
                 #warning("Not implemented")
             } else if let textObject = object as? TextObject {
                 let rect = CGRect(origin: .zero, size: CGSize(width: textObject.width.cgFloatValue, height: -textObject.height.cgFloatValue))
                 let textNode = SKTKTextNode(path: CGPath(rect: rect, transform: nil))
-                
+
                 textNode.add(textObject.string, applying: textObject.style)
+                if object.showTextNodePath == true {
+                    textNode.strokeColor = SKColor.white
+                }
                 
                 textNode.position.x = textObject.x.cgFloatValue
                 textNode.position.y = object.level.heightInPixels - textObject.y.cgFloatValue
@@ -199,13 +171,20 @@ extension SKScene : SpecializedLevel {
                 node = textNode
             } else if let rectangle = object as? RectangleObject {
                 let rect = CGRect(origin: .zero, size: CGSize(width: rectangle.width.cgFloatValue, height: -rectangle.height.cgFloatValue))
-                let rectangleNode = SKShapeNode(path: CGPath(rect: rect, transform: nil))
+                let rectangleNode = SKTKShapeNode(path: CGPath(rect: rect, transform: nil))
 
                 rectangleNode.position.x = rectangle.x.cgFloatValue
                 rectangleNode.position.y = object.level.heightInPixels - rectangle.y.cgFloatValue
                 rectangleNode.zRotation = -rectangle.rotation.radians.cgFloatValue
 
                 node = rectangleNode
+            } else if let point = object as? PointObject {
+                let pointNode = SKTKShapeNode(circleOfRadius: 1)
+                
+                pointNode.position.x = point.x.cgFloatValue
+                pointNode.position.y = object.level.heightInPixels - point.y.cgFloatValue
+                
+                node = pointNode
             }
             
             if let node = node {
