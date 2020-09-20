@@ -19,10 +19,32 @@ extension BinaryFloatingPoint {
     var cgFloatValue : CGFloat {
         return CGFloat(self)
     }
+    
+    var radians : Self {
+        let degree = Self.pi / 180
+        return self * degree
+    }
+
+    var degrees : Self {
+        let radian = 180 / Self.pi
+        return self * radian
+    }
+    
+    var dobuleValue : Double {
+        return Double(self)
+    }
+    
+    var intValue : Int {
+        return Int(self)
+    }
+
 }
 
 extension BinaryInteger {
     var cgFloatValue : CGFloat {
         return CGFloat(self)
+    }
+    var dobuleValue : Double {
+        return Double(self)
     }
 }

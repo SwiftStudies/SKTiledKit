@@ -45,7 +45,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer">
-  <object id="1" name="Elipse" x="32" y="32" width="96" height="96">
+  <object id="1" name="Elipse" x="32" y="32" width="96" height="96" rotation="45">
    <ellipse/>
   </object>
   <object id="3" name="Point" x="23.5972" y="23.3462">
@@ -55,8 +55,8 @@
   <object id="5" name="Polygon" x="134.554" y="55.2275">
    <polygon points="0,0 4.26758,9.79033 -4.51861,54.4744 -56.9847,83.3433 -97.4012,76.3144 -109.953,23.0951 -90.1212,-22.342 -110.455,-27.6137 -100.916,-36.3999 -83.0923,-26.6096 -23.5972,-28.1158"/>
   </object>
-  <object id="6" name="Text" x="30.2858" y="138.186" width="89.5469" height="18.8438">
-   <text wrap="1">Hello World</text>
+  <object id="6" name="Text" x="30" y="138" width="90" height="19">
+   <text fontfamily="Courier New" pixelsize="8" wrap="1" color="#20ffff" kerning="0">Bottom</text>
   </object>
   <object id="7" name="Tile" gid="1" x="13.2425" y="40.4335" width="16" height="16" rotation="45"/>
   <object id="8" name="Polyline" x="106.689" y="23.3462">

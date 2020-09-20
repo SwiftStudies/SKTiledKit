@@ -38,7 +38,7 @@ internal class SKTileSets {
     static var tileTextureCache = [TileUUID:SKTexture]()
     static var tileCache = [Int:SKNode]()
 
-    static private func load(texture url:URL, applying properties:[String:PropertyValue] = [String:PropertyValue]()) throws -> SKTexture {
+    static internal func load(texture url:URL, applying properties:[String:PropertyValue] = [String:PropertyValue]()) throws -> SKTexture {
         
         if let cachedTexture = tileTextureCache[url.path] {
             return cachedTexture

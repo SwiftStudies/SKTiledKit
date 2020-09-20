@@ -21,7 +21,7 @@ Not all objects types are supported yet. The following support is available.
   - __Y__ Supported, sets `position.y` 
   - __Width__ Supported. Captured in the path
   - __Height__ Supported. Captured in the path
-  - __Rotation__ Not supported
+  - __Rotation__ Supported, applied to `zRotation`
 
  ### Support for user specified properties
 
@@ -38,14 +38,14 @@ Created as an  [`SKShape`](https://developer.apple.com/documentation/spritekit/s
  - __Y__ Supported, sets `position.y` 
  - __Width__ Supported. Captured in the path
  - __Height__ Supported. Captured in the path
- - __Rotation__ Not supported
+ - __Rotation__ Supported, applied to `zRotation`
 
 ### Support for user specified properties
 
 No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
 
 ## <a name="text">Text</a>
-Created as an  [`SKLabelNode`](https://developer.apple.com/documentation/spritekit/sklabelnode). 
+In order to support the text alignment options and origin behavior of the TiledKit level (the y-axis is inverted compared to SpriteKIt) an `SKLabelNode` is wrapped in an `SKShapeNode` with a rectangular path the same size as the width and height properties of the Text object in Tiled. 
 
 ### Supported Properties
 
@@ -53,13 +53,20 @@ Created as an  [`SKLabelNode`](https://developer.apple.com/documentation/spritek
  - __Visible__ Supported. `isHidden` is set appropriatly on the label
  - __X__ Supported, sets `position.x`
  - __Y__ Supported, sets `position.y` 
- - __Width__ Not supported
- - __Height__ Not supported
- - __Rotation__ Not supported
+ - __Width__ Supported
+ - __Height__ Supported
+ - __Rotation__ Supported, applied to `zRotation`
  - __Text__ Supported, added as the `text` on the label
  - __Alignment__ Not supported
- - __Font__ Not supported
- - __Word Wrap__ Not supported
+ - __Font__ Partially supported
+    - __Family__ Supported, sets the `fontName` property
+    - __Pixel Size__ Supported, sets the `fontSize` property
+    - __Bold__ Not supported
+    - __Italic__ Not supported
+    - __Underline__ Not supported
+    - __Strikeout__ Not supported
+    - __Kerning__ Not supported
+ - __Word Wrap__ Supported
  - __Color__ Supported, set on `fontColor`
 
 ### Support for user specified properties

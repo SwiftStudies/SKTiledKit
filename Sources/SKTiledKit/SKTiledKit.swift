@@ -27,6 +27,24 @@ public enum SKTiledKitError : Error {
     case noPositionForTile(identifier:Int, tileSet:String)
 }
 
+extension Level {
+    var heightInPixels : CGFloat {
+        return (height * tileHeight).cgFloatValue
+    }
+    
+    func transform(y:Double, objectHeight height:Double = 0)->CGFloat{
+        let levelHeight = Double(self.height) * Double(self.tileHeight)
+        
+        return CGFloat((levelHeight - y) - (height / 2))
+    }
+}
+
+extension SKNode {
+    func transformY(for level:Level)->CGFloat{
+        return level.transform(y: Double(position.y), objectHeight: Double(calculateAccumulatedFrame().size.height))
+    }
+}
+
 extension SKNode {
     func apply(propertiesFrom object:Propertied){
         if userData == nil {
@@ -42,7 +60,7 @@ extension SKNode {
                 userData?.setValue(value, forKey: property.key)
             case .int(let value):
                 userData?.setValue(value, forKey: property.key)
-            case .float(let value):
+            case .double(let value):
                 userData?.setValue(value, forKey: property.key)
             case .file(url: let url):
                 userData?.setValue(url, forKey: property.key)
@@ -105,7 +123,10 @@ extension SKScene : SpecializedLevel {
                         throw SKTiledKitError.tileNodeDoesNotExist
                     }
                     #warning("Force unwrap")
-                    tileNode.position = CGPoint(x: x * tileLayer.level.tileWidth + (tile.tileSet!.tileWidth / 2), y: y * tileLayer.level.tileHeight + (tile.tileSet!.tileHeight / 2))
+                    tileNode.position = CGPoint(x: x * tileLayer.level.tileWidth + (tile.tileSet!.tileWidth / 2), y: y * tileLayer.level.tileHeight)
+                    
+                    tileNode.position.y = tileNode.transformY(for: tileLayer.level)
+                    
                     tileLayerNode.addChild(tileNode)
                 }
             }
@@ -151,24 +172,40 @@ extension SKScene : SpecializedLevel {
             
             var node : SKNode? = nil
             
-            if let rectangle = object as? EllipseObject {
-                let elipse = SKShapeNode(ellipseIn: CGRect(x: rectangle.x.cgFloatValue, y: rectangle.y.cgFloatValue, width: rectangle.width.cgFloatValue, height: rectangle.height.cgFloatValue))
+            if let elipse = object as? EllipseObject {
+                let rect = CGRect(origin: .zero, size: CGSize(width: elipse.width.cgFloatValue, height: -elipse.height.cgFloatValue))
+
+                let elipseNode = SKShapeNode(path: CGPath(ellipseIn: rect, transform: nil))
                 
-                node = elipse
+                elipseNode.position.x = elipse.x.cgFloatValue
+                elipseNode.position.y = object.level.heightInPixels - elipse.y.cgFloatValue
+
+                elipseNode.zRotation = -elipse.rotation.radians.cgFloatValue
                 
-            } else if let text = object as? TextObject {
-                let textNode = SKLabelNode(text: text.text.text)
+                node = elipseNode
                 
-                textNode.fontSize = CGFloat(text.text.fontSize)
-                textNode.fontColor = text.text.color.skColor
-                textNode.position.x = text.x.cgFloatValue
-                textNode.position.y = text.y.cgFloatValue
+            } else if let tileObject = object as? TileObject {
+                #warning("Not implemented")
+            } else if let textObject = object as? TextObject {
+                let rect = CGRect(origin: .zero, size: CGSize(width: textObject.width.cgFloatValue, height: -textObject.height.cgFloatValue))
+                let textNode = SKTKTextNode(path: CGPath(rect: rect, transform: nil))
+                
+                textNode.add(textObject.string, applying: textObject.style)
+                
+                textNode.position.x = textObject.x.cgFloatValue
+                textNode.position.y = object.level.heightInPixels - textObject.y.cgFloatValue
+                textNode.zRotation = -textObject.rotation.radians.cgFloatValue
 
                 node = textNode
             } else if let rectangle = object as? RectangleObject {
-                let rectangle = SKShapeNode(rect: CGRect(x: rectangle.x.cgFloatValue, y: rectangle.y.cgFloatValue, width: rectangle.width.cgFloatValue, height: rectangle.height.cgFloatValue))
+                let rect = CGRect(origin: .zero, size: CGSize(width: rectangle.width.cgFloatValue, height: -rectangle.height.cgFloatValue))
+                let rectangleNode = SKShapeNode(path: CGPath(rect: rect, transform: nil))
 
-                node = rectangle
+                rectangleNode.position.x = rectangle.x.cgFloatValue
+                rectangleNode.position.y = object.level.heightInPixels - rectangle.y.cgFloatValue
+                rectangleNode.zRotation = -rectangle.rotation.radians.cgFloatValue
+
+                node = rectangleNode
             }
             
             if let node = node {
