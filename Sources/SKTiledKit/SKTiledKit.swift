@@ -176,7 +176,6 @@ extension SKScene : SpecializedLevel {
                 tileNode.xScale = tileObject.width.cgFloatValue / size.width
                 tileNode.yScale = tileObject.height.cgFloatValue / size.height
                 
-                
                 node = tileNode
                 
             } else if let textObject = object as? TextObject {
