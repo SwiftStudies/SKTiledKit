@@ -121,13 +121,18 @@ extension SKScene : SpecializedLevel {
 
     #warning("Not implemented")
     public func add(image: ImageLayer, to container: Container) throws {
-        let emptyTextureNode = SKTexture()
+        let texture = try SKTileSets.load(texture: image.url)
         
-        let spriteNode = SKTKSpriteNode(texture: emptyTextureNode, color: SKColor.red, size: CGSize(width: 100, height: 100))
+        let spriteNode = SKTKSpriteNode(texture: texture)
         
-        spriteNode.position = CGPoint(x: image.x, y: image.y)
+        spriteNode.position = CGPoint(x: image.x + image.width/2, y: (Int(image.level.heightInPixels) - image.y) - image.height/2)
+        spriteNode.isHidden = !image.visible
+        spriteNode.alpha = image.opacity.cgFloatValue
+        spriteNode.name = image.name
         
-//        container.addChild(spriteNode)
+        spriteNode.apply(propertiesFrom: image)
+        
+        container.addChild(spriteNode)
     }
     
     public func add(objects: ObjectLayer, to container: Container) throws {
