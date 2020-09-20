@@ -8,7 +8,7 @@ Not all objects types are supported yet. The following support is available.
  - [Polygon](#polygon) Not supported
  - [Polyline](#polyline) Not supported
  - [Text](#text) Supported
- - [Image](#image) Not supported
+ - [Image](#image) Supported
 
 ## <a name="point">Point</a>
 Created as an  `SKTKShape` which is a circle with a transparent center. As SpriteKit doesn't have a native representation of a point this is really to allow you to parse this object as you see fit.  
@@ -19,6 +19,10 @@ Created as an  `SKTKShape` which is a circle with a transparent center. As Sprit
  - __Visible__ Supported. `isHidden` is set appropriatly on the shape
  - __X__ Supported, sets `position.x`
  - __Y__ Supported, sets `position.y` 
+
+### Support for user specified properties
+
+No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
 
  ## <a name="elipse">Elipse</a>
  Created as an  [`SKShape`](https://developer.apple.com/documentation/spritekit/skshape). 
@@ -84,3 +88,20 @@ In order to support the text alignment options and origin behavior of the TiledK
  - `showTextNodePath : Bool` If `true` draws a path around the bounding box for a text node
 
 All other properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
+
+## <a name="image">Image</a>
+Created as an `SKTKSpriteNode` 
+
+### Supported Properties
+
+ - __Name__ Supported. `name` is set on the shape 
+ - __Visible__ Supported. `isHidden` is set appropriatly on the shape
+ - __X__ Supported, sets `position.x`
+ - __Y__ Supported, sets `position.y` 
+ - __Width__ Supported, applied as a scaling factor in `xScale`
+ - __Height__ Supported, applied as a scaling factor in `yScale`
+ - __Rotation__ Supported, applied to `zRotation`
+
+### Support for user specified properties
+
+No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 

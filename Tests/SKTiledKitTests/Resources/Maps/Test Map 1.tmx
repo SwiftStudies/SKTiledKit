@@ -57,7 +57,7 @@
   </object>
   <object id="6" name="Text" x="65.396" y="147.539" width="31.5087" height="8.20547">
    <properties>
-    <property name="showTextNodePath" type="bool" value="true"/>
+    <property name="showTextNodePath" type="bool" value="false"/>
    </properties>
    <text fontfamily="Courier New" pixelsize="8" wrap="1" color="#20ffff" kerning="0">Bottom</text>
   </object>

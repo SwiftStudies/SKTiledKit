@@ -154,7 +154,26 @@ extension SKScene : SpecializedLevel {
                 
                 node = elipseNode
             } else if let tileObject = object as? TileObject {
-                #warning("Not implemented")
+                guard let tile = tileObject.level.tiles[tileObject.gid] else {
+                    throw SKTiledKitError.tileNotFound
+                }
+                let cachedNode = SKTileSets.tileCache[tile.uuid]
+                guard let tileNode = cachedNode?.copy() as? SKTKSpriteNode else {
+                    throw SKTiledKitError.tileNodeDoesNotExist
+                }
+                
+                let size = tileNode.calculateAccumulatedFrame().size
+                
+                tileNode.anchorPoint = .zero
+                tileNode.position.x = tileObject.x.cgFloatValue
+                tileNode.position.y = tileObject.level.heightInPixels - tileObject.y.cgFloatValue
+                tileNode.zRotation = -tileObject.rotation.cgFloatValue.radians
+                tileNode.xScale = tileObject.width.cgFloatValue / size.width
+                tileNode.yScale = tileObject.height.cgFloatValue / size.height
+                
+                
+                node = tileNode
+                
             } else if let textObject = object as? TextObject {
                 let rect = CGRect(origin: .zero, size: CGSize(width: textObject.width.cgFloatValue, height: -textObject.height.cgFloatValue))
                 let textNode = SKTKTextNode(path: CGPath(rect: rect, transform: nil))
