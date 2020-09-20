@@ -1,17 +1,45 @@
 #  Objects
 
-Not all objects types are supported yet. The following support is available. 
+All of the different object types supported by Tiled are created as part of the SpriteKit scene
 
- - [Point](#point) Supported
- - [Elipse](#elipse) Supported
- - [Rectange](#rectangle) Supported
- - [Polygon](#polygon) Not supported
- - [Polyline](#polyline) Not supported
- - [Text](#text) Supported
- - [Image](#image) Supported
+ - [Point](#point) 
+ - [Elipse](#elipse) 
+ - [Rectange](#rectangle) 
+ - [Polygon](#polygon)  
+ - [Polyline](#polyline) 
+ - [Text](#text) 
+ - [Image](#image) 
 
 ## <a name="point">Point</a>
 Created as an  `SKTKShape` which is a circle with a transparent center. As SpriteKit doesn't have a native representation of a point this is really to allow you to parse this object as you see fit.  
+
+### Supported Properties
+
+ - __Name__ Supported. `name` is set on the shape 
+ - __Visible__ Supported. `isHidden` is set appropriatly on the shape
+ - __X__ Supported, sets `position.x`
+ - __Y__ Supported, sets `position.y` 
+
+### Support for user specified properties
+
+No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
+
+## <a name="polyline">Polyline</a>
+Created as an  `SKTKShape`.
+
+### Supported Properties
+
+ - __Name__ Supported. `name` is set on the shape 
+ - __Visible__ Supported. `isHidden` is set appropriatly on the shape
+ - __X__ Supported, sets `position.x`
+ - __Y__ Supported, sets `position.y` 
+
+### Support for user specified properties
+
+No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
+
+## <a name="polygon">Polygon</a>
+Created as an  `SKTKShape`.
 
 ### Supported Properties
 

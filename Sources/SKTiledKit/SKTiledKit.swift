@@ -119,7 +119,6 @@ extension SKScene : SpecializedLevel {
         return container
     }
 
-    #warning("Not implemented")
     public func add(image: ImageLayer, to container: Container) throws {
         let texture = try SKTileSets.load(texture: image.url)
         
@@ -208,6 +207,30 @@ extension SKScene : SpecializedLevel {
                 pointNode.position.y = object.level.heightInPixels - point.y.cgFloatValue
                 
                 node = pointNode
+            } else if let polygon = object as? PolygonObject {
+                let path = CGMutablePath()
+                var first = true
+                for point in polygon.points {
+                    if first {
+                        path.move(to: CGPoint(x: point.x, y: -point.y))
+                        first = false
+                    } else {
+                        path.addLine(to: CGPoint(x: point.x, y: -point.y))
+                    }
+                }
+                
+                if !(polygon is PolylineObject) {
+                    path.closeSubpath()
+                }
+                
+                let pathNode = SKTKShapeNode(path: path)
+
+                pathNode.position.x = polygon.x.cgFloatValue
+                pathNode.position.y = object.level.heightInPixels - polygon.y.cgFloatValue
+                pathNode.zRotation = -(polygon.rotation?.radians.cgFloatValue ?? 0)
+
+                node = pathNode
+
             }
             
             if let node = node {
