@@ -25,6 +25,7 @@ Created as an  `SKTKShape` which is a circle with a transparent center. As Sprit
 No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
 
 ## <a name="polyline">Polyline</a>
+
 Created as an  `SKTKShape`.
 
 ### Supported Properties
@@ -33,6 +34,7 @@ Created as an  `SKTKShape`.
  - __Visible__ Supported. `isHidden` is set appropriatly on the shape
  - __X__ Supported, sets `position.x`
  - __Y__ Supported, sets `position.y` 
+ - __Rotation__ Supported. The shape is rotated so that the visual appearence matches what is seen in Tiled. However, the resulting node can be rotated and will rotate about its center (unlike tiled where it will rotate around the origin of the shape's co-ordinate system)
 
 ### Support for user specified properties
 
@@ -51,6 +53,7 @@ Created as an  `SKTKShape`.
  - __Visible__ Supported. `isHidden` is set appropriatly on the shape
  - __X__ Supported, sets `position.x`
  - __Y__ Supported, sets `position.y` 
+ - __Rotation__ Supported. The shape is rotated so that the visual appearence matches what is seen in Tiled. However, the resulting node can be rotated and will rotate about its center (unlike tiled where it will rotate around the origin of the shape's co-ordinate system)
 
 ### Support for user specified properties
 
@@ -69,7 +72,7 @@ All properties are copied to the [`userData`](https://developer.apple.com/docume
   - __Y__ Supported, sets `position.y` 
   - __Width__ Supported. Captured in the path
   - __Height__ Supported. Captured in the path
-  - __Rotation__ Supported, applied to `zRotation`
+  - __Rotation__ Supported. The shape is rotated so that the visual appearence matches what is seen in Tiled. However, the resulting node can be rotated and will rotate about its center (unlike tiled where it will rotate around the origin of the shape's co-ordinate system)
 
  ### Support for user specified properties
 
@@ -88,7 +91,7 @@ Created as an  [`SKShape`](https://developer.apple.com/documentation/spritekit/s
  - __Y__ Supported, sets `position.y` 
  - __Width__ Supported. Captured in the path
  - __Height__ Supported. Captured in the path
- - __Rotation__ Supported, applied to `zRotation`
+ - __Rotation__ Supported. The shape is rotated so that the visual appearence matches what is seen in Tiled. However, the resulting node can be rotated and will rotate about its center (unlike tiled where it will rotate around the origin of the shape's co-ordinate system)
 
 ### Support for user specified properties
 
