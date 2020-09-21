@@ -11,5 +11,6 @@ All types of properties are supported, but the following should be noted about s
 For some TiledKit objects SKTiledKit objects has some special behaviour which are described in the specific pages for those objects
 
  - [Tile Sets](Tile%20Sets.md)
+ - [Objects](Objects.md)
  
  
