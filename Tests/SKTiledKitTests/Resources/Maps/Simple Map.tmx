@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="6">
- <objectgroup id="4" name="Aligned Circle Layer" offsetx="64" offsety="64">
-  <object id="5" name="Circle" x="0" y="0" width="32" height="32">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="7">
+ <objectgroup id="4" name="Aligned Circle Layer" offsetx="32" offsety="32">
+  <object id="5" name="Circle" x="32" y="32" width="32" height="32">
    <properties>
     <property name="strokeColor" type="color" value="#ff00ff00"/>
    </properties>
@@ -16,6 +16,12 @@
   </object>
   <object id="4" name="Circle Top Left" x="0" y="0" width="47" height="47">
    <ellipse/>
+  </object>
+  <object id="6" name="Triangle" x="160" y="160" rotation="180">
+   <properties>
+    <property name="strokeColor" type="color" value="#ffff80ff"/>
+   </properties>
+   <polygon points="0,0 160,0 0,160"/>
   </object>
  </objectgroup>
 </map>
