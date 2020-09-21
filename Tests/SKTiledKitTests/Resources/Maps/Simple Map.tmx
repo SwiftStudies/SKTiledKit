@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
+ <layer id="1" name="Tile Layer 1" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" name="Level Border" x="0" y="0" width="160" height="160"/>
+  <object id="2" name="Diamond" x="80" y="0" width="113" height="113" rotation="45"/>
+  <object id="3" name="Level Center" x="80" y="80">
+   <point/>
+  </object>
+  <object id="4" name="Top Left Circle" x="0" y="0" width="47" height="47">
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>
