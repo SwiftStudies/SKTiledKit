@@ -24,9 +24,7 @@ extension SKScene {
         tileLayerNode.isHidden = !tileLayer.visible
         tileLayerNode.alpha = CGFloat(tileLayer.opacity)
         tileLayerNode.apply(propertiesFrom: tileLayer)
-        
-        tileLayerNode.position = CGRect(x: tileLayer.x, y: tileLayer.y, width: tileLayer.level.tileWidth, height: tileLayer.level.tileHeight).transform(with: CGPoint(x: 0.5, y: 0.5)).origin
-        
+            
         for x in 0..<tileLayer.level.width {
             for y in 0..<tileLayer.level.height {
 
