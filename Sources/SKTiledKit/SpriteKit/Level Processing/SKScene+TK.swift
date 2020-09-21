@@ -23,9 +23,16 @@ extension SKScene : SpecializedLevel {
     }
 
     public func apply(tiledLevel level: Level) {
-        scene?.size =  CGSize(width: CGFloat(level.width*level.tileWidth), height: CGFloat(level.height*level.tileHeight))
-        scene?.userData = NSMutableDictionary()
+        size =  CGSize(width: CGFloat(level.width*level.tileWidth), height: CGFloat(level.height*level.tileHeight))
+        userData = NSMutableDictionary()
 
         apply(propertiesFrom: level)
+        
+        // Add a camera to apply the transform to the level
+        let camera = SKCameraNode()
+        camera.position = CGPoint(x: (level.tileWidth*level.width)/2, y: (level.tileHeight*level.height) / -2)
+        
+        addChild(camera)
+        self.camera = camera
     }
 }

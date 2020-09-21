@@ -23,7 +23,7 @@ extension SKScene{
         node.isHidden = !group.visible
         node.alpha = CGFloat(group.opacity)
         node.apply(propertiesFrom: group)
-        #warning("Position not being applied")
+        node.position = CGPoint(x: group.x, y: group.y).transform()
         
         container.addChild(node)
         

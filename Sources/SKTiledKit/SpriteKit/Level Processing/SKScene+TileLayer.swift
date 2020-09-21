@@ -25,6 +25,8 @@ extension SKScene {
         tileLayerNode.alpha = CGFloat(tileLayer.opacity)
         tileLayerNode.apply(propertiesFrom: tileLayer)
         
+        tileLayerNode.position = CGRect(x: tileLayer.x, y: tileLayer.y, width: tileLayer.level.tileWidth, height: tileLayer.level.tileHeight).transform(with: CGPoint(x: 0.5, y: 0.5)).origin
+        
         for x in 0..<tileLayer.level.width {
             for y in 0..<tileLayer.level.height {
 
@@ -35,6 +37,7 @@ extension SKScene {
                     guard let tile = tileLayer.level.tiles[levelTileOffset] else {
                         throw SKTiledKitError.tileNotFound
                     }
+                    
                     guard let tileSet = tile.tileSet else {
                         throw SKTiledKitError.tileHasNoTileSet(tile:tile)
                     }

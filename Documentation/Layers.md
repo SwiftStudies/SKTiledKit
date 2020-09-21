@@ -35,8 +35,8 @@ Group layers are supported, and by default result in an [`SKNode`](https://devel
 - __Locked__ Not supported
 - __Opacity__ Supported. `alpha` is set appropriately 
 - __Tint Color__ Not supported 
-- __Horizontal Offset__ Not supported
-- __Vertical Offset__ Not supported
+- __Horizontal Offset__ Applied to the `position.x` of the node
+- __Vertical Offset__ Applied to the `position.y` of the node
 
 
 ### Support for user specified properties
