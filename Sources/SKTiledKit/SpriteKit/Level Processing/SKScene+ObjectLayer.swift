@@ -17,17 +17,18 @@ import TiledKit
 
 extension SKScene{
     public func add(objects: ObjectLayer, to container: Container) throws {
-        let node = SKNode()
-        container.addChild(node)
+        let objectLayerNode = SKNode()
+        container.addChild(objectLayerNode)
 
-        node.name = objects.name
-        node.isHidden = !objects.visible
-        node.alpha = CGFloat(objects.opacity)
-        node.apply(propertiesFrom: objects)
+        objectLayerNode.name = objects.name
+        objectLayerNode.isHidden = !objects.visible
+        objectLayerNode.alpha = CGFloat(objects.opacity)
+        objectLayerNode.apply(propertiesFrom: objects)
+        objectLayerNode.position = CGPoint(x: objects.x, y: objects.y).transform()
         
         for object in objects.objects {
             
-            var node : SKNode? = nil
+            var objectNode : SKNode? = nil
             
             if let elipse = object as? EllipseObject {
                 let rect = CGRect(origin: .zero, size: CGSize(width: elipse.width, height: elipse.height).transform())
@@ -37,7 +38,7 @@ extension SKScene{
                 elipseNode.position = CGPoint(x:elipse.x, y:elipse.y).transform()
                 elipseNode.zRotation = -elipse.rotation.radians.cgFloatValue
                 
-                node = elipseNode
+                objectNode = elipseNode
             } else if let tileObject = object as? TileObject {
                 guard let tile = tileObject.level.tiles[tileObject.gid] else {
                     throw SKTiledKitError.tileNotFound
@@ -55,7 +56,7 @@ extension SKScene{
                 tileNode.xScale = tileObject.width.cgFloatValue / size.width
                 tileNode.yScale = tileObject.height.cgFloatValue / size.height
                 
-                node = tileNode
+                objectNode = tileNode
                 
             } else if let textObject = object as? TextObject {
                 let rect = CGRect(origin: .zero, size: CGSize(width: textObject.width, height: textObject.height).transform())
@@ -70,7 +71,7 @@ extension SKScene{
                 textNode.position = CGPoint(x: textObject.x, y: textObject.y).transform()
                 textNode.zRotation = -textObject.rotation.radians.cgFloatValue
 
-                node = textNode
+                objectNode = textNode
             } else if let rectangle = object as? RectangleObject {
                 let rect = CGRect(origin: .zero, size: CGSize(width: rectangle.width, height: rectangle.height).transform())
 
@@ -78,13 +79,13 @@ extension SKScene{
                 rectangleNode.position = CGPoint(x:rectangle.x, y:rectangle.y).transform()
                 rectangleNode.zRotation = -rectangle.rotation.radians.cgFloatValue
 
-                node = rectangleNode
+                objectNode = rectangleNode
             } else if let point = object as? PointObject {
                 let pointNode = SKTKShapeNode(circleOfRadius: 1)
                 
                 pointNode.position = CGPoint(x: point.x, y: point.y).transform()
                 
-                node = pointNode
+                objectNode = pointNode
             } else if let polygon = object as? PolygonObject {
                 let path = CGMutablePath()
                 var first = true
@@ -106,15 +107,19 @@ extension SKScene{
                 pathNode.position = CGPoint(x: polygon.x, y: polygon.y).transform()
                 pathNode.zRotation = -(polygon.rotation?.radians.cgFloatValue ?? 0)
 
-                node = pathNode
+                objectNode = pathNode
             }
             
-            if let node = node {
-                node.name = object.name
-                node.isHidden = !object.visible
-                node.apply(propertiesFrom: object)
+            if let objectNode = objectNode {
+                objectNode.name = object.name
+                objectNode.isHidden = !object.visible
+                objectNode.apply(propertiesFrom: object)
                 
-                container.addChild(node)
+                if let strokeColor : Color = object.strokeColor, let shapeNode = objectNode as? SKShapeNode {
+                    shapeNode.strokeColor = strokeColor.skColor
+                }
+                
+                objectLayerNode.addChild(objectNode)
             }
             
         }

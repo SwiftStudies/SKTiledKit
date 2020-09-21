@@ -36,6 +36,10 @@ Created as an  `SKTKShape`.
 
 ### Support for user specified properties
 
+All properties are copied to the [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) property of the created node. In addition the following properties are interpretted and applied:
+
+ - `strokeColor : Color` is converted to an `SKColor` and set on the node's `strokeColor` property
+
 No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
 
 ## <a name="polygon">Polygon</a>
@@ -50,7 +54,9 @@ Created as an  `SKTKShape`.
 
 ### Support for user specified properties
 
-No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
+All properties are copied to the [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) property of the created node. In addition the following properties are interpretted and applied:
+
+ - `strokeColor : Color` is converted to an `SKColor` and set on the node's `strokeColor` property
 
  ## <a name="elipse">Elipse</a>
  Created as an  [`SKShape`](https://developer.apple.com/documentation/spritekit/skshape). 
@@ -67,7 +73,9 @@ No special interpretation of user specified properties is done at this time, how
 
  ### Support for user specified properties
 
- No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
+All properties are copied to the [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) property of the created node. In addition the following properties are interpretted and applied:
+
+ - `strokeColor : Color` is converted to an `SKColor` and set on the node's `strokeColor` property
 
 ## <a name="rectangle">Rectangle</a>
 Created as an  [`SKShape`](https://developer.apple.com/documentation/spritekit/skshape). 
@@ -84,7 +92,9 @@ Created as an  [`SKShape`](https://developer.apple.com/documentation/spritekit/s
 
 ### Support for user specified properties
 
-No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
+All properties are copied to the [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) property of the created node. In addition the following properties are interpretted and applied:
+
+ - `strokeColor : Color` is converted to an `SKColor` and set on the node's `strokeColor` property
 
 ## <a name="text">Text</a>
 In order to support the text alignment options and origin behavior of the TiledKit level (the y-axis is inverted compared to SpriteKIt) an `SKLabelNode` is wrapped in an `SKShapeNode` with a rectangular path the same size as the width and height properties of the Text object in Tiled. 
