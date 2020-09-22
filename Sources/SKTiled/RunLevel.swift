@@ -52,6 +52,11 @@ fileprivate class ApplicationDelegate: NSObject, NSApplicationDelegate {
         
         self._window.contentView!.addSubview(skView)
         
+        skView.showsFPS = true
+        skView.showsPhysics = true
+        skView.showsDrawCount = true
+        skView.showsNodeCount = true
+        
         skView.presentScene(scene)
     }
     
