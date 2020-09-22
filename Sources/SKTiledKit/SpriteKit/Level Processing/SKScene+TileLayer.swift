@@ -35,10 +35,6 @@ extension SKScene {
                     guard let tile = tileLayer.level.tiles[levelTileOffset] else {
                         throw SKTiledKitError.tileNotFound
                     }
-                    
-                    guard let tileSet = tile.tileSet else {
-                        throw SKTiledKitError.tileHasNoTileSet(tile:tile)
-                    }
 
                     let cachedNode = SKTileSets.tileCache[tile.uuid]
                     guard let tileNode = cachedNode?.copy() as? SKSpriteNode else {
