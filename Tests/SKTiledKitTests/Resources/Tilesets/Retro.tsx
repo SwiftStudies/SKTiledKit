@@ -4,6 +4,7 @@
   <property name="Credits">Many thanks to Robert for creating the free to use tile set included here. You can find it here:
 
 https://0x72.itch.io/16x16-dungeon-tileset</property>
+  <property name="filteringMode" value="nearest"/>
  </properties>
  <image source="../Images/DungeonTiles.png" width="256" height="256"/>
  <tile id="63">
