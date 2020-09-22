@@ -114,7 +114,23 @@ internal class SKTileSets {
                     in: parentTexture )
                 createTileNode(tile, from: tileset, with: subTexture)
             }
-            return
+        }
+        
+        //Create animations
+        for tile in tileset.tiles.values {
+            var animationSteps = [SKAction]()
+            for frame in tile.animation {
+                if let texture = (tileCache[tile.uuid] as? SKSpriteNode)?.texture {
+                    animationSteps.append(SKAction.setTexture(texture))
+                    animationSteps.append(SKAction.wait(forDuration: frame.duration))
+                } else {
+                    print("WARNING: No texture for \(tile.tileSet?.name ?? "<<Unknown>>").\(tile.identifier)")
+                }
+            }
+            
+            if animationSteps.count > 0 {
+                tileCache[tile.uuid]?.run(SKAction.repeatForever(SKAction.sequence(animationSteps)))
+            }
         }
     }
 }
