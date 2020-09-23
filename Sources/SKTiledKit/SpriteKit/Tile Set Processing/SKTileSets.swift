@@ -86,11 +86,27 @@ internal class SKTileSets {
     }
 
     fileprivate static func createTileNode(_ tile:TileSet.Tile, from tileset:TileSet, with texture:SKTexture) {
-        #warning("Is not handling any layers on the tile")
         let node = SKTKSpriteNode(texture: texture)
         node.userData = NSMutableDictionary()
         tileCache[tile.uuid] = node
         tileTextureCache[tile.identifier.description] = texture
+        let accumulatedFrame = node.calculateAccumulatedFrame()
+
+        if let bodyParts = tile.objects?.objects.compactMap({ (object) -> SKPhysicsBody? in
+            if let path = object.cgPath {
+                let rotation = object.zRotation
+                var translation = CGPoint(x: object.x, y: object.y).transform()
+                
+                translation.y += accumulatedFrame.height
+                
+                return SKPhysicsBody(polygonFrom: path.apply(CGAffineTransform(rotationAngle: rotation)).apply(CGAffineTransform(translationX: translation.x, y: translation.y)))
+            }
+            return nil
+        }){
+            let collisionBody = SKPhysicsBody(bodies: bodyParts)
+            collisionBody.affectedByGravity = false
+            node.physicsBody = collisionBody
+        }        
     }
     
     static func load(_ tileset:TileSet) throws {

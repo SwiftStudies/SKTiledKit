@@ -85,9 +85,9 @@ extension SKScene{
             var objectNode : SKNode? = nil
             
             if let elipse = object as? EllipseObject {
-                let rect = CGRect(origin: .zero, size: CGSize(width: elipse.width, height: elipse.height).transform())
-
-                let path = CGPath(ellipseIn: rect, transform: nil)
+                guard let path = elipse.cgPath else {
+                    fatalError("Could not generate path for elipse")
+                }
                 
                 objectNode = shapeNode(with: path, position: CGPoint(x:elipse.x,y:elipse.y), rotation: elipse.rotation, centered: true)
             } else if let tileObject = object as? TileObject {
@@ -124,9 +124,9 @@ extension SKScene{
 
                 objectNode = textNode
             } else if let rectangle = object as? RectangleObject {
-                let rect = CGRect(origin: .zero, size: CGSize(width: rectangle.width, height: rectangle.height).transform())
-
-                let path = CGPath(rect: rect, transform: nil)
+                guard let path = rectangle.cgPath else {
+                    fatalError("Could not generate path for RectangleObject")
+                }
                 
                 objectNode = shapeNode(with: path, position: CGPoint(x:rectangle.x,y:rectangle.y), rotation: rectangle.rotation, centered: true)
                 
@@ -137,19 +137,8 @@ extension SKScene{
                 
                 objectNode = pointNode
             } else if let polygon = object as? PolygonObject {
-                let path = CGMutablePath()
-                var first = true
-                for point in polygon.points {
-                    if first {
-                        path.move(to: CGPoint(x: point.x, y: point.y).transform())
-                        first = false
-                    } else {
-                        path.addLine(to: CGPoint(x: point.x, y: point.y).transform())
-                    }
-                }
-                
-                if !(polygon is PolylineObject) {
-                    path.closeSubpath()
+                guard let path = polygon.cgPath else {
+                    fatalError("Could not generate path for Polygonal Object")
                 }
                 
                 objectNode = shapeNode(with: path, position: CGPoint(x: polygon.x, y: polygon.y), rotation: polygon.rotation, centered: true)

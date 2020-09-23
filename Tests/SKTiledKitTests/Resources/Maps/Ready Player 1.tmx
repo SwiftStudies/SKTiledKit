@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="6">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="7">
  <tileset firstgid="1" source="../Tilesets/Retro.tsx"/>
  <layer id="1" name="Floor" width="10" height="10">
   <data encoding="csv">
@@ -38,5 +38,6 @@
   <object id="5" x="0.106724" y="143.868" width="159.917" height="19.0617">
    <text fontfamily="Courier New" pixelsize="7" wrap="1" color="#ffffff" halign="center" valign="center">Tileset from: https://0x72.itch.io/16x16-dungeon-tileset</text>
   </object>
+  <object id="6" gid="64" x="102.993" y="134.525" width="16" height="16"/>
  </objectgroup>
 </map>
