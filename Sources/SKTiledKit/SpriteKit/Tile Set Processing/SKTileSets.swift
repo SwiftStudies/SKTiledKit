@@ -90,6 +90,7 @@ internal class SKTileSets {
         let node = SKTKSpriteNode(texture: texture)
         node.userData = NSMutableDictionary()
         tileCache[tile.uuid] = node
+        tileTextureCache[tile.identifier.description] = texture
     }
     
     static func load(_ tileset:TileSet) throws {
@@ -121,7 +122,7 @@ internal class SKTileSets {
         for tile in tileset.tiles.values {
             var animationSteps = [SKAction]()
             for frame in tile.animation {
-                if let texture = (tileCache[tile.uuid] as? SKSpriteNode)?.texture {
+                if let texture = tileTextureCache[frame.tile.identifier.description] {
                     animationSteps.append(SKAction.setTexture(texture))
                     animationSteps.append(SKAction.wait(forDuration: frame.duration))
                 } else {
@@ -130,7 +131,6 @@ internal class SKTileSets {
             }
             
             if animationSteps.count > 0 {
-                animationSteps.insert(SKAction.rotate(byAngle: 2*CGFloat.pi, duration: 2), at: 0)
                 tileCache[tile.uuid]?.run(SKAction.repeatForever(SKAction.sequence(animationSteps)))
             }
         }

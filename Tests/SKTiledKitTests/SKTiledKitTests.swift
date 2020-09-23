@@ -51,9 +51,9 @@ final class SKTiledKitTests : XCTestCase {
         }
         
         do {
-            let scene = try SKScene(tiledLevel: url)
             
-            let view = SKView(frame: NSRect(x: 0, y: 0, width: scene.size.width, height: scene.size.height))
+            let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
+            let scene = try SKScene(tiledLevel: url)
             view.presentScene(scene)
             
             print(scene)
