@@ -88,6 +88,7 @@ internal class SKTileSets {
     fileprivate static func createTileNode(_ tile:TileSet.Tile, from tileset:TileSet, with texture:SKTexture) {
         #warning("Is not handling any layers on the tile")
         let node = SKTKSpriteNode(texture: texture)
+        node.userData = NSMutableDictionary()
         tileCache[tile.uuid] = node
     }
     
@@ -129,6 +130,7 @@ internal class SKTileSets {
             }
             
             if animationSteps.count > 0 {
+                animationSteps.insert(SKAction.rotate(byAngle: 2*CGFloat.pi, duration: 2), at: 0)
                 tileCache[tile.uuid]?.run(SKAction.repeatForever(SKAction.sequence(animationSteps)))
             }
         }

@@ -88,8 +88,6 @@ public extension SKTKTextNode {
         
         let textBounds = label.calculateAccumulatedFrame()
         
-        print("Applying style \(style)")
-        
         switch style.horizontalAlignment {
         case .left, .justified:
             label.position.x = textBounds.width / 2

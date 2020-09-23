@@ -29,11 +29,8 @@ fileprivate class WindowDelegate: NSObject, NSWindowDelegate {
 
 fileprivate class SKTiledApp : NSApplication {
     override func run() {
-        print("Here")
         self.finishLaunching()
-        print("Here")
         super.run()
-        print("Here")
     }
 }
 
