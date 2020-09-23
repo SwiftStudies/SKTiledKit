@@ -21,7 +21,7 @@ let package = Package(
             targets: ["SKTiled"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/SwiftStudies/TiledKit", from: "0.0.18"),
+        .package(url: "https://github.com/SwiftStudies/TiledKit", from: "0.0.19"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.3"),
     ],
     targets: [
