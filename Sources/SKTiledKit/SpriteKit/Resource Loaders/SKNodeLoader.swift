@@ -15,17 +15,30 @@
 import SpriteKit
 import TiledKit
 
-extension SKScene {
-    
-    public static func loader(for project: Project) -> ResourceLoader {
-        return SKSceneLoader(project: project)
+public struct SKTKNodeLoader : ResourceLoader {
+    let project : Project
+    public func retrieve<R>(asType: R.Type, from url: URL) throws -> R where R : Loadable {
+        throw SceneLoadingError.attemptToLoadInMemoryResourceFrom(url)
     }
     
-    public var cache : Bool {
+    
+}
+
+extension SKTKNode : Loadable {
+    public static func loader(for project: Project) -> ResourceLoader {
+        return SKTKNodeLoader(project: project)
+    }
+    
+    public var cache: Bool {
         return true
     }
     
     public func newInstance() -> Self {
-        return copy() as! Self
+        if let nodeCopy = self.copy() as? Self {
+            return nodeCopy
+        }
+        fatalError("Could not create a copy of SKNode for a new instance")
     }
+    
+    
 }

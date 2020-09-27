@@ -36,15 +36,13 @@ public struct SKTextureLoader : ResourceLoader {
         if let directProvider = CGDataProvider(url: url as CFURL) {
             provider = directProvider
         } else {
-            #warning("No way this is right now")
             // See if it has been processed into directly into the bundle resources
             var bundleURL = Bundle.main.bundleURL
             bundleURL.appendPathComponent(url.lastPathComponent)
             guard let bundleProvider = CGDataProvider(url: bundleURL as CFURL) else {
                 // Perhaps it's from a atlas
                 guard let loadedResource = SKTexture(imageNamed: url.deletingPathExtension().lastPathComponent) as? R else {
-                    #warning("Fix error thrown, it's that the texture wasn't right")
-                    throw SceneLoadingError.sceneCouldNotReturned
+                    throw SceneLoadingError.textureCouldNotBeReturned
                 }
                 
                 return loadedResource
@@ -62,11 +60,9 @@ public struct SKTextureLoader : ResourceLoader {
             
             
         let texture = SKTexture(cgImage: cgImage)
-        texture.filteringMode = filteringMode
 
         guard let loadedResource = texture as? R else {
-            #warning("Fix error thrown, it's that the texture wasn't right")
-            throw SceneLoadingError.sceneCouldNotReturned
+            throw SceneLoadingError.textureCouldNotBeReturned
         }
         
         return loadedResource
