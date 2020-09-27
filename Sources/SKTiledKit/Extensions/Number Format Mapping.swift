@@ -13,6 +13,64 @@
 //    limitations under the License.
 
 import SpriteKit
+import TiledKit
+
+extension Point where N == Int {
+    var cgPoint : CGPoint {
+        return CGPoint(x: x, y: y)
+    }
+}
+
+extension Point where N == Double {
+    var cgPoint : CGPoint {
+        return CGPoint(x: x, y: y)
+    }
+}
+
+
+extension Point where N == UInt32 {
+    var cgPoint : CGPoint {
+        return CGPoint(x: Int(x), y: Int(y))
+    }
+}
+
+extension TiledKit.Dimension where N == Int {
+    var cgSize : CGSize {
+        return CGSize(width: width, height: height)
+    }
+}
+
+extension TiledKit.Dimension where N == Double {
+    var cgSize : CGSize {
+        return CGSize(width: width, height: height)
+    }
+}
+
+
+extension TiledKit.Dimension where N == UInt32 {
+    var cgSize : CGSize {
+        return CGSize(width: Int(width), height: Int(height))
+    }
+}
+
+extension Rectangle where N == Int {
+    var cgRect : CGRect {
+        return CGRect(origin: origin.cgPoint, size: size.cgSize)
+    }
+}
+
+extension Rectangle where N == Double {
+    var cgRect : CGRect {
+        return CGRect(origin: origin.cgPoint, size: size.cgSize)
+    }
+}
+
+
+extension Rectangle where N == UInt32 {
+    var cgRect : CGRect {
+        return CGRect(origin: origin.cgPoint, size: size.cgSize)
+    }
+}
 
 
 extension BinaryFloatingPoint {
