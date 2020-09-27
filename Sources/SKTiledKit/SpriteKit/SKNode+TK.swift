@@ -15,8 +15,6 @@
 import SpriteKit
 import TiledKit
 
+#warning("Delete this file")
 extension SKNode {
-    func transformY(for level:Level)->CGFloat{
-        return level.transform(y: Double(position.y), objectHeight: Double(calculateAccumulatedFrame().size.height))
-    }
 }

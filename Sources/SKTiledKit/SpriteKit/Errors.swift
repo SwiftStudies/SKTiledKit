@@ -18,7 +18,7 @@ import Foundation
 public enum SKTiledKitError : Error {
     case tileNodeDoesNotExist
     case tileNotFound
-    case tileHasNoTileSet(tile:TileSet.Tile)
+    case tileHasNoTileSet(tile:Tile)
     case notImplemented
     case missingPathForTile(tile:String)
     case couldNotLoadImage(url:URL)

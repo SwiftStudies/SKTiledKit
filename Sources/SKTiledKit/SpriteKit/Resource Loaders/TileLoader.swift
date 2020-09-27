@@ -15,18 +15,23 @@
 import SpriteKit
 import TiledKit
 
-public struct SKTKNodeLoader : ResourceLoader {
+extension Tile {
+    internal var cachingUrl : URL {
+        let encodedPath = imageSource.pathComponents.reduce("", {"\($0)/\($1.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)"})
+        return URL(inMemory: "TileNode", encodedPath,"\(bounds.origin.x)","\(bounds.origin.y)","\(bounds.size.width)","\(bounds.size.height)")!
+    }
+}
+
+public struct TileLoader : ResourceLoader {
     let project : Project
     public func retrieve<R>(asType: R.Type, from url: URL) throws -> R where R : Loadable {
         throw SceneLoadingError.attemptToLoadInMemoryResourceFrom(url)
     }
-    
-    
 }
 
-extension SKTKNode : Loadable {
+extension SKSpriteNode : Loadable {
     public static func loader(for project: Project) -> ResourceLoader {
-        return SKTKNodeLoader(project: project)
+        return TileLoader(project: project)
     }
     
     public var cache: Bool {

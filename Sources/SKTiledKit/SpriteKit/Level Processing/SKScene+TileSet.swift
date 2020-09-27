@@ -15,13 +15,7 @@
 import SpriteKit
 import TiledKit
 
+#warning("Delete this file")
 extension SKScene {
-    public func create(tileSet: TileSet) throws {
-        try SKTileSets.load(tileSet)
-    }
-    
-    #warning("This may not be necessary")
-    public func add(tile: Int, to tileSet: TileSet) throws {
-        throw SKTiledKitError.notImplemented
-    }
+
 }

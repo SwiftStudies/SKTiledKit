@@ -15,6 +15,7 @@
 import ArgumentParser
 import SpriteKit
 import SKTiledKit
+import TiledKit
 
 struct Run : ParsableCommand {
     static var configuration =  CommandConfiguration(abstract:"Loads the specified level into a scene")
@@ -38,15 +39,17 @@ struct Run : ParsableCommand {
     
     func run() throws {
         do {
-            let url = URL(fileURLWithPath: level, isDirectory: false, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
-            let scene = try SKScene(tiledLevel: url)
+            let sceneUrl = URL(fileURLWithPath: level)
+            let project = Project(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+            
+            let scene = try project.retrieve(asType: SKTKScene.self, from: sceneUrl)
             
             scene.scaleMode = .aspectFit
             
             if let windowSize = windowSize {
-                start(scene, from:url, windowSize:CGSize(width: windowSize.x, height: windowSize.y))
+                start(scene, from: sceneUrl, windowSize:CGSize(width: windowSize.x, height: windowSize.y))
             } else {
-                start(scene, from: url)
+                start(scene, from: sceneUrl)
             }
             
         } catch {

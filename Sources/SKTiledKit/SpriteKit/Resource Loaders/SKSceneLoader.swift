@@ -19,6 +19,7 @@ enum SceneLoadingError : Error {
     case sceneCouldNotReturned
     case textureCouldNotBeReturned
     case attemptToLoadInMemoryResourceFrom(URL)
+    case tileNotFound(UInt32, tileSet:String)
 }
 
 extension SKScene {
@@ -115,7 +116,7 @@ public struct SKSceneLoader : ResourceLoader {
         return shapeNode
     }
     
-    public func add(_ objects: [Object], to container: SKNode) throws {
+    public func add(_ objects: [Object], to container: SKNode, in map:Map) throws {
         
         for object in objects {
             
@@ -125,65 +126,46 @@ public struct SKSceneLoader : ResourceLoader {
             case .point:
                 let pointNode = SKTKShapeNode(circleOfRadius: 1)
                 
-                pointNode.position = CGPoint(x: point.x, y: point.y).transform()
+                pointNode.position = object.position.cgPoint.transform()
                 
                 objectNode = pointNode
-            case .rectangle(_, angle: let angle):
-                guard let path = rectangle.cgPath else {
-                    fatalError("Could not generate path for RectangleObject")
+            case .polygon(_, let angle), .polyline(_, let angle), .ellipse(_, let angle), .rectangle(_, let angle):
+                guard let path = object.cgPath else {
+                    fatalError("Could not generate path for Polygonal Object")
                 }
                 
-                objectNode = shapeNode(with: path, position: CGPoint(x:rectangle.x,y:rectangle.y), rotation: rectangle.rotation, centered: true)
-            case .ellipse(_, angle: let angle):
-                guard let path = elipse.cgPath else {
-                    fatalError("Could not generate path for elipse")
-                }
-                
-                objectNode = shapeNode(with: path, position: CGPoint(x:elipse.x,y:elipse.y), rotation: elipse.rotation, centered: true)
-            case .tile(_, size: let size, angle: let angle):
-                guard let tile = tileObject.level.tiles[tileObject.gid] else {
+                objectNode = shapeNode(with: path, position: object.position.cgPoint, rotation: angle, centered: true)
+            case .tile(let tileGid, _, _):
+                guard let tile = map[tileGid] else {
                     throw SKTiledKitError.tileNotFound
                 }
-                let cachedNode = SKTileSets.tileCache[tile.uuid]
-                guard let tileNode = cachedNode?.copy() as? SKTKSpriteNode else {
-                    throw SKTiledKitError.tileNodeDoesNotExist
-                }
                 
+                let tileNode = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
+                                
                 let size = tileNode.calculateAccumulatedFrame().size
                 
                 tileNode.anchorPoint = .zero
-                tileNode.position = CGPoint(x: tileObject.x, y: tileObject.y).transform()
-                tileNode.zRotation = -tileObject.rotation.cgFloatValue.radians
-                tileNode.xScale = tileObject.width.cgFloatValue / size.width
-                tileNode.yScale = tileObject.height.cgFloatValue / size.height
+                tileNode.position = object.position.cgPoint.transform()
+                tileNode.zRotation = object.zRotation
+                tileNode.xScale = size.width.cgFloatValue / size.width
+                tileNode.yScale = size.height.cgFloatValue / size.height
                 
                 objectNode = tileNode
-            case .text(_, size: let size, angle: let angle, style: let style):
-                let rect = CGRect(origin: .zero, size: CGSize(width: textObject.width, height: textObject.height).transform())
+            case .text(let string, let size, _, let style):
+                let rect = CGRect(origin: .zero, size: size.cgSize.transform())
 
                 let textNode = SKTKTextNode(path: CGPath(rect: rect, transform: nil))
 
-                textNode.add(textObject.string, applying: textObject.style)
-                if object.showTextNodePath == true {
+                textNode.add(string, applying: style)
+                if object.properties["showTextNodePath"] == true {
                     textNode.strokeColor = SKColor.white
                 }
 
-                textNode.position = CGPoint(x: textObject.x, y: textObject.y).transform()
-                textNode.zRotation = -textObject.rotation.radians.cgFloatValue
+                textNode.position = object.position.cgPoint.transform()
+                textNode.zRotation = object.zRotation
 
                 objectNode = textNode
-            case .polygon(pointPath, angle: let angle):
-                guard let path = polygon.cgPath else {
-                    fatalError("Could not generate path for Polygonal Object")
-                }
-                
-                objectNode = shapeNode(with: path, position: CGPoint(x: polygon.x, y: polygon.y), rotation: polygon.rotation, centered: true)
-            case .polyline(pointPath, angle: let angle):
-                guard let path = polygon.cgPath else {
-                    fatalError("Could not generate path for Polygonal Object")
-                }
-                
-                objectNode = shapeNode(with: path, position: CGPoint(x: polygon.x, y: polygon.y), rotation: polygon.rotation, centered: true)
+
             }
         
             if let objectNode = objectNode {
@@ -191,11 +173,11 @@ public struct SKSceneLoader : ResourceLoader {
                 objectNode.isHidden = !object.visible
                 objectNode.apply(propertiesFrom: object)
                 
-                if let strokeColor : Color = object.strokeColor, let shapeNode = objectNode as? SKShapeNode {
+                if case let PropertyValue.color(strokeColor) = object.properties["strokeColor"] ?? .bool(false), let shapeNode = objectNode as? SKShapeNode {
                     shapeNode.strokeColor = strokeColor.skColor
                 }
                 
-                objectLayerNode.addChild(objectNode)
+                container.addChild(objectNode)
             }
             
         }
@@ -221,7 +203,7 @@ public struct SKSceneLoader : ResourceLoader {
                             #warning("Forced unwrap")
                             #warning("These should have all be pre-loaded via the loading of the tile sets before walk begain")
                             // Read the warning above
-                            let tileNode = try project.retrieve(asType: SKTKNode.self, from: URL(inMemory: "TileNode", tile.uuid)!)
+                            let tileNode = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
 
                             tileNode.position = CGRect(x: x * map.tileSize.width, y: y * map.tileSize.height, width: map.tileSize.width, height: map.tileSize.height).transform(with: tileNode.anchorPoint).origin
                             
@@ -235,7 +217,7 @@ public struct SKSceneLoader : ResourceLoader {
                 let objectLayerNode = SKNode()
                 configure(objectLayerNode, for: layer)
 
-                add(objects, to: objectLayerNode)
+                try add(objects, to: objectLayerNode, in: map)
                 
                 parent.addChild(objectLayerNode)
             case .group(let group):
@@ -265,7 +247,7 @@ public struct SKSceneLoader : ResourceLoader {
         scene.apply(propertiesFrom: map)
         
         for tileSet in map.tileSets {
-            
+            try load(tileSet)
         }
         
         // Prepare the remaining layers
@@ -279,4 +261,74 @@ public struct SKSceneLoader : ResourceLoader {
         scene.camera = camera
     }
     
+    internal func createTileNode(_ tile:Tile, from tileset:TileSet, using texture:SKTexture) {
+        let node = SKTKSpriteNode(texture: texture)
+        node.userData = NSMutableDictionary()
+
+        // No matter what happens, store the node in the cache before returning
+        defer {
+            project.store(node, as: tile.cachingUrl)
+        }
+
+        let accumulatedFrame = node.calculateAccumulatedFrame()
+
+        if let bodyParts = tile.collisionBodies?.compactMap({ (object) -> SKPhysicsBody? in
+            if let path = object.cgPath {
+                let rotation = object.zRotation
+                var translation = object.position.cgPoint.transform()
+                
+                translation.y += accumulatedFrame.height
+                
+                return SKPhysicsBody(polygonFrom: path.apply(CGAffineTransform(rotationAngle: rotation)).apply(CGAffineTransform(translationX: translation.x, y: translation.y)))
+            }
+            return nil
+        }){
+            let collisionBody = SKPhysicsBody(bodies: bodyParts)
+            collisionBody.affectedByGravity = false
+            node.physicsBody = collisionBody
+        }
+    }
+    
+    internal func load(_ tileset:TileSet) throws {
+        
+        for tileId : UInt32 in 0..<UInt32(tileset.count) {
+            guard let tile = tileset[tileId] else {
+                throw SceneLoadingError.tileNotFound(tileId, tileSet: tileset.name)
+            }
+            
+            let texture = try project.retrieve(asType: SKTexture.self, from: tile.imageSource)
+            texture.filteringMode = SKTextureFilteringMode(withPropertiesFrom: tileset)
+            
+            if texture.size() != tile.bounds.size.cgSize {
+                let subTexture = SKTexture(rect: tile.bounds.cgRect, in: texture)
+                subTexture.filteringMode = SKTextureFilteringMode(withPropertiesFrom: tileset)
+                createTileNode(tile, from: tileset, using: subTexture)
+            } else {
+                createTileNode(tile, from: tileset, using: texture)
+            }
+        }
+        
+        //Create animations
+        for tileId : UInt32 in 0..<UInt32(tileset.count) {
+            guard let tile = tileset[tileId] else {
+                throw SceneLoadingError.tileNotFound(tileId, tileSet: tileset.name)
+            }
+            var animationSteps = [SKAction]()
+            for frame in tile.frames ?? [] {
+                if let texture = try project.retrieve(asType: SKSpriteNode.self, from: frame.tile.cachingUrl).texture {
+                    animationSteps.append(SKAction.setTexture(texture))
+                    animationSteps.append(SKAction.wait(forDuration: frame.duration))
+                } else {
+                    print("WARNING: No texture for \(tileset.name).\(tile.uuid)")
+                }
+            }
+            
+            // If we have frames, update the cache
+            if animationSteps.count > 0 {
+                let currentTileSprite = try project.retrieve(asType: SKTKSpriteNode.self, from: tile.cachingUrl)
+                currentTileSprite.run(SKAction.repeatForever(SKAction.sequence(animationSteps)))
+                project.store(currentTileSprite, as: tile.cachingUrl)
+            }
+        }
+    }
 }

@@ -52,7 +52,7 @@ public extension SKTKTextNode {
         }
     }
         
-    internal func add(_ text:String, applying style:TextObject.TextStyle){
+    internal func add(_ text:String, applying style:TextStyle){
         strokeColor = SKColor.clear
         fillColor = SKColor.clear
 
@@ -64,7 +64,7 @@ public extension SKTKTextNode {
         apply(style)
     }
     
-    func apply(_ style:TextObject.TextStyle){
+    func apply(_ style:TextStyle){
         guard let label = label else {
             return
         }
