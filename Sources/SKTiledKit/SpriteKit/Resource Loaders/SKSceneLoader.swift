@@ -259,7 +259,7 @@ public struct SKSceneLoader : ResourceLoader {
         scene.camera = camera
     }
     
-    internal func createTileNode(_ tile:Tile, from tileset:TileSet, using texture:SKTexture) {
+    internal func createTileNode(_ tile:Tile, id tileId:UInt32, from tileset:TileSet, using texture:SKTexture) {
         let node = SKTKSpriteNode(texture: texture)
         node.userData = NSMutableDictionary()
 
@@ -268,10 +268,10 @@ public struct SKSceneLoader : ResourceLoader {
             project.store(node, as: tile.cachingUrl)
         }
 
-        let accumulatedFrame = node.calculateAccumulatedFrame()
 
         if let bodyParts = tile.collisionBodies?.compactMap({ (object) -> SKPhysicsBody? in
             if let path = object.cgPath {
+                let accumulatedFrame = node.calculateAccumulatedFrame()
                 let rotation = object.zRotation
                 var translation = object.position.cgPoint.transform()
                 
@@ -305,11 +305,13 @@ public struct SKSceneLoader : ResourceLoader {
             texture.filteringMode = SKTextureFilteringMode(withPropertiesFrom: tileset)
             
             if texture.size() != tile.bounds.size.cgSize {
-                let subTexture = SKTexture(rect: scale(tile.bounds.cgRect, to: texture), in: texture)
+                var textureBounds = scale(tile.bounds.cgRect, to: texture)
+                textureBounds.origin.y = (1 - textureBounds.origin.y) - textureBounds.size.height
+                let subTexture = SKTexture(rect: textureBounds, in: texture)
                 subTexture.filteringMode = SKTextureFilteringMode(withPropertiesFrom: tileset)
-                createTileNode(tile, from: tileset, using: subTexture)
+                createTileNode(tile, id: tileId, from: tileset, using: subTexture)
             } else {
-                createTileNode(tile, from: tileset, using: texture)
+                createTileNode(tile, id: tileId, from: tileset, using: texture)
             }
         }
         
