@@ -291,6 +291,13 @@ public struct SKSceneLoader : ResourceLoader {
     
     internal func load(_ tileset:TileSet) throws {
         
+        func scale(_ bounds:CGRect, to texture: SKTexture) -> CGRect {
+            return CGRect(x: bounds.origin.x / texture.size().width,
+                          y: bounds.origin.y / texture.size().height,
+                          width: bounds.size.width / texture.size().width,
+                          height: bounds.size.height / texture.size().height)
+        }
+        
         for tileId : UInt32 in 0..<UInt32(tileset.count) {
             guard let tile = tileset[tileId] else {
                 throw SceneLoadingError.tileNotFound(tileId, tileSet: tileset.name)
@@ -300,7 +307,7 @@ public struct SKSceneLoader : ResourceLoader {
             texture.filteringMode = SKTextureFilteringMode(withPropertiesFrom: tileset)
             
             if texture.size() != tile.bounds.size.cgSize {
-                let subTexture = SKTexture(rect: tile.bounds.cgRect, in: texture)
+                let subTexture = SKTexture(rect: scale(tile.bounds.cgRect, to: texture), in: texture)
                 subTexture.filteringMode = SKTextureFilteringMode(withPropertiesFrom: tileset)
                 createTileNode(tile, from: tileset, using: subTexture)
             } else {
