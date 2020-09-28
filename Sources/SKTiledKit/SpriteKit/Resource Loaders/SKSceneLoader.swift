@@ -199,10 +199,8 @@ public struct SKSceneLoader : ResourceLoader {
                             guard let tile = map[tileGid] else {
                                 throw SKTiledKitError.tileNotFound
                             }
-                            
-                            #warning("Forced unwrap")
-                            #warning("These should have all be pre-loaded via the loading of the tile sets before walk begain")
-                            // Read the warning above
+
+                            // TileSets were pre-loaded by the map before we got here
                             let tileNode = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
 
                             tileNode.position = CGRect(x: x * map.tileSize.width, y: y * map.tileSize.height, width: map.tileSize.width, height: map.tileSize.height).transform(with: tileNode.anchorPoint).origin
