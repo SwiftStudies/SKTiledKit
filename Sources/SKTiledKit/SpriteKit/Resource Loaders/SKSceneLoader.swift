@@ -135,7 +135,7 @@ public struct SKSceneLoader : ResourceLoader {
                 }
                 
                 objectNode = shapeNode(with: path, position: object.position.cgPoint, rotation: angle, centered: true)
-            case .tile(let tileGid, _, _):
+            case .tile(let tileGid, let drawSize, _):
                 guard let tile = map[tileGid] else {
                     throw SKTiledKitError.tileNotFound
                 }
@@ -147,8 +147,8 @@ public struct SKSceneLoader : ResourceLoader {
                 tileNode.anchorPoint = .zero
                 tileNode.position = object.position.cgPoint.transform()
                 tileNode.zRotation = object.zRotation
-                tileNode.xScale = size.width.cgFloatValue / size.width
-                tileNode.yScale = size.height.cgFloatValue / size.height
+                tileNode.xScale = drawSize.width.cgFloatValue / size.width
+                tileNode.yScale = drawSize.height.cgFloatValue / size.height
                 
                 objectNode = tileNode
             case .text(let string, let size, _, let style):
