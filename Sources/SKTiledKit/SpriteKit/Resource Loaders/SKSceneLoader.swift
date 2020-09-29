@@ -22,7 +22,7 @@ enum SceneLoadingError : Error {
     case tileNotFound(UInt32, tileSet:String)
 }
 
-extension SKScene {
+extension SKScene : Loadable {
     
     public static func loader(for project: Project) -> ResourceLoader {
         return SKSceneLoader(project: project)
@@ -243,6 +243,9 @@ public struct SKSceneLoader : ResourceLoader {
         scene.userData = NSMutableDictionary()
 
         scene.apply(propertiesFrom: map)
+        if let mapBackgroundColor = map.backgroundColor {
+            scene.backgroundColor = mapBackgroundColor.skColor
+        }
         
         for tileSet in map.tileSets {
             try load(tileSet)

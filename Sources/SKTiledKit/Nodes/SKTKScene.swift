@@ -16,7 +16,7 @@ import SpriteKit
 import TiledKit
 
 @dynamicMemberLookup
-public class SKTKScene : SKScene, Loadable {
+public class SKTKScene : SKScene {
 
     
     

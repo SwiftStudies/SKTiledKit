@@ -1,6 +1,6 @@
-#  Levels
+#  Maps
 
-Not all kinds of level, or standard properties of levels are supported yet. The following are supported
+Not all kinds of map, or standard properties of maps are supported yet. The following are supported
 
 ## Support for standard Tiled Properties
 
