@@ -1,0 +1,43 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "Maps",
+        "Tilesets",
+        "Images"
+    ],
+    "fileStates": {
+        "Maps/Level 1.tmx": {
+            "scale": 1.2483231707317073,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 312.41909879106123,
+                "y": 240.32238368543167
+            }
+        },
+        "Tilesets/Dungeon.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 1
+        }
+    },
+    "map.height": 30,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 40,
+    "openFiles": [
+    ],
+    "project": "Playground Project.tiled-project",
+    "recentFiles": [
+        "Maps/Level 1.tmx",
+        "Tilesets/Dungeon.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
