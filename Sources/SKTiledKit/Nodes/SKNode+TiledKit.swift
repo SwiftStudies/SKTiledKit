@@ -15,11 +15,6 @@
 import SpriteKit
 import TiledKit
 
-@dynamicMemberLookup
-public class SKTKNode : SKNode {
-    
-}
-
 extension SKNode {
     func apply(propertiesFrom object:Propertied){
         if userData == nil {

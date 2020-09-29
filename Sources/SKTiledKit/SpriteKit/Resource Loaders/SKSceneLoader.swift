@@ -44,7 +44,7 @@ public struct SKSceneLoader : ResourceLoader {
     public func retrieve<R>(asType: R.Type, from url: URL) throws -> R {
         let map = try project.retrieve(asType: Map.self, from: url)
 
-        let scene = SKTKScene()
+        let scene = SKScene()
         
         try apply(map: map, to: scene)
         
@@ -71,7 +71,7 @@ public struct SKSceneLoader : ResourceLoader {
     ///   - degrees: The rotation in degrees (as specified in Tiled
     ///   - centered: If true the shape will be positioned as it was in tiled, but the center of rotation will be the center of the shape
     /// - Returns: The created node
-    func shapeNode(with path:CGPath, position:CGPoint, rotation degrees:Double, centered:Bool) -> SKTKShapeNode{
+    func shapeNode(with path:CGPath, position:CGPoint, rotation degrees:Double, centered:Bool) -> SKShapeNode{
         let position = position.transform()
         let radians = -degrees.cgFloatValue.radians
         
@@ -83,7 +83,7 @@ public struct SKSceneLoader : ResourceLoader {
         path = path.copy(using: &rotationTransform)!
 
         if !centered {
-            let shapeNode = SKTKShapeNode(path: path)
+            let shapeNode = SKShapeNode(path: path)
             shapeNode.position = position
             return shapeNode
         }
@@ -108,7 +108,7 @@ public struct SKSceneLoader : ResourceLoader {
         #warning("Force unwrap")
         path = path.copy(using: &centeringTransform)!
         
-        let shapeNode = SKTKShapeNode(path: path)
+        let shapeNode = SKShapeNode(path: path)
         shapeNode.position = position
         shapeNode.position.x += center.x
         shapeNode.position.y += center.y
@@ -124,7 +124,7 @@ public struct SKSceneLoader : ResourceLoader {
             
             switch object.kind {
             case .point:
-                let pointNode = SKTKShapeNode(circleOfRadius: 1)
+                let pointNode = SKShapeNode(circleOfRadius: 1)
                 
                 pointNode.position = object.position.cgPoint.transform()
                 
@@ -188,7 +188,7 @@ public struct SKSceneLoader : ResourceLoader {
             switch layer.kind {
             
             case .tile(let tileGrid):
-                let tileLayerNode = SKTKNode()
+                let tileLayerNode = SKNode()
                 configure(tileLayerNode, for: layer)
                 
                 for x in 0..<tileGrid.size.width {
@@ -219,14 +219,14 @@ public struct SKSceneLoader : ResourceLoader {
                 
                 parent.addChild(objectLayerNode)
             case .group(let group):
-                let node = SKTKNode()
+                let node = SKNode()
                 configure(node, for: layer)
                 try walk(group.layers, in: map, with: node)
                 parent.addChild(node)
             case .image(let image):
                 let texture = try project.retrieve(textureFrom: image.source, filteringMode: layer.properties["filteringMode"])
 
-                let spriteNode = SKTKSpriteNode(texture: texture)
+                let spriteNode = SKSpriteNode(texture: texture)
                 configure(spriteNode, for: layer)
                 
                 // Position has to be adjusted because it has a different anchor
@@ -263,7 +263,7 @@ public struct SKSceneLoader : ResourceLoader {
     }
     
     internal func createTileNode(_ tile:Tile, id tileId:UInt32, from tileset:TileSet, using texture:SKTexture) {
-        let node = SKTKSpriteNode(texture: texture)
+        let node = SKSpriteNode(texture: texture)
         node.userData = NSMutableDictionary()
 
         // No matter what happens, store the node in the cache before returning
@@ -335,7 +335,7 @@ public struct SKSceneLoader : ResourceLoader {
             
             // If we have frames, update the cache
             if animationSteps.count > 0 {
-                let currentTileSprite = try project.retrieve(asType: SKTKSpriteNode.self, from: tile.cachingUrl)
+                let currentTileSprite = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
                 currentTileSprite.run(SKAction.repeatForever(SKAction.sequence(animationSteps)))
                 project.store(currentTileSprite, as: tile.cachingUrl)
             }
