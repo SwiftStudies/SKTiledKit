@@ -31,6 +31,7 @@
     "openFiles": [
     ],
     "project": "Playground Project.tiled-project",
+    "property.type": "int",
     "recentFiles": [
         "Maps/Level 1.tmx",
         "Tilesets/Dungeon.tsx"
