@@ -15,14 +15,6 @@
 import TiledKit
 import SpriteKit
 
-extension Level {
-    var heightInPixels : CGFloat {
-        return (height * tileHeight).cgFloatValue
-    }
-    
-    func transform(y:Double, objectHeight height:Double = 0)->CGFloat{
-        let levelHeight = Double(self.height) * Double(self.tileHeight)
-        
-        return CGFloat((levelHeight - y) - (height / 2))
-    }
+#warning("Delete this file")
+extension Map {
 }

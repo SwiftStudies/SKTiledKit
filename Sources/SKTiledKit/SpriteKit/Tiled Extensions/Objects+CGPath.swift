@@ -26,30 +26,30 @@ public extension CGPath {
 extension Object {
     
     public var zRotation: CGFloat {
-        if let rectObject = self as? RectangleObject {
-            return -rectObject.rotation.cgFloatValue.radians
-        } else if let pologonalObject = self as? PolygonObject {
-            return -pologonalObject.rotation.cgFloatValue.radians
+        switch self.kind {
+        case .point:
+            return 0
+        case .rectangle(_,let angle), .ellipse(_, let angle), .tile(_,_,let angle), .text(_,_,let angle,_), .polygon(_, let angle), .polyline(_, let angle):
+            return -angle.cgFloatValue.radians
         }
-        
-        return 0
     }
     
     public var cgPath: CGPath? {
-        if self is TextObject || self is TileObject || self is PointObject{
+        switch kind {
+        case .point, .text, .tile:
             return nil
-        } else if let elipse = self as? EllipseObject {
-            let rect = CGRect(origin: .zero, size: CGSize(width: elipse.width, height: elipse.height).transform())
-
-            return CGPath(ellipseIn: rect, transform: nil)
-        } else if let rectangle = self as? RectangleObject {
+        case .rectangle(let rectangle, _):
             let rect = CGRect(origin: .zero, size: CGSize(width: rectangle.width, height: rectangle.height).transform())
 
             return CGPath(rect: rect, transform: nil)
-        } else if let polygonal = self as? PolygonObject {
+        case .ellipse(let ellipse, _):
+            let rect = CGRect(origin: .zero, size: CGSize(width: ellipse.width, height: ellipse.height).transform())
+
+            return CGPath(ellipseIn: rect, transform: nil)
+        case .polygon(let pathPoints, _), .polyline(let pathPoints, _):
             let path = CGMutablePath()
             var first = true
-            for point in polygonal.points {
+            for point in pathPoints {
                 if first {
                     path.move(to: CGPoint(x: point.x, y: point.y).transform())
                     first = false
@@ -58,14 +58,12 @@ extension Object {
                 }
             }
             
-            if !(polygonal is PolylineObject) {
+            if case let Object.Kind.polygon = kind {
                 path.closeSubpath()
             }
             
             return path
         }
-        
-        return nil
     }
 }
 

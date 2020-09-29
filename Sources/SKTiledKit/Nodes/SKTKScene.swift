@@ -13,8 +13,11 @@
 //    limitations under the License.
 
 import SpriteKit
+import TiledKit
 
 @dynamicMemberLookup
-public class SKTKScene : SKScene {
+public class SKTKScene : SKScene, Loadable {
+
+    
     
 }
