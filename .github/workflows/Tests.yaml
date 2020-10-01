@@ -6,15 +6,15 @@ on:
   pull_request:
     branches: [ main ]
     
-runs-on: ${{ matrix.os }}
-strategy:
-  matrix:
-    os: [ubuntu-latest, macos-latest]
-    swift: ["5.3.0", "5.3.0"]
-
 jobs:
   build:
-     
+
+    runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os: [ubuntu-latest, macos-latest]
+          swift: ["5.3.0", "5.3.0"]
+
     steps:
       - uses: fwal/setup-swift@v1
       with:
