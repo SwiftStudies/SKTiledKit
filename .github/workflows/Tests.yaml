@@ -1,12 +1,25 @@
 name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
 runs-on: ${{ matrix.os }}
 strategy:
   matrix:
     os: [ubuntu-latest, macos-latest]
     swift: ["5.3.0", "5.3.0"]
+    
 steps:
 - uses: fwal/setup-swift@v1
   with:
     swift-version: ${{ matrix.swift }}
 - name: Get swift version
   run: swift --version
+- uses: actions/checkout@v2
+- name: Build
+  run: swift build -v
+- name: Run tests
+  run: swift test -v
