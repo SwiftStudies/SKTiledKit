@@ -1,4 +1,4 @@
-name: Build & Test on ${{ matrix.os }}
+name: Build and Test on ${{ matrix.os }}
 
 on:
   push:
