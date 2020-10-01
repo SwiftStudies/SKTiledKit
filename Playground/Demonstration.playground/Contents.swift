@@ -5,22 +5,16 @@ import SpriteKit
 import TiledKit
 import SKTiledKit
 
-print("Starting")
+let project = Project(at: Bundle.main.url(forResource: "Tiled Project", withExtension: nil)!)
 
 do {
-    guard let levelOneUrl = Project.default.url(for: "Level 1", in: "Maps", of: .tmx) else {
-        fatalError("Can't find the map :-/")
-    }
-    let scene = try Project.default.retrieve(asType: SKTKScene.self, from: levelOneUrl)
+    let scene = try project.retrieve(scene: "Level 1", in: "Maps")
     scene.scaleMode = .aspectFill
-    
-    let view = SKView(frame: scene.frame)
+    let view  = SKView(frame: scene.frame)
     view.presentScene(scene)
-
+    
     PlaygroundSupport.PlaygroundPage.current.liveView = view
 } catch {
-    print("Something went wrong: \(error)")
+    print("Something went wrong :-/ \(error)")
 }
-
-print("Done")
 

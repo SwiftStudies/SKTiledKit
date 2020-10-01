@@ -22,6 +22,12 @@ enum SceneLoadingError : Error {
     case tileNotFound(UInt32, tileSet:String)
 }
 
+public extension Project {
+    func retrieve(scene name:String, in subdirectory:String? = nil) throws -> SKScene {
+        return try retrieve(asType: SKScene.self, from: name, in: subdirectory, of: .tmx)
+    }
+}
+
 extension SKScene : Loadable {
     
     public static func loader(for project: Project) -> ResourceLoader {
