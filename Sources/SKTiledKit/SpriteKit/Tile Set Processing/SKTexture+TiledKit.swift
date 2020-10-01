@@ -15,6 +15,12 @@
 import SpriteKit
 import TiledKit
 
-#warning("Delete this file")
-extension SKNode {
+internal extension SKTextureFilteringMode {
+    init(withPropertiesFrom propertied:Propertied){
+        if let property = propertied.properties["filteringMode"], property == "nearest" {
+            self = .nearest
+        } else {
+            self = .linear
+        }
+    }
 }

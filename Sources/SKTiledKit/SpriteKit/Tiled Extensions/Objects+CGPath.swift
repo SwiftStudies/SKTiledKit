@@ -58,7 +58,7 @@ extension Object {
                 }
             }
             
-            if case let Object.Kind.polygon = kind {
+            if case Object.Kind.polygon = kind {
                 path.closeSubpath()
             }
             

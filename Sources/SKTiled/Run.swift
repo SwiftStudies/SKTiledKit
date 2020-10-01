@@ -42,7 +42,7 @@ struct Run : ParsableCommand {
             let sceneUrl = URL(fileURLWithPath: level)
             let project = Project(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
             
-            let scene = try project.retrieve(asType: SKTKScene.self, from: sceneUrl)
+            let scene = try project.retrieve(asType: SKScene.self, from: sceneUrl)
             
             scene.scaleMode = .aspectFit
             

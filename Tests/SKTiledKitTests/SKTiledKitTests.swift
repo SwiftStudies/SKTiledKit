@@ -17,7 +17,7 @@ final class SKTiledKitTests : XCTestCase {
         do {
             let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
 
-            let scene = try moduleBundleProject.retrieve(asType: SKTKScene.self, from: moduleBundleProject.url(for: "Test Map 1", in: "Maps", of: .tmx)!)
+            let scene = try moduleBundleProject.retrieve(asType: SKScene.self, from: moduleBundleProject.url(for: "Test Map 1", in: "Maps", of: .tmx)!)
             
             view.presentScene(scene)
             print(scene)
@@ -28,7 +28,7 @@ final class SKTiledKitTests : XCTestCase {
 
     func testTranslation(){
         do {
-            let scene = try moduleBundleProject.retrieve(asType: SKTKScene.self, from: moduleBundleProject.url(for: "Simple Map", in: "Maps", of: .tmx)!)
+            let scene = try moduleBundleProject.retrieve(asType: SKScene.self, from: moduleBundleProject.url(for: "Simple Map", in: "Maps", of: .tmx)!)
 
             let view = SKView(frame: NSRect(x: 0, y: 0, width: scene.size.width, height: scene.size.height))
             view.presentScene(scene)
@@ -43,7 +43,7 @@ final class SKTiledKitTests : XCTestCase {
         do {
             
             let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
-            let scene = try moduleBundleProject.retrieve(asType: SKTKScene.self, from: moduleBundleProject.url(for: "Ready Player 1", in: "Maps", of: .tmx)!)
+            let scene = try moduleBundleProject.retrieve(asType: SKScene.self, from: moduleBundleProject.url(for: "Ready Player 1", in: "Maps", of: .tmx)!)
             view.presentScene(scene)
             
             print(scene)

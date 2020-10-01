@@ -15,7 +15,6 @@
 import SpriteKit
 import TiledKit
 
-@dynamicMemberLookup
 public class SKTKTextNode : SKShapeNode {
 }
 
