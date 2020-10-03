@@ -12,9 +12,16 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+import Foundation
 import ArgumentParser
 
-struct SKTiled : ParsableCommand {
-    static var configuration =  CommandConfiguration(abstract:"Enables direct testing of levels and compilation of Tile Sets into XCode assets",subcommands: [Install.self, Run.self, ProjectCommand.self], defaultSubcommand: Run.self)
+struct ProjectCommand : ParsableCommand {
+    static var configuration =  CommandConfiguration(commandName:"project", abstract:"Opens a project so that you can perform a range of sub-commands on that project", subcommands: [CreateSpriteKitObjectTypes.self])
+    
+    struct Options : ParsableArguments {
+        @Argument(help: "The location of an .tiled-project file, or the location of where you would like to create it if it does not exist")
+        var path : String
+    }
+    
     
 }

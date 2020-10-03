@@ -14,9 +14,9 @@
         "package": "TiledKit",
         "repositoryURL": "https://github.com/SwiftStudies/TiledKit",
         "state": {
-          "branch": null,
-          "revision": "d6be8687043e2254e926fb6811901f9bf987b3c2",
-          "version": "0.4.4"
+          "branch": "development",
+          "revision": "3c6a656af109ce641e645b0130cb128fcbc80788",
+          "version": null
         }
       },
       {
