@@ -8,5 +8,5 @@
         "Images",
         "Maps"
     ],
-    "objectTypesFile": ""
+    "objectTypesFile": "ObjectTypes.xml"
 }
