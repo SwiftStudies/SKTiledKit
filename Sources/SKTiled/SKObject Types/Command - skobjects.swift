@@ -45,12 +45,12 @@ extension ProjectCommand {
 
             let skTypes = [
                 SKObjectType("RectangleCamera", color: .darkGrey).withProperties(.trackObject),
-//                SKObjectType("Node", color: .green, inherits: skRectangle, skPhysical, skLit),
-//                SKObjectType("Node", color: .green, inherits: skEllipse, skPhysical, skLit),
-//                SKObjectType("Node", color: .green, inherits: skPolygon, skPhysical, skLit),
-//                SKObjectType("Node", color: .yellow, inherits: skPoint, skLight),
-//                SKObjectType("EdgeLoop", color: .white, inherits: skEdgeLoopPolygon, skPhysical),
-//                SKObjectType("Sprite", color: .blue, inherits: skPhysical, skLit)
+                SKObjectType("Node", color: .green, inherits: skRectangle, skPhysical, skLit),
+                SKObjectType("Node", color: .green, inherits: skEllipse, skPhysical, skLit),
+                SKObjectType("Node", color: .green, inherits: skPolygon, skPhysical, skLit),
+                SKObjectType("Node", color: .yellow, inherits: skPoint, skLight),
+                SKObjectType("EdgeLoop", color: .white, inherits: skEdgeLoopPolygon, skPhysical),
+                SKObjectType("Sprite", color: .blue, inherits: skPhysical, skLit)
             ]
             
             do {

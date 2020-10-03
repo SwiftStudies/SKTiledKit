@@ -33,7 +33,7 @@ enum SKProperty : String {
     private static var values : [SKProperty : PropertyValue] = [
         .strokeColor : .color(Color.white),
         .fillColor   : .color(Color.clear),
-        .trackObject : .object(id: -1),
+        .trackObject : .object(id: 0),
         .physicsCategory : 0,
         .physicsContactMask : 0,
         .physicsCollisionMask : 0,

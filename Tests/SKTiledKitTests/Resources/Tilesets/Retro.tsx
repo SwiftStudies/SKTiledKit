@@ -13,6 +13,16 @@
    <object id="2" x="1.4821" y="5" width="5" height="3" rotation="313"/>
   </objectgroup>
  </tile>
+ <tile id="117">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="SKRectanglePhysicalLitNode" x="0" y="0" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="118">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="SKRectanglePhysicalLitNode" x="0" y="0" width="16" height="16"/>
+  </objectgroup>
+ </tile>
  <tile id="152">
   <animation>
    <frame tileid="152" duration="100"/>
