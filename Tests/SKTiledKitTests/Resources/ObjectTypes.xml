@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objecttypes>
- <objecttype name="Test Type" color="#a0a0a4">
-  <property name="trackObject" type="object" default="0"/>
+ <objecttype name="test type" color="#a0a0a4">
+  <property name="sdfdsf" type="object" default="0"/>
  </objecttype>
 </objecttypes>
