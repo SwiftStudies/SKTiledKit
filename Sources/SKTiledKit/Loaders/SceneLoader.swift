@@ -50,35 +50,35 @@ public struct SceneLoader : ResourceLoader {
     static var layerProcessors  = [LayerProcessor]()
     static var mapProcessors = [MapProcessor]()
     
-    public static func prepend(_ tileProcessor:TileProcessor){
+    public static func prepend(tileProcessor:TileProcessor){
         tileProcessors.insert(tileProcessor, at: 0)
     }
 
-    public static func append(_ tileProcessor:TileProcessor){
+    public static func append(tileProcessor:TileProcessor){
         tileProcessors.append(tileProcessor)
     }
     
-    public static func prepend(_ objectProcessor:ObjectProcessor){
+    public static func prepend(objectProcessor:ObjectProcessor){
         objectProcessors.insert(objectProcessor, at: 0)
     }
 
-    public static func append(_ objectProcessor:ObjectProcessor){
+    public static func append(objectProcessor:ObjectProcessor){
         objectProcessors.append(objectProcessor)
     }
 
-    public static func prepend(_ layerProcessor:LayerProcessor){
+    public static func prepend(layerProcessor:LayerProcessor){
         layerProcessors.insert(layerProcessor, at: 0)
     }
 
-    public static func append(_ layerProcessor:LayerProcessor){
+    public static func append(layerProcessor:LayerProcessor){
         layerProcessors.append(layerProcessor)
     }
 
-    public static func prepend(_ mapProcessor:MapProcessor){
+    public static func prepend(mapProcessor:MapProcessor){
         mapProcessors.insert(mapProcessor, at: 0)
     }
 
-    public static func append(_ mapProcessor:MapProcessor){
+    public static func append(mapProcessor:MapProcessor){
         mapProcessors.append(mapProcessor)
     }
 
@@ -247,6 +247,10 @@ public struct SceneLoader : ResourceLoader {
                     
                 }
             }
+
+            // Always tag the node with the objectId
+            objectNode.userData = NSMutableDictionary()
+            objectNode.userData?["tiledId"] = object.id
             
             for objectProcessor in Self.objectProcessors {
                 objectNode = objectProcessor.didCreate(objectNode, for: object, in: layer, and: map, from: project)

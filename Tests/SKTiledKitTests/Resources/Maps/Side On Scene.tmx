@@ -210,7 +210,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Objects">
-  <object id="1" name="Camera" type="SKRectangleCamera" x="608" y="512" width="640" height="480">
+  <object id="1" name="Camera" type="SKCamera" x="608" y="512" width="640" height="480">
    <properties>
     <property name="trackObject" type="object" value="5"/>
    </properties>
