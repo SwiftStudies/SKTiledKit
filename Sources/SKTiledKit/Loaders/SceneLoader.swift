@@ -31,7 +31,7 @@ public extension Project {
 extension SKScene : Loadable {
     
     public static func loader(for project: Project) -> ResourceLoader {
-        return SKSceneLoader(project: project)
+        return SceneLoader(project: project)
     }
     
     public var cache : Bool {
@@ -44,10 +44,19 @@ extension SKScene : Loadable {
 }
 
 
-public struct SKSceneLoader : ResourceLoader {
+public struct SceneLoader : ResourceLoader {
+    static var tileProcessors = [TileProcessor]()
     static var objectProcessors = [ObjectProcessor]()
     static var layerProcessors  = [LayerProcessor]()
     static var mapProcessors = [MapProcessor]()
+    
+    public static func prepend(_ tileProcessor:TileProcessor){
+        tileProcessors.insert(tileProcessor, at: 0)
+    }
+
+    public static func append(_ tileProcessor:TileProcessor){
+        tileProcessors.append(tileProcessor)
+    }
     
     public static func prepend(_ objectProcessor:ObjectProcessor){
         objectProcessors.insert(objectProcessor, at: 0)

@@ -17,6 +17,7 @@ import TiledKit
 import Foundation
 
 enum SKProperty : String {
+    case zPosition
     case strokeColor, fillColor, trackObject
     case physicsCategory, physicsCollisionMask, physicsContactMask, physicsPreciseCollisions
     case affectedByGravity, allowsRotation, isDynamic, mass, friction, restitution, linearDamping, angularDamping
@@ -56,6 +57,7 @@ enum SKProperty : String {
         .restitution : 0.2,
         .linearDamping : 0.1,
         .angularDamping : 0.1,
+        .zPosition : 0.0,
     ]
     
     var propertyValue : PropertyValue {

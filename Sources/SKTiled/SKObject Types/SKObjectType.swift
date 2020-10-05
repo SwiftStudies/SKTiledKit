@@ -22,9 +22,7 @@ struct SKObjectType {
     var properties = [String:SKProperty]()
     
     init(_ name:String, color:Color, inherits from:[SKObjectType]=[]){
-        self.name = from.reduce("", { (classPrefix, subClass) -> String in
-            return classPrefix+subClass.name
-        })+name
+        self.name = name
         self.color = color
         properties = inheritsFrom(from).properties
     }

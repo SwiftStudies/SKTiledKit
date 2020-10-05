@@ -29,11 +29,9 @@ extension ProjectCommand {
             // Shapes
             let defaultShapeProperties : [SKProperty] = [.strokeColor, .fillColor]
             
-            let skRectangle = SKObjectType("Rectangle", color: .white).withProperties(defaultShapeProperties)
-            let skEllipse = SKObjectType("Ellipse", color: .white).withProperties(defaultShapeProperties)
-            let skPolygon = SKObjectType("Polygon", color: .white).withProperties(defaultShapeProperties)
+            let skNode  = SKObjectType("Node", color: .white).withProperties(.zPosition)
+            let skShape = SKObjectType("Shape", color: .white).withProperties(defaultShapeProperties)
             let skPoint = SKObjectType("Point", color: .white)
-            
             let skEdgeLoopPolygon = SKObjectType("Polygon", color:.clear)
 
             let skPhysical = SKObjectType("Physical", color: Color.clear).withProperties(.physicsCategory, .physicsCollisionMask, .physicsContactMask, .physicsPreciseCollisions, .affectedByGravity, .allowsRotation, .isDynamic, .mass, .friction, .restitution, .linearDamping, .angularDamping)
@@ -44,13 +42,11 @@ extension ProjectCommand {
 
 
             let skTypes = [
-                SKObjectType("RectangleCamera", color: .darkGrey).withProperties(.trackObject),
-                SKObjectType("Node", color: .green, inherits: skRectangle, skPhysical, skLit),
-                SKObjectType("Node", color: .green, inherits: skEllipse, skPhysical, skLit),
-                SKObjectType("Node", color: .green, inherits: skPolygon, skPhysical, skLit),
-                SKObjectType("Node", color: .yellow, inherits: skPoint, skLight),
-                SKObjectType("EdgeLoop", color: .white, inherits: skEdgeLoopPolygon, skPhysical),
-                SKObjectType("Sprite", color: .blue, inherits: skPhysical, skLit)
+                SKObjectType("Camera", color: .darkGrey).withProperties(.trackObject),
+                SKObjectType("Shape", color: .green, inherits: skNode, skShape, skPhysical, skLit),
+                SKObjectType("Light", color: .yellow, inherits: skNode, skPoint, skLight),
+                SKObjectType("EdgeLoop", color: .white, inherits: skNode, skEdgeLoopPolygon, skPhysical),
+                SKObjectType("Sprite", color: .blue, inherits: skNode, skPhysical, skLit)
             ]
             
             do {

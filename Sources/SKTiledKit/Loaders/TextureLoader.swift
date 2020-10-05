@@ -27,7 +27,7 @@ extension Project {
     }
 }
 
-public struct SKTextureLoader : ResourceLoader {
+public struct TextureLoader : ResourceLoader {
     let     project : Project
     
     public func retrieve<R>(asType: R.Type, from url: URL) throws -> R where R : Loadable {
@@ -72,7 +72,7 @@ public struct SKTextureLoader : ResourceLoader {
 
 extension SKTexture : Loadable {
     public static func loader(for project: Project) -> ResourceLoader {
-        return SKTextureLoader(project: project)
+        return TextureLoader(project: project)
     }
     
     public var cache: Bool {
