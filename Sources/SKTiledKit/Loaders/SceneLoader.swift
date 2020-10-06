@@ -44,18 +44,18 @@ extension SKScene : Loadable {
 }
 
 
-public struct SceneLoader : ResourceLoader {
+public struct SceneLoader : ResourceLoader, MapWalker {
     static var tileProcessors = [TileProcessor]()
     
-    static var mapProcessors : [MapProcessor] = [
+    public static var mapProcessors : [MapProcessor] = [
         CameraProcessor.default,
     ]
     
-    static var layerProcessors  : [LayerProcessor] = [
-        
+    public static var layerProcessors  : [LayerProcessor] = [
+        DefaultLayerProcessor(),
     ]
     
-    static var objectProcessors : [ObjectProcessor] = [
+    public static var objectProcessors : [ObjectProcessor] = [
         DefaultObjectProcessor(),
         CameraProcessor.default,
     ]
@@ -122,16 +122,7 @@ public struct SceneLoader : ResourceLoader {
         return generatedScene
     }
     
-    internal func configure(_ node:SKNode, for layer:Layer){
-        node.name = layer.name
-        node.isHidden = !layer.visible
-        node.alpha = layer.opacity.cgFloatValue
-        node.apply(propertiesFrom: layer)
-        node.position = layer.position.cgPoint.transform()
-    }
-    
-    
-    public func add(_ objects: [Object], from layer:Layer, to container: SKNode, in map:Map) throws {
+    public func walk(_ objects: [Object], from layer:Layer, to container: SKNode, in map:Map) throws {
         
         for object in objects {
             var objectNode : SKNode! = nil
@@ -156,74 +147,20 @@ public struct SceneLoader : ResourceLoader {
         }
     }
     
-    internal func walk(_ layers:[Layer], in map:Map, with parent:SKNode) throws {
+    public func walk(_ layers:[Layer], in map:Map, with parent:SKNode) throws {
         
         for layer in layers {
             var layerNode : SKNode!
             
             for layerProcessor in Self.layerProcessors {
-                if let createdNode = try layerProcessor.willCreate(nodeFor: layer, in: map, from: project){
+                if let createdNode = try layerProcessor.willCreate(nodeFor: layer, in: map, from: project, with: self){
                     layerNode = createdNode
                     break
                 }
             }
-            
-            if layerNode == nil {
-                switch layer.kind {
-                
-                case .tile(let tileGrid):
-                    let tileLayerNode = SKNode()
-                    configure(tileLayerNode, for: layer)
-                    
-                    for x in 0..<tileGrid.size.width {
-                        for y in 0..<tileGrid.size.height {
-                            let tileGid = tileGrid[x,y]
-                            
-                            if tileGid.globalTileOffset > 0 {
-                                guard let tile = map[tileGid] else {
-                                    throw SKTiledKitError.tileNotFound
-                                }
-
-                                // TileSets were pre-loaded by the map before we got here
-                                let tileNode = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
-
-                                tileNode.position = CGRect(x: x * map.tileSize.width, y: y * map.tileSize.height, width: map.tileSize.width, height: map.tileSize.height).transform(with: tileNode.anchorPoint).origin
-                                
-                                tileLayerNode.addChild(tileNode)
-                            }
-                        }
-                    }
-                    
-                    layerNode = tileLayerNode
-                case .objects(let objects):
-                    let objectLayerNode = SKNode()
-                    configure(objectLayerNode, for: layer)
-
-                    try add(objects, from: layer, to: objectLayerNode, in: map)
-                    
-                    layerNode = objectLayerNode
-                case .group(let group):
-                    let node = SKNode()
-                    configure(node, for: layer)
-                    try walk(group.layers, in: map, with: node)
-                    
-                    layerNode = node
-                case .image(let image):
-                    let texture = try project.retrieve(textureFrom: image.source, filteringMode: layer.properties["filteringMode"])
-
-                    let spriteNode = SKSpriteNode(texture: texture)
-                    configure(spriteNode, for: layer)
-                    
-                    // Position has to be adjusted because it has a different anchor
-                    spriteNode.position = CGRect(origin: layer.position.cgPoint, size: image.size.cgSize).transform(with: spriteNode.anchorPoint).origin
-                    
-                    
-                    layerNode = spriteNode
-                }
-            }
 
             for layerProcessor in Self.layerProcessors {
-                layerNode = try layerProcessor.didCreate(layerNode, for: layer, in: map, from: project)
+                layerNode = try layerProcessor.didCreate(layerNode, for: layer, in: map, from: project, with: self)
             }
             
             parent.addChild(layerNode)
