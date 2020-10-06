@@ -44,62 +44,62 @@ extension SKScene : Loadable {
 }
 
 
-public struct SceneLoader : ResourceLoader, MapWalker {
+public struct SceneLoader : ResourceLoader {
     static var tileProcessors = [TileProcessor]()
     
-    public static var mapProcessors : [MapProcessor] = [
-        CameraProcessor.default,
+    public static var factories : [Factory] = [
+        StandardLayerFactory(),
+        StandardObjectFactory(),
     ]
     
-    public static var layerProcessors  : [LayerProcessor] = [
-        DefaultLayerProcessor(),
+    public static var postProcessors : [PostProcessor] = [
+        CameraProcessor(),
     ]
     
-    public static var objectProcessors : [ObjectProcessor] = [
-        DefaultObjectProcessor(),
-        CameraProcessor.default,
-    ]
-
-    public static func prepend(tileProcessor:TileProcessor){
-        tileProcessors.insert(tileProcessor, at: 0)
-    }
-
-    public static func append(tileProcessor:TileProcessor){
-        tileProcessors.append(tileProcessor)
-    }
-    
-    public static func prepend(objectProcessor:ObjectProcessor){
-        objectProcessors.insert(objectProcessor, at: 0)
-    }
-
-    public static func append(objectProcessor:ObjectProcessor){
-        objectProcessors.append(objectProcessor)
-    }
-
-    public static func prepend(layerProcessor:LayerProcessor){
-        layerProcessors.insert(layerProcessor, at: 0)
-    }
-
-    public static func append(layerProcessor:LayerProcessor){
-        layerProcessors.append(layerProcessor)
-    }
-
-    public static func prepend(mapProcessor:MapProcessor){
-        mapProcessors.insert(mapProcessor, at: 0)
-    }
-
-    public static func append(mapProcessor:MapProcessor){
-        mapProcessors.append(mapProcessor)
-    }
-
     let project : Project
         
+    var mapFactories : [MapFactory] {
+        return Self.factories.compactMap {
+            return $0 as? MapFactory
+        }
+    }
+
+    var layerFactories : [LayerFactory] {
+        return Self.factories.compactMap {
+            return $0 as? LayerFactory
+        }
+    }
+
+    var objectFactories : [ObjectFactory] {
+        return Self.factories.compactMap {
+            return $0 as? ObjectFactory
+        }
+    }
+    
+    var mapPostProcessors : [MapPostProcessor] {
+        return Self.postProcessors.compactMap {
+            return $0 as? MapPostProcessor
+        }
+    }
+
+    var layerPostProcessors : [LayerPostProcessor] {
+        return Self.postProcessors.compactMap {
+            return $0 as? LayerPostProcessor
+        }
+    }
+
+    var objectPostProcessors : [ObjectPostProcessor] {
+        return Self.postProcessors.compactMap {
+            return $0 as? ObjectPostProcessor
+        }
+    }
+
     public func retrieve<R>(asType: R.Type, from url: URL) throws -> R {
         let map = try project.retrieve(asType: Map.self, from: url)
 
         var scene : SKScene!
-        for mapProcessor in Self.mapProcessors {
-            if let createdScene = try mapProcessor.willCreate(sceneFor: map, from: project) {
+        for mapProcessor in mapFactories {
+            if let createdScene = try mapProcessor.make(sceneFor: map, from: project) {
                 scene = createdScene
                 break
             }
@@ -111,8 +111,8 @@ public struct SceneLoader : ResourceLoader, MapWalker {
                 
         try apply(map: map, to: scene)
         
-        for mapProcessor in Self.mapProcessors {
-            scene = try mapProcessor.didCreate(scene, for: map, from: project)
+        for mapProcessor in mapPostProcessors {
+            scene = try mapProcessor.process(scene, for: map, from: project)
         }
         
         guard let generatedScene = scene as? R else {
@@ -127,8 +127,8 @@ public struct SceneLoader : ResourceLoader, MapWalker {
         for object in objects {
             var objectNode : SKNode! = nil
 
-            for objectProcessor in Self.objectProcessors {
-                if let createdNode = try objectProcessor.willCreate(nodeFor: object, in: layer, and: map, from: project) {
+            for objectProcessor in objectFactories {
+                if let createdNode = try objectProcessor.make(nodeFor: object, in: layer, and: map, from: project) {
                     objectNode = createdNode
                     break
                 }
@@ -139,8 +139,8 @@ public struct SceneLoader : ResourceLoader, MapWalker {
             objectNode.userData = NSMutableDictionary()
             objectNode.userData?["tiledId"] = object.id
             
-            for objectProcessor in Self.objectProcessors {
-                objectNode = try objectProcessor.didCreate(objectNode, for: object, in: layer, and: map, from: project)
+            for objectProcessor in objectPostProcessors {
+                objectNode = try objectProcessor.process(objectNode, for: object, in: layer, and: map, from: project)
             }
 
             container.addChild(objectNode)
@@ -152,15 +152,24 @@ public struct SceneLoader : ResourceLoader, MapWalker {
         for layer in layers {
             var layerNode : SKNode!
             
-            for layerProcessor in Self.layerProcessors {
-                if let createdNode = try layerProcessor.willCreate(nodeFor: layer, in: map, from: project, with: self){
+            for layerProcessor in layerFactories {
+                if let createdNode = try layerProcessor.make(nodeFor: layer, in: map, from: project){
                     layerNode = createdNode
                     break
                 }
             }
+            
+            switch layer.kind {
+            case .group(let group):
+                try walk(group.layers, in: map, with: layerNode)
+            case .objects(let objects):
+                try walk(objects, from: layer, to: layerNode, in: map)
+            default:
+                break
+            }
 
-            for layerProcessor in Self.layerProcessors {
-                layerNode = try layerProcessor.didCreate(layerNode, for: layer, in: map, from: project, with: self)
+            for layerProcessor in layerPostProcessors {
+                layerNode = try layerProcessor.process(layerNode, for: layer, in: map, from: project)
             }
             
             parent.addChild(layerNode)

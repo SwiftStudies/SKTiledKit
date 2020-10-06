@@ -15,7 +15,7 @@
 import TiledKit
 import SpriteKit
 
-public struct DefaultLayerProcessor : LayerProcessor {
+public struct StandardLayerFactory : LayerFactory {
     internal func configure(_ node:SKNode, for layer:Layer){
         node.name = layer.name
         node.isHidden = !layer.visible
@@ -24,7 +24,7 @@ public struct DefaultLayerProcessor : LayerProcessor {
         node.position = layer.position.cgPoint.transform()
     }
     
-    public func willCreate(nodeFor layer: Layer, in map: Map, from project: Project, with walker:MapWalker) throws -> SKNode? {
+    public func make(nodeFor layer: Layer, in map: Map, from project: Project) throws -> SKNode? {
         var layerNode : SKNode?
 
         switch layer.kind {
@@ -53,18 +53,13 @@ public struct DefaultLayerProcessor : LayerProcessor {
             }
             
             layerNode = tileLayerNode
-        case .objects(let objects):
+        case .objects:
             let objectLayerNode = SKNode()
             configure(objectLayerNode, for: layer)
-
-            try walker.walk(objects, from: layer, to: objectLayerNode, in: map)
-            
             layerNode = objectLayerNode
-        case .group(let group):
+        case .group:
             let node = SKNode()
             configure(node, for: layer)
-            try walker.walk(group.layers, in: map, with: node)
-            
             layerNode = node
         case .image(let image):
             let texture = try project.retrieve(textureFrom: image.source, filteringMode: layer.properties["filteringMode"])
@@ -81,10 +76,5 @@ public struct DefaultLayerProcessor : LayerProcessor {
 
         return layerNode
     }
-    
-    public func didCreate(_ node: SKNode, for layer: Layer, in map: Map, from project: Project, with walker:MapWalker) throws -> SKNode {
-        return node
-    }
-    
     
 }

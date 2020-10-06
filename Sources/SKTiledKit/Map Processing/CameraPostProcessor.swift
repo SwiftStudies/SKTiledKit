@@ -15,30 +15,18 @@
 import TiledKit
 import SpriteKit
 
-public class CameraProcessor : ObjectProcessor, MapProcessor {
+public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
+
+    
     var frame : CGRect? = nil
     var cameraShape : SKShapeNode? = nil
     var trackId : Int? = nil
     
-    static var `default` = CameraProcessor()
-    
-    init(){
+    public init(){
         
     }
     
-    public func willCreate(sceneFor map: Map, from project: Project) -> SKScene? {
-        frame = nil
-        cameraShape = nil
-        trackId = nil
-        
-        return nil
-    }
-    
-    public func willCreate(nodeFor object: Object, in layer: Layer, and map: Map, from project: Project) -> SKNode? {
-        return nil
-    }
-    
-    public func didCreate(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) -> SKNode {
+    public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
         guard object.type ?? "" == "SKCamera" else {
             return node
         }
@@ -58,7 +46,7 @@ public class CameraProcessor : ObjectProcessor, MapProcessor {
         return node
     }
     
-    public func didCreate(_ scene: SKScene, for map: Map, from project: Project) -> SKScene {
+    public func process(_ scene: SKScene, for map: Map, from project: Project) throws -> SKScene {
         guard let frame = frame, let cameraShape = cameraShape else {
             return scene
         }
@@ -86,5 +74,4 @@ public class CameraProcessor : ObjectProcessor, MapProcessor {
         
         return scene
     }
-
 }

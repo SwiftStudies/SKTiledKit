@@ -15,7 +15,7 @@
 import SpriteKit
 import TiledKit
 
-class DefaultObjectProcessor : ObjectProcessor{
+class StandardObjectFactory : ObjectFactory{
     /// Creates a shape node for the supplied path
     ///
     /// - Parameters:
@@ -70,7 +70,7 @@ class DefaultObjectProcessor : ObjectProcessor{
     }
 
     
-    func willCreate(nodeFor object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode? {
+    func make(nodeFor object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode? {
         
         var objectNode : SKNode?
         
@@ -133,11 +133,5 @@ class DefaultObjectProcessor : ObjectProcessor{
         
         return objectNode
     }
-    
-    func didCreate(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) -> SKNode {
-        #warning("Should apply properties here")
-        return node
-    }
-    
-    
+
 }
