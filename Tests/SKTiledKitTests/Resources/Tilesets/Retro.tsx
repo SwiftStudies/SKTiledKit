@@ -13,16 +13,6 @@
    <object id="2" x="1.4821" y="5" width="5" height="3" rotation="313"/>
   </objectgroup>
  </tile>
- <tile id="117">
-  <objectgroup draworder="index" id="2">
-   <object id="1" type="SKRectanglePhysicalLitNode" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="118">
-  <objectgroup draworder="index" id="2">
-   <object id="1" type="SKRectanglePhysicalLitNode" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
  <tile id="152">
   <animation>
    <frame tileid="152" duration="100"/>
@@ -46,5 +36,10 @@
    <frame tileid="174" duration="100"/>
    <frame tileid="175" duration="100"/>
   </animation>
+ </tile>
+ <tile id="252">
+  <objectgroup draworder="index" id="2">
+   <object id="1" name="Collision Box" type="SKShape" x="3.27273" y="1.18182" width="9.63636" height="13.6364"/>
+  </objectgroup>
  </tile>
 </tileset>

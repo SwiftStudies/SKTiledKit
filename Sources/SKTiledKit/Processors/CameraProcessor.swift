@@ -20,11 +20,17 @@ public class CameraProcessor : ObjectProcessor, MapProcessor {
     var cameraShape : SKShapeNode? = nil
     var trackId : Int? = nil
     
-    public init(){
+    static var `default` = CameraProcessor()
+    
+    init(){
         
     }
     
     public func willCreate(sceneFor map: Map, from project: Project) -> SKScene? {
+        frame = nil
+        cameraShape = nil
+        trackId = nil
+        
         return nil
     }
     

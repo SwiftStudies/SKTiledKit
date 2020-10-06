@@ -215,17 +215,9 @@
     <property name="trackObject" type="object" value="5"/>
    </properties>
   </object>
-  <object id="5" name="Player" type="SKPhysicalLitSprite" gid="253" x="943.333" y="752.667" width="16" height="16"/>
-  <object id="6" type="SKRectanglePhysicalLitNode" x="1060.67" y="752.333" width="7" height="13.6667"/>
-  <object id="7" type="SKPolygonPhysicalEdgeLoop" x="625.333" y="984" visible="0">
+  <object id="5" name="Player" type="SKSprite" gid="253" x="943.333" y="752.667" width="16" height="16"/>
+  <object id="7" name="Level Edge" type="SKEdgeLoop" x="625.333" y="984">
    <polygon points="0,0 2,-440.667 606.667,-439.333 604.667,-6.66667 604.667,-0.666667"/>
-  </object>
-  <object id="8" name="Controller" type="SKKeyboard" x="920.667" y="738.667">
-   <properties>
-    <property name="applies" value="impulse"/>
-    <property name="controls" type="object" value="5"/>
-   </properties>
-   <point/>
   </object>
  </objectgroup>
  <layer id="4" name="Foreground" width="100" height="100">

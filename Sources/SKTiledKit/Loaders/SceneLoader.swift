@@ -46,10 +46,20 @@ extension SKScene : Loadable {
 
 public struct SceneLoader : ResourceLoader {
     static var tileProcessors = [TileProcessor]()
-    static var objectProcessors = [ObjectProcessor]()
-    static var layerProcessors  = [LayerProcessor]()
-    static var mapProcessors = [MapProcessor]()
     
+    static var mapProcessors : [MapProcessor] = [
+        CameraProcessor.default,
+    ]
+    
+    static var layerProcessors  : [LayerProcessor] = [
+        
+    ]
+    
+    static var objectProcessors : [ObjectProcessor] = [
+        DefaultObjectProcessor(),
+        CameraProcessor.default,
+    ]
+
     public static func prepend(tileProcessor:TileProcessor){
         tileProcessors.insert(tileProcessor, at: 0)
     }
@@ -82,15 +92,14 @@ public struct SceneLoader : ResourceLoader {
         mapProcessors.append(mapProcessor)
     }
 
-    
     let project : Project
-    
+        
     public func retrieve<R>(asType: R.Type, from url: URL) throws -> R {
         let map = try project.retrieve(asType: Map.self, from: url)
 
         var scene : SKScene!
         for mapProcessor in Self.mapProcessors {
-            if let createdScene = mapProcessor.willCreate(sceneFor: map, from: project) {
+            if let createdScene = try mapProcessor.willCreate(sceneFor: map, from: project) {
                 scene = createdScene
                 break
             }
@@ -103,7 +112,7 @@ public struct SceneLoader : ResourceLoader {
         try apply(map: map, to: scene)
         
         for mapProcessor in Self.mapProcessors {
-            scene = mapProcessor.didCreate(scene, for: map, from: project)
+            scene = try mapProcessor.didCreate(scene, for: map, from: project)
         }
         
         guard let generatedScene = scene as? R else {
@@ -121,139 +130,26 @@ public struct SceneLoader : ResourceLoader {
         node.position = layer.position.cgPoint.transform()
     }
     
-    /// Creates a shape node for the supplied path
-    ///
-    /// - Parameters:
-    ///   - path: Path built in SpriteKit co-ordinate space
-    ///   - position: Position in Tiled co-ordinate space
-    ///   - degrees: The rotation in degrees (as specified in Tiled
-    ///   - centered: If true the shape will be positioned as it was in tiled, but the center of rotation will be the center of the shape
-    /// - Returns: The created node
-    func shapeNode(with path:CGPath, position:CGPoint, rotation degrees:Double, centered:Bool) -> SKShapeNode{
-        let position = position.transform()
-        let radians = -degrees.cgFloatValue.radians
-        
-        var path = path
-        //Rotate to create a new path
-        var rotationTransform = CGAffineTransform(rotationAngle: radians)
-
-        #warning("Force unwrap")
-        path = path.copy(using: &rotationTransform)!
-
-        if !centered {
-            let shapeNode = SKShapeNode(path: path)
-            shapeNode.position = position
-            return shapeNode
-        }
-        
-        var total = 0
-        var xSum : CGFloat = 0
-        var ySum : CGFloat = 0
-        
-        path.applyWithBlock { (pathElementPointer) in
-            
-            if !pathElementPointer.pointee.points.pointee.x.isNaN {
-                xSum += pathElementPointer.pointee.points.pointee.x
-                ySum += pathElementPointer.pointee.points.pointee.y
-                total += 1
-            }
-        }
-        
-        let center = CGPoint( x: xSum / total.cgFloatValue, y: ySum / total.cgFloatValue)
-        
-        var centeringTransform = CGAffineTransform(translationX: -center.x, y: -center.y)
-        
-        #warning("Force unwrap")
-        path = path.copy(using: &centeringTransform)!
-        
-        let shapeNode = SKShapeNode(path: path)
-        shapeNode.position = position
-        shapeNode.position.x += center.x
-        shapeNode.position.y += center.y
-        
-        return shapeNode
-    }
     
     public func add(_ objects: [Object], from layer:Layer, to container: SKNode, in map:Map) throws {
         
         for object in objects {
-            
-            
             var objectNode : SKNode! = nil
 
             for objectProcessor in Self.objectProcessors {
-                if let createdNode = objectProcessor.willCreate(nodeFor: object, in: layer, and: map, from: project) {
+                if let createdNode = try objectProcessor.willCreate(nodeFor: object, in: layer, and: map, from: project) {
                     objectNode = createdNode
                     break
                 }
             }
-            
-            
-            if objectNode == nil {
-                switch object.kind {
-                case .point:
-                    let pointNode = SKShapeNode(circleOfRadius: 1)
-                    
-                    pointNode.position = object.position.cgPoint.transform()
-                    
-                    objectNode = pointNode
-                case .polygon(_, let angle), .polyline(_, let angle), .ellipse(_, let angle), .rectangle(_, let angle):
-                    guard let path = object.cgPath else {
-                        fatalError("Could not generate path for Polygonal Object")
-                    }
-                    
-                    objectNode = shapeNode(with: path, position: object.position.cgPoint, rotation: angle, centered: true)
-                case .tile(let tileGid, let drawSize, _):
-                    guard let tile = map[tileGid] else {
-                        throw SKTiledKitError.tileNotFound
-                    }
-                    
-                    let tileNode = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
-                                    
-                    let size = tileNode.calculateAccumulatedFrame().size
-                    
-                    tileNode.anchorPoint = .zero
-                    tileNode.position = object.position.cgPoint.transform()
-                    tileNode.zRotation = object.zRotation
-                    tileNode.xScale = drawSize.width.cgFloatValue / size.width
-                    tileNode.yScale = drawSize.height.cgFloatValue / size.height
-                    
-                    objectNode = tileNode
-                case .text(let string, let size, _, let style):
-                    let rect = CGRect(origin: .zero, size: size.cgSize.transform())
 
-                    let textNode = SKTKTextNode(path: CGPath(rect: rect, transform: nil))
-
-                    textNode.add(string, applying: style)
-                    if object.properties["showTextNodePath"] == true {
-                        textNode.strokeColor = SKColor.white
-                    }
-
-                    textNode.position = object.position.cgPoint.transform()
-                    textNode.zRotation = object.zRotation
-
-                    objectNode = textNode
-
-                }
-            
-                if let objectNode = objectNode {
-                    objectNode.name = object.name
-                    objectNode.isHidden = !object.visible
-                    objectNode.apply(propertiesFrom: object)
-                    
-                    if case let PropertyValue.color(strokeColor) = object.properties["strokeColor"] ?? .bool(false), let shapeNode = objectNode as? SKShapeNode {
-                        shapeNode.strokeColor = strokeColor.skColor
-                    }
-                    
-                }
-            }
 
             // Always tag the node with the objectId
             objectNode.userData = NSMutableDictionary()
             objectNode.userData?["tiledId"] = object.id
             
             for objectProcessor in Self.objectProcessors {
-                objectNode = objectProcessor.didCreate(objectNode, for: object, in: layer, and: map, from: project)
+                objectNode = try objectProcessor.didCreate(objectNode, for: object, in: layer, and: map, from: project)
             }
 
             container.addChild(objectNode)
@@ -266,7 +162,7 @@ public struct SceneLoader : ResourceLoader {
             var layerNode : SKNode!
             
             for layerProcessor in Self.layerProcessors {
-                if let createdNode = layerProcessor.willCreate(nodeFor: layer, in: map, from: project){
+                if let createdNode = try layerProcessor.willCreate(nodeFor: layer, in: map, from: project){
                     layerNode = createdNode
                     break
                 }
@@ -327,7 +223,7 @@ public struct SceneLoader : ResourceLoader {
             }
 
             for layerProcessor in Self.layerProcessors {
-                layerNode = layerProcessor.didCreate(layerNode, for: layer, in: map, from: project)
+                layerNode = try layerProcessor.didCreate(layerNode, for: layer, in: map, from: project)
             }
             
             parent.addChild(layerNode)

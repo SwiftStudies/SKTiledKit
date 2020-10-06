@@ -21,16 +21,16 @@ public protocol TileProcessor {
 }
 
 public protocol MapProcessor {
-    func willCreate(sceneFor map:Map, from project:Project)->SKScene?
-    func didCreate(_ scene:SKScene, for map:Map, from project:Project)->SKScene
+    func willCreate(sceneFor map:Map, from project:Project) throws ->SKScene?
+    func didCreate(_ scene:SKScene, for map:Map, from project:Project) throws ->SKScene
 }
 
 public protocol LayerProcessor {
-    func willCreate(nodeFor layer:Layer, in map:Map, from project:Project)->SKNode?
-    func didCreate(_ node:SKNode,for layer:Layer, in map:Map, from project:Project)->SKNode
+    func willCreate(nodeFor layer:Layer, in map:Map, from project:Project) throws ->SKNode?
+    func didCreate(_ node:SKNode,for layer:Layer, in map:Map, from project:Project) throws ->SKNode
 }
 
 public protocol ObjectProcessor {
-    func willCreate(nodeFor object:Object,in layer:Layer, and map:Map, from project:Project)->SKNode?
-    func didCreate(_ node:SKNode,for object:Object, in layer:Layer, and map:Map, from project:Project)->SKNode
+    func willCreate(nodeFor object:Object,in layer:Layer, and map:Map, from project:Project) throws ->SKNode?
+    func didCreate(_ node:SKNode,for object:Object, in layer:Layer, and map:Map, from project:Project) throws ->SKNode
 }
