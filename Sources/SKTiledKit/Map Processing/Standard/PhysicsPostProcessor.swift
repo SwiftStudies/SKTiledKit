@@ -13,18 +13,23 @@
 //    limitations under the License.
 
 import TiledKit
-import Foundation
+import SpriteKit
 
-public enum SKTiledKitError : Error {
-    case tileNodeDoesNotExist
-    case tileNotFound
-    case tileHasNoTileSet(tile:Tile)
-    case notImplemented
-    case missingPathForTile(tile:String)
-    case couldNotLoadImage(url:URL)
-    case imageFileNotFound(url:URL)
-    case couldNotCreateImage(url:URL)
-    case noPositionForTile(identifier:Int, tileSet:String)
-    case unexpectedTypeForProperty(tiledPropertyName:String, tiledPropertyType:String)
+public struct PhysicsPropertiesPostProcessor : ObjectPostProcessor {
+    public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
+        guard let physicsBody = node.physicsBody else {
+            return node
+        }
+        
+        for property in PhysicsProperty.allCases {
+            if let propertyValue = object.properties[property.tiledPropertyName] {
+                
+                property.apply(to: physicsBody, propertyValue)
+            }
+        }
+        
+        return node
+    }
+    
+    
 }
-

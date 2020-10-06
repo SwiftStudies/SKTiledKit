@@ -53,6 +53,7 @@ public struct SceneLoader : ResourceLoader {
     ]
     
     public static var postProcessors : [PostProcessor] = [
+        PhysicsPropertiesPostProcessor(),
         CameraProcessor(),
     ]
     
