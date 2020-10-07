@@ -15,6 +15,35 @@
 import SpriteKit
 import TiledKit
 
+fileprivate extension SKPhysicsBody {
+    var physicsCategory : Int {
+        get {
+            return Int(bitPattern: UInt(categoryBitMask))
+        }
+        set {
+            categoryBitMask = UInt32(bitPattern: Int32(newValue))
+        }
+    }
+    
+    var  physicsCollisionMask : Int {
+        get {
+            return Int(bitPattern: UInt(collisionBitMask))
+        }
+        set {
+            collisionBitMask = UInt32(bitPattern: Int32(newValue))
+        }
+    }
+    
+    var physicsContactMask : Int {
+        get {
+            return Int(bitPattern: UInt(contactTestBitMask))
+        }
+        set {
+            contactTestBitMask = UInt32(bitPattern: Int32(newValue))
+        }
+    }
+}
+
 public enum PhysicalObjectProperty : String, AutomaticallyMappableProperty {
     public typealias TargetObjectType = SKPhysicsBody
     case physicsCategory, physicsCollisionMask, physicsContactMask, physicsPreciseCollisions
@@ -31,24 +60,14 @@ public enum PhysicalObjectProperty : String, AutomaticallyMappableProperty {
         return Self.defaults[self] ?? .error(type: "Unknown", value: "Error")
     }
     
-    public var isMask: Bool {
-        switch self {
-        case .physicsContactMask, .physicsCollisionMask, .physicsCategory:
-            return true
-        default:
-            return false
-        }
-        
-    }
-    
     public var keyPath : PartialKeyPath<TargetObjectType> {
         switch self {
         case .physicsCategory:
-            return \TargetObjectType.categoryBitMask
+            return \TargetObjectType.physicsCategory
         case .physicsCollisionMask:
-            return \TargetObjectType.collisionBitMask
+            return \TargetObjectType.physicsCollisionMask
         case .physicsContactMask:
-            return \TargetObjectType.contactTestBitMask
+            return \TargetObjectType.physicsContactMask
         case .physicsPreciseCollisions:
             return \TargetObjectType.usesPreciseCollisionDetection
         case .affectedByGravity:

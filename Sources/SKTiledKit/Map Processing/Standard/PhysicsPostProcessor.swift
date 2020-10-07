@@ -21,7 +21,7 @@ public struct PhysicsPropertiesPostProcessor : ObjectPostProcessor {
             return node
         }
         
-        for property in PhysicsProperty.allCases {
+        for property in PhysicalObjectProperty.allCases {
             if let propertyValue = object.properties[property.tiledPropertyName] {
                 
                 property.apply(to: physicsBody, propertyValue)
