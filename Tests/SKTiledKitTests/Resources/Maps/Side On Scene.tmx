@@ -224,7 +224,7 @@
     <property name="physicsContactMask" type="int" value="1"/>
    </properties>
   </object>
-  <object id="7" name="Level Edge" type="SKEdgeLoop" x="625.333" y="984">
+  <object id="7" name="Level Edge" type="SKEdgeLoop" x="625.333" y="984" visible="0">
    <properties>
     <property name="affectedByGravity" type="bool" value="false"/>
     <property name="isDynamic" type="bool" value="true"/>

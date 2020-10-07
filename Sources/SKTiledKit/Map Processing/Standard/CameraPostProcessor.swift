@@ -16,8 +16,6 @@ import TiledKit
 import SpriteKit
 
 public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
-
-    
     var frame : CGRect? = nil
     var cameraShape : SKShapeNode? = nil
     var trackId : Int? = nil
@@ -42,6 +40,8 @@ public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
         self.cameraShape = cameraShape
         
         frame = cameraShape.calculateAccumulatedFrame()
+        
+        print("Camera node is in scene \(node.scene != nil)")
         
         return node
     }

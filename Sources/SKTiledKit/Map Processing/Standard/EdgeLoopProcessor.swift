@@ -21,8 +21,6 @@ public class EdgeLoopProcessor : ObjectPostProcessor {
     public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
         if let type = object.type, type == "SKEdgeLoop", let node = node as? SKShapeNode, let path = node.path {
             node.physicsBody = SKPhysicsBody(edgeLoopFrom: path)
-            node.strokeColor = SKColor.clear
-            node.fillColor = SKColor.clear
         }
         return node
     }
