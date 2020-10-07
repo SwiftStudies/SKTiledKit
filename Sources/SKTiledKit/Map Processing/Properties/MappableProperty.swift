@@ -15,33 +15,11 @@
 import TiledKit
 import SpriteKit
 
-public protocol MappableProperty : CaseIterable {
+public protocol MappableProperty  {
     var     tiledPropertyName : String                     {get}
     var     tiledDefaultValue : PropertyValue              {get}
 }
 
-public extension ObjectType {
-    func include<P:MappableProperty>(_ with:P.Type) -> ObjectType  {
-        return P.extend(self)
-    }
-}
-
-fileprivate extension MappableProperty {
-    static func extend(_ objectType:ObjectType)->ObjectType {
-        var extendedObjectType = ObjectType(color: objectType.color)
-        
-        for existingProperty in objectType.allPropertyNames {
-            extendedObjectType[existingProperty] = objectType[existingProperty]
-        }
-        
-        for property in allCases {
-            extendedObjectType[property.tiledPropertyName] = property.tiledDefaultValue
-        }
-        
-        return extendedObjectType
-    }
-
-}
 
 public protocol AutomaticallyMappableProperty : MappableProperty {
     associatedtype TargetObjectType

@@ -15,6 +15,7 @@
 import Foundation
 import ArgumentParser
 import TiledKit
+import SKTiledKit
 
 extension ProjectCommand {
     struct CreateSpriteKitObjectTypes : ParsableCommand {
@@ -26,29 +27,26 @@ extension ProjectCommand {
 
         mutating func run() throws {
             
-            // Shapes
-            let defaultShapeProperties : [SKProperty] = [.strokeColor, .fillColor]
-            
-            let skNode  = SKObjectType("Node", color: .white).withProperties(.zPosition)
-            let skShape = SKObjectType("Shape", color: .white).withProperties(defaultShapeProperties)
+            let skNode  = SKObjectType("Node", color: .white).withProperties(NodeProperty.allCases)
+            let skShape = SKObjectType("Shape", color: .white).withProperties(ShapeProperty.allCases)
             let skPoint = SKObjectType("Point", color: .white)
             let skEdgeLoopPolygon = SKObjectType("Polygon", color:.clear)
 
-            let skPhysical = SKObjectType("Physical", color: Color.clear).withProperties(.physicsCategory, .physicsCollisionMask, .physicsContactMask, .physicsPreciseCollisions, .affectedByGravity, .allowsRotation, .isDynamic, .mass, .friction, .restitution, .linearDamping, .angularDamping)
+            let skPhysical = SKObjectType("Physical", color: Color.clear).withProperties(PhysicalObjectProperty.allCases)
             
-            let skLit = SKObjectType("Lit", color: Color.clear).withProperties(.litByMask, .shadowedByMask, .castsShadowsByMask, .normalImage)
+            let skLit = SKObjectType("Lit", color: Color.clear).withProperties(LitObjectProperty.allCases)
             
-            let skLight = SKObjectType("Light", color: .clear).withProperties(.lightCategory, .ambientColor, .lightColor, .shadowColor, .falloff, .direction)
+            let skLight = SKObjectType("Light", color: .clear).withProperties(LightProperty.allCases)
 
 
             let skTypes = [
-                SKObjectType("Camera", color: .darkGrey).withProperties(.trackObject),
+                SKObjectType("Camera", color: .darkGrey).withProperties(CameraProperty.allCases),
                 SKObjectType("Shape", color: .green, inherits: skNode, skShape, skPhysical, skLit),
                 SKObjectType("Light", color: .yellow, inherits: skNode, skPoint, skLight),
                 SKObjectType("EdgeLoop", color: .white, inherits: skNode, skEdgeLoopPolygon, skPhysical),
                 SKObjectType("Sprite", color: .blue, inherits: skNode, skPhysical, skLit)
             ]
-            
+                        
             do {
                 let project = try Project(from: URL(fileURLWithPath: options.path))
                 var objectTypes = ObjectTypes()

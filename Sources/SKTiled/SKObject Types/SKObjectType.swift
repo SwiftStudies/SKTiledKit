@@ -15,11 +15,12 @@
 
 import Foundation
 import TiledKit
+import SKTiledKit
 
 struct SKObjectType {
-    var color:Color
     var name : String
-    var properties = [String:SKProperty]()
+    var color : Color
+    var properties = [MappableProperty]()
     
     init(_ name:String, color:Color, inherits from:[SKObjectType]=[]){
         self.name = name
@@ -38,24 +39,20 @@ struct SKObjectType {
     private func inheritsFrom(_ parents:[SKObjectType])->SKObjectType {
         var fresh = self
         for parent in parents {
-            for property in parent.properties.values {
-                fresh.properties[property.propertyName] = property
-            }
+            fresh.properties.append(contentsOf: parent.properties)
         }
 
         return fresh
     }
     
-    func withProperties(_ properties:SKProperty...)->SKObjectType {
+    func withProperties(_ properties:MappableProperty...)->SKObjectType {
         return withProperties(properties)
     }
     
-    func withProperties(_ properties:[SKProperty])->SKObjectType {
+    func withProperties(_ properties:[MappableProperty])->SKObjectType {
         var fresh = self
         
-        for property in properties {
-            fresh.properties[property.propertyName] = property
-        }
+        fresh.properties.append(contentsOf: properties)
         
         return fresh
     }
@@ -64,7 +61,7 @@ struct SKObjectType {
         var objectType = ObjectType(color: color)
         
         for property in properties {
-            objectType[property.key] = property.value.propertyValue
+            objectType[property.tiledPropertyName] = property.tiledDefaultValue
         }
         
         return objectType

@@ -12,36 +12,41 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-import SpriteKit
 import TiledKit
+import SpriteKit
 
-public enum ShapeProperty : String, AutomaticallyMappableProperty, CaseIterable {
-    public typealias TargetObjectType = SKShapeNode
-    
-    case fillColor, strokeColor
-    
-    public var keyPath: PartialKeyPath<SKShapeNode> {
-        switch self {
-        case .fillColor:
-            return \TargetObjectType.fillColor
-        case .strokeColor:
-            return \TargetObjectType.strokeColor
+internal extension SKShapeNode {
+    var trackObjectId : Int {
+        get {
+            return userData?["trackObjectId"] as? Int ?? 0
+        }
+        set {
+            guard let userData = userData else {
+                SceneLoader.warn("No user data to set trackObjectId for camera to \(newValue)")
+                return
+            }
+            userData["trackObjectId"] = newValue
         }
     }
+}
+
+public enum CameraProperty : String, AutomaticallyMappableProperty, CaseIterable {
+    public typealias TargetObjectType = SKShapeNode
     
+    case trackObject
 
     public var tiledPropertyName: String {
         return rawValue
     }
     
     public var tiledDefaultValue: PropertyValue {
-        switch self {
-        case .fillColor:
-            return .color(.clear)
-        case .strokeColor:
-            return .color(.white)
-        }
+        return .object(id: 0)
     }
     
-    
+    public var keyPath: PartialKeyPath<SKShapeNode> {
+        switch  self {
+        case .trackObject:
+            return \SKShapeNode.trackObjectId
+        }
+    }
 }

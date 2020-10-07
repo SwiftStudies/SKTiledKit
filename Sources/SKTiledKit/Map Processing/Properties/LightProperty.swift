@@ -36,7 +36,7 @@ fileprivate extension SKLightNode {
     }
 }
 
-public enum LightProperty : String, AutomaticallyMappableProperty {
+public enum LightProperty : String, AutomaticallyMappableProperty, CaseIterable {
     public typealias TargetObjectType = SKLightNode
     
     case lightCategory, ambientColor, lightColor, shadowColor, falloff, direction

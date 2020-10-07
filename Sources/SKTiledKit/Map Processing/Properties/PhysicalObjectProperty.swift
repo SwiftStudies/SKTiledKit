@@ -44,7 +44,7 @@ fileprivate extension SKPhysicsBody {
     }
 }
 
-public enum PhysicalObjectProperty : String, AutomaticallyMappableProperty {
+public enum PhysicalObjectProperty : String, AutomaticallyMappableProperty,CaseIterable {
     public typealias TargetObjectType = SKPhysicsBody
     case physicsCategory, physicsCollisionMask, physicsContactMask, physicsPreciseCollisions
     case affectedByGravity, allowsRotation, isDynamic, mass, friction, restitution, linearDamping, angularDamping
