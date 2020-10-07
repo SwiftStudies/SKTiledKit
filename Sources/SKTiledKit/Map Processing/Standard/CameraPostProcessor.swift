@@ -51,8 +51,6 @@ public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
             return scene
         }
         
-        return scene
-        
         scene.size = frame.size
         
         let cameraNode = SKCameraNode()
