@@ -87,6 +87,11 @@ class StandardObjectFactory : ObjectFactory{
             }
             
             objectNode = shapeNode(with: path, position: object.position.cgPoint, rotation: angle, centered: true)
+            
+            if object.hasProperty(in: PhysicalObjectProperty.allCases) {
+                let size = objectNode!.calculateAccumulatedFrame().size
+                objectNode?.physicsBody = SKPhysicsBody(polygonFrom: path.apply(CGAffineTransform(translationX: -size.width / 2, y: size.height / 2)))
+            }
         case .tile(let tileGid, let drawSize, _):
             guard let tile = map[tileGid] else {
                 throw SKTiledKitError.tileNotFound

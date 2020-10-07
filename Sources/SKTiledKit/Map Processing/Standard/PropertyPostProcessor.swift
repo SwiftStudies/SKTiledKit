@@ -15,7 +15,11 @@
 import TiledKit
 import SpriteKit
 
-
+public extension Object {
+    func hasProperty(in properties:[MappableProperty])->Bool {
+        return self.properties.filter({properties.map(\.tiledPropertyName).contains($0.key)}).count > 0
+    }
+}
 
 public struct PropertyPostProcessor<TargetObjectType> : ObjectPostProcessor {
 
@@ -58,14 +62,20 @@ public struct PropertyPostProcessor<TargetObjectType> : ObjectPostProcessor {
             }
         }
         
+        //Don't bother if the object has none of the expected properties
+        guard object.hasProperty(in: properties) else {
+            return node
+        }
+        
         //Validate that the supplied node is of the correct type
         let targetObject : TargetObjectType
         if let keyPath = keyPath {
             targetObject = node[keyPath: keyPath]
         } else {
             guard let targetNode = node as? TargetObjectType else {
-                
-                SceneLoader.warn("\(applicableObjectTypeName ?? object.name) expected a node of type \(TargetObjectType.self), but node was \(Swift.type(of: node)). Ignored")
+                if let applicableObjectTypeName = applicableObjectTypeName {
+                    SceneLoader.warn("\(applicableObjectTypeName) expected a node of type \(TargetObjectType.self), but node was \(Swift.type(of: node)). Ignored")
+                }
                 return node
             }
             targetObject = targetNode

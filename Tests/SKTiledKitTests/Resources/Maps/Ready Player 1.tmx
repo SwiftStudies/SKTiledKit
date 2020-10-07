@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="7">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="11">
  <tileset firstgid="1" source="../Tilesets/Retro.tsx"/>
  <layer id="1" name="Floor" width="10" height="10">
   <data encoding="csv">
@@ -15,6 +15,55 @@
 51,51,51,51,51,51,51,51,51,51
 </data>
  </layer>
+ <objectgroup id="3" name="Objects">
+  <object id="1" gid="105" x="16.0799" y="95.859" width="16" height="16"/>
+  <object id="2" gid="189" x="119.124" y="69.6098" width="16" height="16"/>
+  <object id="4" x="36.708" y="71.101" width="89.5469" height="18.8438">
+   <text fontfamily="Courier New" pixelsize="8" wrap="1" color="#ffffff" halign="center" valign="center">Ready Player One</text>
+  </object>
+  <object id="5" x="0.106724" y="143.868" width="159.917" height="19.0617">
+   <text fontfamily="Courier New" pixelsize="7" wrap="1" color="#ffffff" halign="center" valign="center">Tileset from: https://0x72.itch.io/16x16-dungeon-tileset</text>
+  </object>
+  <object id="6" gid="64" x="102.993" y="134.525" width="16" height="16"/>
+  <object id="7" name="Player One" type="SKSprite" gid="253" x="72.66" y="96.4893" width="16" height="16">
+   <properties>
+    <property name="affectedByGravity" type="bool" value="true"/>
+    <property name="castsShadowsByMask" type="int" value="1"/>
+    <property name="isDynamic" type="bool" value="true"/>
+    <property name="litByMask" type="int" value="1"/>
+    <property name="physicsCategory" type="int" value="1"/>
+    <property name="physicsCollisionMask" type="int" value="1"/>
+    <property name="physicsContactMask" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="8" name="Edge Loop" type="SKEdgeLoop" x="0.728307" y="32.2276" visible="0">
+   <properties>
+    <property name="affectedByGravity" type="bool" value="false"/>
+    <property name="physicsCategory" type="int" value="1"/>
+    <property name="physicsCollisionMask" type="int" value="1"/>
+    <property name="physicsContactMask" type="int" value="1"/>
+   </properties>
+   <polygon points="0,0 15.8407,0 18.7539,3.09531 26.5832,3.27738 30.4068,0 128.728,-0.182077 130.731,3.09531 138.56,3.45946 142.384,0 158.771,0 159.135,119.26 -0.182077,119.442"/>
+  </object>
+  <object id="9" name="Crates" type="SKShape" x="48.7966" y="108.518" width="47.34" height="19.4822" visible="0">
+   <properties>
+    <property name="affectedByGravity" type="bool" value="false"/>
+    <property name="isDynamic" type="bool" value="false"/>
+    <property name="physicsCategory" type="int" value="1"/>
+    <property name="physicsCollisionMask" type="int" value="1"/>
+    <property name="physicsContactMask" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="10" name="Torch 1" type="SKLight" x="40.0569" y="74.1053">
+   <properties>
+    <property name="ambientColor" type="color" value="#ffb3b3b3"/>
+    <property name="falloff" type="float" value="0.5"/>
+    <property name="lightCategory" type="int" value="1"/>
+    <property name="lightColor" type="color" value="#fffd8008"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
  <layer id="2" name="Level" width="10" height="10">
   <data encoding="csv">
 18,71,80,8,77,78,8,80,71,37,
@@ -29,15 +78,4 @@
 19,71,19,19,19,65,19,19,71,19
 </data>
  </layer>
- <objectgroup id="3" name="Objects">
-  <object id="1" gid="105" x="16.0799" y="95.859" width="16" height="16"/>
-  <object id="2" gid="189" x="119.124" y="69.6098" width="16" height="16"/>
-  <object id="4" x="36.708" y="71.101" width="89.5469" height="18.8438">
-   <text fontfamily="Courier New" pixelsize="8" wrap="1" color="#ffffff" halign="center" valign="center">Ready Player One</text>
-  </object>
-  <object id="5" x="0.106724" y="143.868" width="159.917" height="19.0617">
-   <text fontfamily="Courier New" pixelsize="7" wrap="1" color="#ffffff" halign="center" valign="center">Tileset from: https://0x72.itch.io/16x16-dungeon-tileset</text>
-  </object>
-  <object id="6" gid="64" x="102.993" y="134.525" width="16" height="16"/>
- </objectgroup>
 </map>
