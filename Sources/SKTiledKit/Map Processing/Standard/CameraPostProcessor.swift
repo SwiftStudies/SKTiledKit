@@ -51,6 +51,8 @@ public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
             return scene
         }
         
+        return scene
+        
         scene.size = frame.size
         
         let cameraNode = SKCameraNode()
@@ -65,13 +67,10 @@ public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
             return scene
         }
         
-        scene.enumerateChildNodes(withName: "//*") { (node, stop) in
-            if node.userData?["tiledId"] as? Int ?? -1 == trackId {
-                cameraNode.constraints = [ SKConstraint.distance(SKRange(upperLimit: 0), to: node) ]
-                stop.initialize(to: true)
-            }
+        if let trackedNode = scene.child(withTiledObject: trackId) {
+            cameraNode.constraints = [ SKConstraint.distance(SKRange(upperLimit: 0), to: trackedNode) ]
         }
-        
+                
         return scene
     }
 }
