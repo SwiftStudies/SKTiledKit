@@ -41,8 +41,6 @@ public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
         
         frame = cameraShape.calculateAccumulatedFrame()
         
-        print("Camera node is in scene \(node.scene != nil)")
-        
         return node
     }
     

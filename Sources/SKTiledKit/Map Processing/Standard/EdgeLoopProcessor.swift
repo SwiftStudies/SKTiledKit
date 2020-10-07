@@ -20,7 +20,14 @@ public class EdgeLoopProcessor : ObjectPostProcessor {
         
     public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
         if let type = object.type, type == "SKEdgeLoop", let node = node as? SKShapeNode, let path = node.path {
-            node.physicsBody = SKPhysicsBody(edgeLoopFrom: path)
+            switch object.kind {
+            case .polyline:
+                node.physicsBody = SKPhysicsBody(edgeChainFrom: path)
+            case .polygon, .ellipse, .rectangle:
+                node.physicsBody = SKPhysicsBody(edgeLoopFrom: path)
+            default:
+                SceneLoader.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object kind not supported \(object.kind)")
+            }
         }
         return node
     }

@@ -96,6 +96,10 @@ public struct SceneLoader : ResourceLoader {
         }
     }
 
+    public static func warn(_ message:String){
+        print("Warning:\(message)")
+    }
+    
     public func retrieve<R>(asType: R.Type, from url: URL) throws -> R {
         let map = try project.retrieve(asType: Map.self, from: url)
 
