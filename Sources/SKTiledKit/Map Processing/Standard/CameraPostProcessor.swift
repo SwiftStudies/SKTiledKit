@@ -61,12 +61,19 @@ public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
         
         cameraShape.removeFromParent()
         
+        // Setup constraints
+        var constraints = [ SKConstraint.positionX(SKRange.init(lowerLimit: frame.size.width/2, upperLimit: map.pixelSize.width.cgFloatValue-(frame.size.width/2)), y: SKRange.init(lowerLimit: -frame.size.height/2, upperLimit: -map.pixelSize.height.cgFloatValue+(frame.size.height/2)))]
+ 
+        defer {
+            cameraNode.constraints = constraints
+        }
+        
         guard let trackId = trackId else {
             return scene
         }
         
         if let trackedNode = scene.child(withTiledObject: trackId) {
-            cameraNode.constraints = [ SKConstraint.distance(SKRange(upperLimit: 0), to: trackedNode) ]
+            constraints.append(SKConstraint.distance(SKRange(upperLimit: 0), to: trackedNode))
         }
                 
         return scene
