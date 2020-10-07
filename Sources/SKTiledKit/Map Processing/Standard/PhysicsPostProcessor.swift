@@ -15,20 +15,28 @@
 import TiledKit
 import SpriteKit
 
+fileprivate extension SKNode {
+    var guaranteedPhysicsBody : SKPhysicsBody {
+        if let physicsBody = physicsBody {
+            return physicsBody
+        }
+        SceneLoader.warn("Attempting to apply physical property to a \(type(of: self)) with no physicsBody")
+        return SKPhysicsBody()
+    }
+}
+
 public struct PhysicsPropertiesPostProcessor : ObjectPostProcessor {
+    
+    private let genericProcessor : PropertyPostProcessor<SKPhysicsBody>
+    
+    public init(){
+        genericProcessor = PropertyPostProcessor<SKPhysicsBody>(for: nil, fromNodeWith: \SKNode.guaranteedPhysicsBody as KeyPath<SKNode, SKPhysicsBody>, with: PhysicalObjectProperty.allCases)
+    }
+    
     public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
-        guard let physicsBody = node.physicsBody else {
-            return node
-        }
         
-        for property in PhysicalObjectProperty.allCases {
-            if let propertyValue = object.properties[property.tiledPropertyName] {
-                
-                property.apply(to: physicsBody, propertyValue)
-            }
-        }
-        
-        return node
+        return try genericProcessor.process(node, for: object, in: layer, and: map, from: project)
+
     }
     
     
