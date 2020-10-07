@@ -34,7 +34,7 @@ extension ProjectCommand {
 
             let skPhysical = SKObjectType("Physical", color: Color.clear).withProperties(PhysicalObjectProperty.allCases)
             
-            let skLit = SKObjectType("Lit", color: Color.clear).withProperties(LitObjectProperty.allCases)
+            let skLit = SKObjectType("Lit", color: Color.clear).withProperties(LitSpriteProperty.allCases)
             
             let skLight = SKObjectType("Light", color: .clear).withProperties(LightProperty.allCases)
 

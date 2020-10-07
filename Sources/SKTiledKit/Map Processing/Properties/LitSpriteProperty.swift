@@ -58,7 +58,7 @@ fileprivate extension SKSpriteNode {
     }
 }
 
-public enum LitObjectProperty : String, AutomaticallyMappableProperty,CaseIterable {
+public enum LitSpriteProperty : String, AutomaticallyMappableProperty,CaseIterable {
     public typealias TargetObjectType = SKSpriteNode
 
     case litByMask, shadowedByMask, castsShadowsByMask, normalImage

@@ -48,6 +48,7 @@ public struct SceneLoader : ResourceLoader {
     static var tileProcessors = [TileProcessor]()
     
     public static var factories : [Factory] = [
+        LightFactory(),
         StandardLayerFactory(),
         StandardObjectFactory(),
     ]
@@ -55,6 +56,8 @@ public struct SceneLoader : ResourceLoader {
     public static var postProcessors : [PostProcessor] = [
         EdgeLoopProcessor(),
         PhysicsPropertiesPostProcessor(),
+        PropertyPostProcessor<SKSpriteNode>(with: LitSpriteProperty.allCases),
+        PropertyPostProcessor<SKLightNode>(for:"SKLight",with: LightProperty.allCases),
         CameraProcessor(),
     ]
     
