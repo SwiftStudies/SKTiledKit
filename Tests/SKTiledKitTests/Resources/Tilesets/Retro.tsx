@@ -13,6 +13,11 @@
    <object id="2" x="1.4821" y="5" width="5" height="3" rotation="313"/>
   </objectgroup>
  </tile>
+ <tile id="116" type="SKSprite">
+  <properties>
+   <property name="litByMask" type="int" value="1"/>
+  </properties>
+ </tile>
  <tile id="152">
   <animation>
    <frame tileid="152" duration="100"/>

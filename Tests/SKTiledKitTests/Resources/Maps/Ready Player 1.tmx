@@ -45,7 +45,7 @@
    </properties>
    <polygon points="0,0 15.8407,0 18.7539,3.09531 26.5832,3.27738 30.4068,0 128.728,-0.182077 130.731,3.09531 138.56,3.45946 142.384,0 158.771,0 159.135,119.26 -0.182077,119.442"/>
   </object>
-  <object id="9" name="Crates" type="SKShape" x="48.7966" y="108.518" width="47.34" height="19.4822" visible="0">
+  <object id="9" name="Crates" type="SKShape" x="48.7966" y="113.798" width="47.34" height="14.202" visible="0">
    <properties>
     <property name="affectedByGravity" type="bool" value="false"/>
     <property name="isDynamic" type="bool" value="false"/>

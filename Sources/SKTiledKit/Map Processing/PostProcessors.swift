@@ -29,6 +29,7 @@ public protocol LayerPostProcessor : PostProcessor {
 }
 
 public protocol ObjectPostProcessor : PostProcessor {
+    func process(_ node:SKNode, of type:String?, with properties:Properties) throws -> SKNode
     func process(_ node:SKNode,for object:Object, in layer:Layer, and map:Map, from project:Project) throws ->SKNode
 }
 

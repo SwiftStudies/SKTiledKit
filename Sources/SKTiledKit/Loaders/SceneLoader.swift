@@ -236,6 +236,12 @@ public struct SceneLoader : ResourceLoader {
             collisionBody.affectedByGravity = false
             node.physicsBody = collisionBody
         }
+        
+        for postProcessor in Self.postProcessors {
+            if let objectPostProcessor = postProcessor as? ObjectPostProcessor {
+                objectPostProcessor.process(node, of: tile.type, with: tile.properties)
+            }
+        }
     }
     
     internal func load(_ tileset:TileSet) throws {

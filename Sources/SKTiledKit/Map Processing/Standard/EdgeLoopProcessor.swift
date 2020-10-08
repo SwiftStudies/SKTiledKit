@@ -17,6 +17,14 @@ import TiledKit
 import SpriteKit
 
 public class EdgeLoopProcessor : ObjectPostProcessor {
+    public func process(_ node: SKNode, of type: String?, with properties: Properties) throws -> SKNode {
+        if let type = type, type == "SKEdgeLoop" {
+            SceneLoader.warn("Tiles cannot contain edge loops")
+        }
+        
+        return node
+    }
+    
         
     public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
         if let type = object.type, type == "SKEdgeLoop", let node = node as? SKShapeNode, let path = node.path {

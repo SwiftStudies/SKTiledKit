@@ -15,9 +15,15 @@
 import TiledKit
 import SpriteKit
 
+public extension Properties {
+    func hasProperty(in properties:[MappableProperty])->Bool {
+        return filter({properties.map(\.tiledPropertyName).contains($0.key)}).count > 0
+    }
+}
+
 public extension Object {
     func hasProperty(in properties:[MappableProperty])->Bool {
-        return self.properties.filter({properties.map(\.tiledPropertyName).contains($0.key)}).count > 0
+        return self.properties.hasProperty(in: properties)
     }
 }
 
@@ -54,16 +60,16 @@ public struct PropertyPostProcessor<TargetObjectType> : ObjectPostProcessor {
         self.keyPath = keypath
     }
     
-    public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
+    public func process(_ node:SKNode, of type:String?, with properties:Properties) throws -> SKNode {
         //If the passed object is not of the applicable type, just skip
         if let applicableObjectTypeName = applicableObjectTypeName {
-            guard let type = object.type, type == applicableObjectTypeName else {
+            guard let type = type, type == applicableObjectTypeName else {
                 return node
             }
         }
         
         //Don't bother if the object has none of the expected properties
-        guard object.hasProperty(in: properties) else {
+        guard properties.hasProperty(in: self.properties) else {
             return node
         }
         
@@ -81,13 +87,19 @@ public struct PropertyPostProcessor<TargetObjectType> : ObjectPostProcessor {
             targetObject = targetNode
         }
         
-        for property in properties {
-            if let value = object.properties[property.tiledPropertyName] {
+        for property in self.properties {
+            if let value = properties[property.tiledPropertyName] {
                 property.apply(to: targetObject, value)
             }
         }
         
         return node
+    }
+    
+    public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
+        
+        return try process(node, of: object.type, with: object.properties)
+
     }
     
     

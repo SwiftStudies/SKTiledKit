@@ -16,6 +16,7 @@ import TiledKit
 import SpriteKit
 
 public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
+
     var frame : CGRect? = nil
     var cameraShape : SKShapeNode? = nil
     var trackId : Int? = nil
@@ -23,6 +24,14 @@ public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
     public init(){
         
     }
+    
+    public func process(_ node: SKNode, of type: String?, with properties: Properties) throws -> SKNode {
+        if type ?? "" == "SKCamera" {
+            SceneLoader.warn("Tile nodes cannot be Cameras")
+        }
+        return node
+    }
+    
     
     public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
         guard object.type ?? "" == "SKCamera" else {
