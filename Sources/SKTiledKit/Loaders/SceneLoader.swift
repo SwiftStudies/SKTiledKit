@@ -240,6 +240,29 @@ public struct SceneLoader : ResourceLoader {
         scene.camera = camera
     }
     
+    internal func makeTexture(for imageUrl:URL, with bounds:PixelBounds, and properties:Properties,  from project:Project) throws -> SKTexture{
+        // Make the texture
+        var builtTexture : SKTexture?
+        for textureFactory in textureFactories {
+            if let createdTexture = try textureFactory.make(textureFor: imageUrl, with: bounds, from: project) {
+                builtTexture = createdTexture
+                break
+            }
+        }
+        
+        // Make sure we have a texture
+        guard var texture = builtTexture else {
+            throw SceneLoadingError.textureCouldNotBeReturned
+        }
+        
+        // Post process it
+        for texturePostProcessor in texturePostProcessors {
+            texture = try texturePostProcessor.process(texture, applying: properties, from: project)
+        }
+        
+        return texture
+    }
+    
     internal func load(_ tileset:TileSet) throws {
         
         var tileSpriteCache = [UInt32:SKSpriteNode]()
@@ -249,24 +272,7 @@ public struct SceneLoader : ResourceLoader {
                 throw SceneLoadingError.tileNotFound(tileId, tileSet: tileset.name)
             }
             
-            // Make the texture
-            var builtTexture : SKTexture?
-            for textureFactory in textureFactories {
-                if let createdTexture = try textureFactory.make(textureFor: tile.imageSource, with: tile.bounds, from: project) {
-                    builtTexture = createdTexture
-                    break
-                }
-            }
-            
-            // Make sure we have a texture
-            guard var texture = builtTexture else {
-                throw SceneLoadingError.textureCouldNotBeReturned
-            }
-            
-            // Post process it
-            for texturePostProcessor in texturePostProcessors {
-                texture = try texturePostProcessor.process(texture, for: tile, in: tileset, from: project)
-            }
+            let texture = try makeTexture(for: tile.imageSource, with: tile.bounds, and: tileset.properties.overridingWith(tile.properties), from: project)
             
             // Make and post process the tile
             var builtSprite : SKSpriteNode?

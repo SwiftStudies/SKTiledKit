@@ -38,7 +38,7 @@ public protocol TileProcessor : PostProcessor {
 }
 
 public protocol TextureProcessor : PostProcessor {
-    func process(_ texture:SKTexture, for tile:Tile, in tileset:TileSet, from project:Project) throws ->SKTexture
+    func process(_ texture:SKTexture, applying properties:Properties, from project:Project) throws ->SKTexture
 }
 
 

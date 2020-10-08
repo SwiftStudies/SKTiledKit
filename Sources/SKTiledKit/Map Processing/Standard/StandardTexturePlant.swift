@@ -24,9 +24,12 @@ public struct StandardTexturePlant : TextureFactory, TextureProcessor {
                       height: bounds.size.height / texture.size().height)
     }
     
-    public func process(_ texture: SKTexture, for tile: Tile, in tileset: TileSet, from project: Project) -> SKTexture {
+    public func process(_ texture: SKTexture, applying properties:Properties, from project: Project) -> SKTexture {
         
-        texture.filteringMode = SKTextureFilteringMode(withPropertiesFrom: tileset)
+        if let filteringMode = properties["filteringMode"], filteringMode == "nearest" {
+            texture.filteringMode = .nearest
+        }
+
         return texture
     }
     

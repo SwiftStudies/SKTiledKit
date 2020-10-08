@@ -62,6 +62,7 @@ public struct StandardLayerFactory : LayerFactory {
             configure(node, for: layer)
             layerNode = node
         case .image(let image):
+            #warning("This should be using the texture factories and processors")
             let texture = try project.retrieve(textureFrom: image.source, filteringMode: layer.properties["filteringMode"])
 
             let spriteNode = SKSpriteNode(texture: texture)
