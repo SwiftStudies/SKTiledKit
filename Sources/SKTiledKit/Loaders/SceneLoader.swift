@@ -16,6 +16,7 @@ import TiledKit
 import SpriteKit
 
 enum SceneLoadingError : Error {
+    case couldNotCreateTile(UInt32, tileSet:String)
     case sceneCouldNotReturned
     case textureCouldNotBeReturned
     case attemptToLoadInMemoryResourceFrom(URL)
@@ -51,9 +52,13 @@ public struct SceneLoader : ResourceLoader {
         LightFactory(),
         StandardLayerFactory(),
         StandardObjectFactory(),
+        StandardTexturePlant(),
+        StandardTilePlant(),
     ]
     
     public static var postProcessors : [PostProcessor] = [
+        StandardTilePlant(),
+        StandardTexturePlant(),
         EdgeLoopProcessor(),
         PhysicsPropertiesPostProcessor(),
         PropertyPostProcessor<SKSpriteNode>(with: LitSpriteProperty.allCases),
@@ -81,6 +86,19 @@ public struct SceneLoader : ResourceLoader {
         }
     }
     
+    var textureFactories : [TextureFactory] {
+        return Self.factories.compactMap {
+            return $0 as? TextureFactory
+        }
+    }
+    
+    var tileFactories : [TileFactory] {
+        return Self.factories.compactMap {
+            return $0 as? TileFactory
+        }
+    }
+
+    
     var mapPostProcessors : [MapPostProcessor] {
         return Self.postProcessors.compactMap {
             return $0 as? MapPostProcessor
@@ -99,6 +117,18 @@ public struct SceneLoader : ResourceLoader {
         }
     }
 
+    var texturePostProcessors : [TextureProcessor] {
+        return Self.postProcessors.compactMap {
+            return $0 as? TextureProcessor
+        }
+    }
+
+    var tilePostProcessors : [TileProcessor] {
+        return Self.postProcessors.compactMap {
+            return $0 as? TileProcessor
+        }
+    }
+    
     public static func warn(_ message:String){
         print("Warning:\(message)")
     }
@@ -161,8 +191,8 @@ public struct SceneLoader : ResourceLoader {
         for layer in layers {
             var layerNode : SKNode!
             
-            for layerProcessor in layerFactories {
-                if let createdNode = try layerProcessor.make(nodeFor: layer, in: map, from: project){
+            for factory in layerFactories {
+                if let createdNode = try factory.make(nodeFor: layer, in: map, from: project){
                     layerNode = createdNode
                     break
                 }
@@ -210,97 +240,67 @@ public struct SceneLoader : ResourceLoader {
         scene.camera = camera
     }
     
-    internal func createTileNode(_ tile:Tile, id tileId:UInt32, from tileset:TileSet, using texture:SKTexture) {
-        var node = SKSpriteNode(texture: texture)
-        node.userData = NSMutableDictionary()
-
-        // No matter what happens, store the node in the cache before returning
-        defer {
-            project.store(node, as: tile.cachingUrl)
-        }
-
-
-        if let bodyParts = tile.collisionBodies?.compactMap({ (object) -> SKPhysicsBody? in
-            if let path = object.cgPath {
-                let accumulatedFrame = node.calculateAccumulatedFrame()
-                let rotation = object.zRotation
-                var translation = object.position.cgPoint.transform()
-                
-                translation.y += accumulatedFrame.height
-                
-                return SKPhysicsBody(polygonFrom: path.apply(CGAffineTransform(rotationAngle: rotation)).apply(CGAffineTransform(translationX: translation.x, y: translation.y)))
-            }
-            return nil
-        }){
-            let collisionBody = SKPhysicsBody(bodies: bodyParts)
-            collisionBody.affectedByGravity = false
-            node.physicsBody = collisionBody
-        }
-        
-        for postProcessor in Self.postProcessors {
-            if let objectPostProcessor = postProcessor as? ObjectPostProcessor {
-                do {
-                    guard let newNode = try objectPostProcessor.process(node, of: tile.type, with: tile.properties) as? SKSpriteNode else {
-                        SceneLoader.warn("ObjectPostProcessor returned a non SKSpriteNode")
-                        continue
-                    }
-                    node = newNode
-                } catch {
-                    SceneLoader.warn("\(error) during tile sprite processing")
-                }
-            }
-        }
-    }
-    
     internal func load(_ tileset:TileSet) throws {
         
-        func scale(_ bounds:CGRect, to texture: SKTexture) -> CGRect {
-            return CGRect(x: bounds.origin.x / texture.size().width,
-                          y: bounds.origin.y / texture.size().height,
-                          width: bounds.size.width / texture.size().width,
-                          height: bounds.size.height / texture.size().height)
-        }
+        var tileSpriteCache = [UInt32:SKSpriteNode]()
         
         for tileId : UInt32 in 0..<UInt32(tileset.count) {
             guard let tile = tileset[tileId] else {
                 throw SceneLoadingError.tileNotFound(tileId, tileSet: tileset.name)
             }
             
-            let texture = try project.retrieve(asType: SKTexture.self, from: tile.imageSource)
-            texture.filteringMode = SKTextureFilteringMode(withPropertiesFrom: tileset)
-            
-            if texture.size() != tile.bounds.size.cgSize {
-                var textureBounds = scale(tile.bounds.cgRect, to: texture)
-                textureBounds.origin.y = (1 - textureBounds.origin.y) - textureBounds.size.height
-                let subTexture = SKTexture(rect: textureBounds, in: texture)
-                subTexture.filteringMode = SKTextureFilteringMode(withPropertiesFrom: tileset)
-                createTileNode(tile, id: tileId, from: tileset, using: subTexture)
-            } else {
-                createTileNode(tile, id: tileId, from: tileset, using: texture)
-            }
-        }
-        
-        //Create animations
-        for tileId : UInt32 in 0..<UInt32(tileset.count) {
-            guard let tile = tileset[tileId] else {
-                throw SceneLoadingError.tileNotFound(tileId, tileSet: tileset.name)
-            }
-            var animationSteps = [SKAction]()
-            for frame in tile.frames ?? [] {
-                if let texture = try project.retrieve(asType: SKSpriteNode.self, from: frame.tile.cachingUrl).texture {
-                    animationSteps.append(SKAction.setTexture(texture))
-                    animationSteps.append(SKAction.wait(forDuration: frame.duration))
-                } else {
-                    print("WARNING: No texture for \(tileset.name).\(tile.uuid)")
+            // Make the texture
+            var builtTexture : SKTexture?
+            for textureFactory in textureFactories {
+                if let createdTexture = try textureFactory.make(textureFor: tile.imageSource, with: tile.bounds, from: project) {
+                    builtTexture = createdTexture
+                    break
                 }
             }
             
-            // If we have frames, update the cache
-            if animationSteps.count > 0 {
-                let currentTileSprite = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
-                currentTileSprite.run(SKAction.repeatForever(SKAction.sequence(animationSteps)))
-                project.store(currentTileSprite, as: tile.cachingUrl)
+            // Make sure we have a texture
+            guard var texture = builtTexture else {
+                throw SceneLoadingError.textureCouldNotBeReturned
             }
+            
+            // Post process it
+            for texturePostProcessor in texturePostProcessors {
+                texture = try texturePostProcessor.process(texture, for: tile, in: tileset, from: project)
+            }
+            
+            // Make and post process the tile
+            var builtSprite : SKSpriteNode?
+            for tileFactory in tileFactories {
+                if let createdSprite = try tileFactory.make(spriteFor: tile, id: tileId, in: tileset, with: texture, from: project, processingObjectsWith: objectPostProcessors) {
+                    builtSprite = createdSprite
+                    break
+                }
+            }
+            
+            if builtSprite == nil {
+                throw  SceneLoadingError.couldNotCreateTile(tileId, tileSet: tileset.name)
+            }
+            
+            tileSpriteCache[tileId] = builtSprite
+        }
+        
+        
+        //Post process tiles
+        for tileId : UInt32 in 0..<UInt32(tileset.count) {
+            guard let tile = tileset[tileId] else {
+                throw SceneLoadingError.tileNotFound(tileId, tileSet: tileset.name)
+            }
+            
+            guard var sprite = tileSpriteCache[tileId] else {
+                throw SceneLoadingError.couldNotCreateTile(tileId, tileSet: tileset.name)
+            }
+            
+            for postProcessor in tilePostProcessors {
+                sprite = try postProcessor.process(sprite, for: tile, in: tileset, from: project)
+            }
+
+            #warning("Error occurs here")
+            project.store(sprite, as: tile.cachingUrl)
         }
     }
 }

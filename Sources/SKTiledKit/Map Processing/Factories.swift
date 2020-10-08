@@ -31,3 +31,12 @@ public protocol MapFactory : Factory {
     func make(sceneFor map:Map, from project:Project) throws ->SKScene?
 
 }
+
+public protocol TileFactory : Factory {
+    func make(spriteFor tile:Tile, id:UInt32, in tileset:TileSet, with texture:SKTexture, from project:Project, processingObjectsWith objectPostProcessors:[ObjectPostProcessor]) throws ->SKSpriteNode?
+
+}
+
+public protocol TextureFactory : Factory {
+    func make(textureFor image:URL, with frame:Rectangle<Int>, from project:Project) throws -> SKTexture?
+}

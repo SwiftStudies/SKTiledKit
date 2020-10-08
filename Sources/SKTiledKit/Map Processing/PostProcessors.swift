@@ -33,10 +33,12 @@ public protocol ObjectPostProcessor : PostProcessor {
     func process(_ node:SKNode,for object:Object, in layer:Layer, and map:Map, from project:Project) throws ->SKNode
 }
 
-public protocol TileProcessor {
-    func willCreate(spriteFor tile:Tile, in tileset:TileSet, from project:Project)->SKSpriteNode?
-    func didCreate(_ sprite:SKSpriteNode, for tile:Tile, in tileset:TileSet, from project:Project)->SKSpriteNode
+public protocol TileProcessor : PostProcessor {
+    func process(_ sprite:SKSpriteNode, for tile:Tile, in tileset:TileSet, from project:Project) throws ->SKSpriteNode
 }
 
+public protocol TextureProcessor : PostProcessor {
+    func process(_ texture:SKTexture, for tile:Tile, in tileset:TileSet, from project:Project) throws ->SKTexture
+}
 
 
