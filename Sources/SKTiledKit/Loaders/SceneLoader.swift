@@ -211,7 +211,7 @@ public struct SceneLoader : ResourceLoader {
     }
     
     internal func createTileNode(_ tile:Tile, id tileId:UInt32, from tileset:TileSet, using texture:SKTexture) {
-        let node = SKSpriteNode(texture: texture)
+        var node = SKSpriteNode(texture: texture)
         node.userData = NSMutableDictionary()
 
         // No matter what happens, store the node in the cache before returning
@@ -239,7 +239,15 @@ public struct SceneLoader : ResourceLoader {
         
         for postProcessor in Self.postProcessors {
             if let objectPostProcessor = postProcessor as? ObjectPostProcessor {
-                objectPostProcessor.process(node, of: tile.type, with: tile.properties)
+                do {
+                    guard let newNode = try objectPostProcessor.process(node, of: tile.type, with: tile.properties) as? SKSpriteNode else {
+                        SceneLoader.warn("ObjectPostProcessor returned a non SKSpriteNode")
+                        continue
+                    }
+                    node = newNode
+                } catch {
+                    SceneLoader.warn("\(error) during tile sprite processing")
+                }
             }
         }
     }
