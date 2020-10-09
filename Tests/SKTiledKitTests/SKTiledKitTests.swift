@@ -1,6 +1,6 @@
 import XCTest
 
-import TiledKit
+@testable import TiledKit
 import SpriteKit
 @testable import SKTiledKit
 
@@ -64,6 +64,46 @@ final class SKTiledKitTests : XCTestCase {
         
         XCTAssertEqual(cachingUrl.absoluteString, "tkrc:///TileNode////Users/nhughes/Library/Developer/Xcode/DerivedData/SKTiledKit-ewgphuzitggjojazxlxlcnrlxdfh/Build/Products/Debug/SKTiledKitTests.xctest/Contents/Resources/SKTiledKit_SKTiledKitTests.bundle/Contents/Resources/Images/4%20Tiles.png/0/0/32/32")
     }
+    
+    func testPhysicsProperties(){
+        let propertyProcessor = PhysicsPropertiesPostProcessor()
+
+        let testProperties : Properties = [
+            PhysicalObjectProperty.affectedByGravity.tiledPropertyName : .bool(false),
+            PhysicalObjectProperty.physicsCategory.tiledPropertyName : .int(1),
+            PhysicalObjectProperty.mass.tiledPropertyName : .double(10)
+        ]
+        let sprite = SKSpriteNode()
+        sprite.physicsBody = SKPhysicsBody(circleOfRadius: 10000)
+        
+        XCTAssertEqual(sprite.physicsBody!.affectedByGravity, true)
+        XCTAssertEqual(sprite.physicsBody!.categoryBitMask, UInt32.max)
+        XCTAssertNotEqual(sprite.physicsBody!.mass, 10)
+        XCTAssertNoThrow(try propertyProcessor.process(sprite, of: nil, with: testProperties))
+        XCTAssertEqual(sprite.physicsBody!.affectedByGravity, false)
+        XCTAssertEqual(sprite.physicsBody!.categoryBitMask, 1)
+        XCTAssertEqual(sprite.physicsBody!.mass, 10)
+    }
+    
+    func testLitProperties(){
+        let propertyProcessor = PropertyPostProcessor<SKSpriteNode>(with: LitSpriteProperty.allCases)
+
+        let testProperties : Properties = [
+            LitSpriteProperty.litByMask.tiledPropertyName : .int(1),
+            LitSpriteProperty.shadowedByMask.tiledPropertyName : .int(2),
+            LitSpriteProperty.castsShadowsByMask.tiledPropertyName : .int(4),
+        ]
+        let sprite = SKSpriteNode()
+        
+        XCTAssertEqual(sprite.lightingBitMask, 0)
+        XCTAssertEqual(sprite.shadowedBitMask, 0)
+        XCTAssertEqual(sprite.shadowCastBitMask, 0)
+        XCTAssertNoThrow(try propertyProcessor.process(sprite, of: nil, with: testProperties))
+        XCTAssertEqual(sprite.lightingBitMask, 1)
+        XCTAssertEqual(sprite.shadowedBitMask, 2)
+        XCTAssertEqual(sprite.shadowCastBitMask, 4)
+    }
+    
     static var allTests = [
         ("testResources", testResources),
     ]

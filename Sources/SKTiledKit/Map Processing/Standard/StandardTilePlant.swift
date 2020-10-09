@@ -33,9 +33,13 @@ public struct StandardTilePlant : TileFactory, TileProcessor {
         if animationSteps.count > 0 {
             let currentTileSprite = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
             currentTileSprite.run(SKAction.repeatForever(SKAction.sequence(animationSteps)))
+            
+            return currentTileSprite
+        } else {
+            return sprite
         }
         
-        return sprite
+        
     }
     
     public func make(spriteFor tile: Tile, id:UInt32, in tileset: TileSet, with texture: SKTexture, from project: Project, processingObjectsWith objectPostProcessors:[ObjectPostProcessor]) -> SKSpriteNode? {

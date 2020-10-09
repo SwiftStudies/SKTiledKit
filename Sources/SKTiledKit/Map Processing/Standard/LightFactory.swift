@@ -21,7 +21,11 @@ public struct LightFactory : ObjectFactory {
             return nil
         }
         if case Object.Kind.point = object.kind {
-            return SKLightNode()
+            let lightNode = SKLightNode()
+            
+            lightNode.position = object.position.cgPoint.transform()
+            
+            return lightNode
         } else {
             SceneLoader.warn("Object \(object.name.isEmpty ? "\(object.id)" : object.name) is an SKLight, but is not a Point object. SKLight can only be applied to Tiled Point objects.")
             return nil

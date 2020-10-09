@@ -56,10 +56,8 @@
   </object>
   <object id="10" name="Torch 1" type="SKLight" x="40.0569" y="74.1053">
    <properties>
-    <property name="ambientColor" type="color" value="#ffb3b3b3"/>
-    <property name="falloff" type="float" value="0.5"/>
     <property name="lightCategory" type="int" value="1"/>
-    <property name="lightColor" type="color" value="#fffd8008"/>
+    <property name="lightColor" type="color" value="#ffffffff"/>
    </properties>
    <point/>
   </object>

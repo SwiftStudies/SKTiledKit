@@ -67,13 +67,13 @@ public enum LitSpriteProperty : String, AutomaticallyMappableProperty,CaseIterab
         switch self {
         
         case .litByMask:
-            return \SKSpriteNode.lightingBitMask
+            return \SKSpriteNode.litByMask
         case .shadowedByMask:
-            return \SKSpriteNode.shadowedBitMask
+            return \SKSpriteNode.shadowedByMask
         case .castsShadowsByMask:
-            return \SKSpriteNode.shadowCastBitMask
+            return \SKSpriteNode.castsShadowsByMask
         case .normalImage:
-            return \SKSpriteNode.normalTexture
+            return \SKSpriteNode.normalImage
         }
     }
     

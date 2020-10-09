@@ -53,8 +53,18 @@ fileprivate class ApplicationDelegate: NSObject, NSApplicationDelegate {
         skView.showsPhysics = true
         skView.showsDrawCount = true
         skView.showsNodeCount = true
+        skView.showsFields = true
         
         skView.presentScene(scene)
+        
+        scene.enumerateChildNodes(withName: "//*") { (node, shouldStop) in
+            print("\(type(of: node)).\(node.name ?? "null") @ \(node.calculateAccumulatedFrame().origin)")
+            if let sprite = node as? SKSpriteNode {
+                print("\tLit By: \(sprite.lightingBitMask)")
+            } else if let light = node as? SKLightNode {
+                print("\tCategory: \(light.categoryBitMask)")
+            }
+        }
     }
     
 }

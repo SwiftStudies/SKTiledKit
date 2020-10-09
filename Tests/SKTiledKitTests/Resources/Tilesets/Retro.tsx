@@ -5,7 +5,20 @@
   <property name="filteringMode" value="nearest"/>
  </properties>
  <image source="../Images/DungeonTiles.png" width="256" height="256"/>
- <tile id="63">
+ <tile id="50" type="SKSprite">
+  <properties>
+   <property name="litByMask" type="int" value="1"/>
+   <property name="shadowedByMask" type="int" value="1"/>
+  </properties>
+ </tile>
+ <tile id="63" type="SKSprite">
+  <properties>
+   <property name="affectedByGravity" type="bool" value="false"/>
+   <property name="isDynamic" type="bool" value="true"/>
+   <property name="physicsCategory" type="int" value="1"/>
+   <property name="physicsCollisionMask" type="int" value="1"/>
+   <property name="physicsContactMask" type="int" value="1"/>
+  </properties>
   <objectgroup draworder="index" id="2">
    <object id="1" x="3.68309" y="3.61158" width="11.2922" height="11.6498">
     <ellipse/>
