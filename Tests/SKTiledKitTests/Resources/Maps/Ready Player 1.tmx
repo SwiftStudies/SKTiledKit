@@ -57,7 +57,7 @@
   <object id="10" name="Torch 1" type="SKLight" x="40.0569" y="74.1053">
    <properties>
     <property name="lightCategory" type="int" value="1"/>
-    <property name="lightColor" type="color" value="#ffffffff"/>
+    <property name="lightColor" type="color" value="#fffd8008"/>
    </properties>
    <point/>
   </object>

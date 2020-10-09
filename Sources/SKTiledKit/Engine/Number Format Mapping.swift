@@ -72,6 +72,11 @@ extension Rectangle where N == UInt32 {
     }
 }
 
+extension CGFloat : ExpressibleAsTiledFloat {
+    public static func instance(bridging value: Double) -> CGFloat {
+        return CGFloat(value)
+    }
+}
 
 extension BinaryFloatingPoint {
     var cgFloatValue : CGFloat {
