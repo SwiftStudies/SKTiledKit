@@ -12,12 +12,14 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+
 import TiledKit
 import SpriteKit
 
-public final class SpriteKitEngine : Engine {
-    public typealias FloatType = CGFloat
-    public typealias ColorType = SKColor
+public extension SpriteKitEngine {
+    typealias TextureType = SKTexture
+
+    static func load(textureFrom url: URL, in project: Project) throws -> SKTexture {
+        return try project.retrieve(asType: SKTexture.self, from: url)
+    }
 }
-
-

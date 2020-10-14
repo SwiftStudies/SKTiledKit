@@ -12,12 +12,25 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+
 import TiledKit
 import SpriteKit
 
-public final class SpriteKitEngine : Engine {
-    public typealias FloatType = CGFloat
-    public typealias ColorType = SKColor
+extension SKScene : EngineMap {
 }
 
+public extension SpriteKitEngine {
+    typealias MapType = SKScene
 
+    static func make(engineMapForTiled map: Map) throws -> SKScene {
+        let scene = SKScene(size: map.pixelSize.cgSize)
+
+        scene.backgroundColor = map.backgroundColor?.skColor ?? SKColor.black
+        
+        return scene
+    }
+    
+    static func postProcess(_ specializedMap: SKScene, for map: Map, from project: Project) throws -> SKScene {
+        return specializedMap
+    }
+}
