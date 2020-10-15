@@ -42,7 +42,14 @@ extension SKNode : EngineObject, EngineLayerContainer, EngineObjectContainer {
 
 extension SKSpriteNode : DeepCopyable {
     public func deepCopy() -> Self {
-        return copy() as! Self
+        
+        let initialCopy = copy() as! Self
+        
+        if let originalBody = physicsBody {
+            initialCopy.physicsBody = originalBody.copy() as! SKPhysicsBody
+        }
+    
+        return initialCopy
     }
 }
 
