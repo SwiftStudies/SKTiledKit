@@ -46,7 +46,7 @@ extension SKSpriteNode : DeepCopyable {
         let initialCopy = copy() as! Self
         
         if let originalBody = physicsBody {
-            initialCopy.physicsBody = originalBody.copy() as! SKPhysicsBody
+            initialCopy.physicsBody = (originalBody.copy() as! SKPhysicsBody)
         }
     
         return initialCopy

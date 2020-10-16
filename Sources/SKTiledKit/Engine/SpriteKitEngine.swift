@@ -18,6 +18,14 @@ import SpriteKit
 public final class SpriteKitEngine : Engine {
     public typealias FloatType = CGFloat
     public typealias ColorType = SKColor
+    
+    public static func registerFactoriesAndPostProcessors() {
+        register(factory: LightFactory())
+        register(postProcessor: EdgeLoopProcessor())
+        register(postProcessor: BridgedPropertyProcessor<SKShapeNode>(applies: LightProperty.allCases, to: .pointObject ))
+        register(postProcessor: BridgedPropertyProcessor<SKSpriteNode>(applies: LitSpriteProperty.allCases, to: [.tileObject, .imageLayer]))
+        register(postProcessor: CameraProcessor())
+    }
 }
 
 

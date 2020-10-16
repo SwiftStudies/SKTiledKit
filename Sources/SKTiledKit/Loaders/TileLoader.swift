@@ -15,6 +15,7 @@
 import SpriteKit
 import TiledKit
 
+#warning("ACTION: Delete file")
 extension Tile {
     internal var cachingUrl : URL {
         let encodedPath = imageSource.pathComponents.reduce("", {"\($0)/\($1.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)"})

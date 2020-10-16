@@ -16,6 +16,7 @@
 import TiledKit
 import SpriteKit
 
+#warning("ACTION: Delete file")
 public struct StandardTexturePlant : TextureFactory, TextureProcessor {
     private func scale(_ bounds:CGRect, to texture: SKTexture) -> CGRect {
         return CGRect(x: bounds.origin.x / texture.size().width,

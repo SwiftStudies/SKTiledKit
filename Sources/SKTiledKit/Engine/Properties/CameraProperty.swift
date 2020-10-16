@@ -22,7 +22,7 @@ internal extension SKShapeNode {
         }
         set {
             guard let userData = userData else {
-                SceneLoader.warn("No user data to set trackObjectId for camera to \(newValue)")
+                EngineType.warn("No user data to set trackObjectId for camera to \(newValue)")
                 return
             }
             userData["trackObjectId"] = newValue
@@ -30,20 +30,16 @@ internal extension SKShapeNode {
     }
 }
 
-public enum CameraProperty : String, AutomaticallyMappableProperty, CaseIterable {
-    public typealias TargetObjectType = SKShapeNode
+public enum CameraProperty : String, TiledEngineBridgableProperty, CaseIterable {
+    public typealias EngineObjectType = SKShapeNode
     
     case trackObject
-
-    public var tiledPropertyName: String {
-        return rawValue
-    }
     
-    public var tiledDefaultValue: PropertyValue {
+    public var tiledDefault: PropertyValue {
         return .object(id: 0)
     }
     
-    public var keyPath: PartialKeyPath<SKShapeNode> {
+    public var engineObjectProperty: PartialKeyPath<SKShapeNode> {
         switch  self {
         case .trackObject:
             return \SKShapeNode.trackObjectId

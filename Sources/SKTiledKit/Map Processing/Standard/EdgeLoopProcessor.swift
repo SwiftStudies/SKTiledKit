@@ -16,28 +16,34 @@
 import TiledKit
 import SpriteKit
 
-public class EdgeLoopProcessor : ObjectPostProcessor {
-    public func process(_ node: SKNode, of type: String?, with properties: Properties) throws -> SKNode {
-        if let type = type, type == "SKEdgeLoop" {
-            SceneLoader.warn("Tiles cannot contain edge loops")
-        }
+public class EdgeLoopProcessor : TiledKit.ObjectPostProcessor {
+    public typealias EngineType = SpriteKitEngine
         
-        return node
+    public func process(_ point: EngineType.PointObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> EngineType.PointObjectType {
+        SceneLoader.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        return point
     }
     
-        
-    public func process(_ node: SKNode, for object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode {
-        if let type = object.type, type == "SKEdgeLoop", let node = node as? SKShapeNode, let path = node.path {
-            switch object.kind {
-            case .polyline:
-                node.physicsBody = SKPhysicsBody(edgeChainFrom: path)
-            case .polygon, .ellipse, .rectangle:
-                node.physicsBody = SKPhysicsBody(edgeLoopFrom: path)
-            default:
-                SceneLoader.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object kind not supported \(object.kind)")
-            }
-        }
-        return node
+    public func process(_ sprite: EngineType.SpriteType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> EngineType.SpriteType {
+        SceneLoader.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        return sprite
     }
-
+    
+    public func process(_ text: EngineType.TextObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> EngineType.TextObjectType {
+        SceneLoader.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        return text
+    }
+    
+    public func process(_ shape: EngineType.PolylineObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> EngineType.PolylineObjectType {
+        
+        if object.tiledType == .polylineObject {
+            shape.physicsBody = SKPhysicsBody(edgeChainFrom: shape.path!)
+        } else if [.polygonObject, .rectangleObject, .ellipseObject].contains(object.tiledType) {
+            shape.physicsBody = SKPhysicsBody(edgeLoopFrom: shape.path!)
+        } else {
+            SceneLoader.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        }
+        
+        return shape
+    }
 }

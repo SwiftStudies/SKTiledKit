@@ -23,16 +23,25 @@ public extension CGPath {
     }
 }
 
+extension ObjectProtocol {
+    public var zRotation: CGFloat {
+        
+        if let kind = (self as? Object)?.kind {
+            switch kind {
+            case .point:
+                return 0
+            case .rectangle(_,let angle), .ellipse(_, let angle), .tile(_,_,let angle), .text(_,_,let angle,_), .polygon(_, let angle), .polyline(_, let angle):
+                return -angle.cgFloatValue.radians
+            }
+        } else {
+            return 0
+        }
+        
+    }
+}
+
 extension Object {
     
-    public var zRotation: CGFloat {
-        switch self.kind {
-        case .point:
-            return 0
-        case .rectangle(_,let angle), .ellipse(_, let angle), .tile(_,_,let angle), .text(_,_,let angle,_), .polygon(_, let angle), .polyline(_, let angle):
-            return -angle.cgFloatValue.radians
-        }
-    }
     
     public var cgPath: CGPath? {
         switch kind {

@@ -17,8 +17,9 @@ final class SKTiledKitTests : XCTestCase {
         do {
             let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
 
-            let scene = try moduleBundleProject.retrieve(asType: SKScene.self, from: moduleBundleProject.url(for: "Test Map 1", in: "Maps", of: .tmx)!)
-            
+            let scene : SKScene = try
+                moduleBundleProject.retrieve(SpriteKitEngine.self, mapNamed: "Test Map 1", in: "Maps")
+                        
             view.presentScene(scene)
             print(scene)
         } catch {

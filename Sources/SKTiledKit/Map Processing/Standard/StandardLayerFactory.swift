@@ -15,6 +15,7 @@
 import TiledKit
 import SpriteKit
 
+#warning("ACTION: Delete file")
 public struct StandardLayerFactory : LayerFactory {
     internal func configure(_ node:SKNode, for layer:Layer){
         node.name = layer.name
@@ -25,57 +26,7 @@ public struct StandardLayerFactory : LayerFactory {
     }
     
     public func make(nodeFor layer: Layer, in map: Map, from project: Project) throws -> SKNode? {
-        var layerNode : SKNode?
-
-        switch layer.kind {
-        
-        case .tile(let tileGrid):
-            let tileLayerNode = SKNode()
-            configure(tileLayerNode, for: layer)
-            
-            for x in 0..<tileGrid.size.width {
-                for y in 0..<tileGrid.size.height {
-                    let tileGid = tileGrid[x,y]
-                    
-                    if tileGid.globalTileOffset > 0 {
-                        guard let tile = map[tileGid] else {
-                            throw SKTiledKitError.tileNotFound
-                        }
-
-                        // TileSets were pre-loaded by the map before we got here
-                        let tileNode = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
-
-                        tileNode.position = CGRect(x: x * map.tileSize.width, y: y * map.tileSize.height, width: map.tileSize.width, height: map.tileSize.height).transform(with: tileNode.anchorPoint).origin
-                        
-                        tileLayerNode.addChild(tileNode)
-                    }
-                }
-            }
-            
-            layerNode = tileLayerNode
-        case .objects:
-            let objectLayerNode = SKNode()
-            configure(objectLayerNode, for: layer)
-            layerNode = objectLayerNode
-        case .group:
-            let node = SKNode()
-            configure(node, for: layer)
-            layerNode = node
-        case .image(let image):
-            #warning("This should be using the texture factories and processors")
-            let texture = try project.retrieve(textureFrom: image.source, filteringMode: layer.properties["filteringMode"])
-
-            let spriteNode = SKSpriteNode(texture: texture)
-            configure(spriteNode, for: layer)
-            
-            // Position has to be adjusted because it has a different anchor
-            spriteNode.position = CGRect(origin: layer.position.cgPoint, size: image.size.cgSize).transform(with: spriteNode.anchorPoint).origin
-            
-            
-            layerNode = spriteNode
-        }
-
-        return layerNode
+        throw SceneLoadingError.obsolete("StandardLayerFactory.make()")
     }
     
 }

@@ -15,18 +15,8 @@
 import TiledKit
 import SpriteKit
 
-public extension Properties {
-    func hasProperty(in properties:[MappableProperty])->Bool {
-        return filter({properties.map(\.tiledPropertyName).contains($0.key)}).count > 0
-    }
-}
 
-public extension Object {
-    func hasProperty(in properties:[MappableProperty])->Bool {
-        return self.properties.hasProperty(in: properties)
-    }
-}
-
+#warning("ACTION: Delete file")
 public struct PropertyPostProcessor<TargetObjectType> : ObjectPostProcessor {
 
     private struct PropertyWrapper : AutomaticallyMappableProperty {

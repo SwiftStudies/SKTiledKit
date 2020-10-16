@@ -12,14 +12,16 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-import SpriteKit
 import TiledKit
 
-#warning("ACTION: Delete file")
-class StandardObjectFactory : ObjectFactory{
-    
-    func make(nodeFor object: Object, in layer: Layer, and map: Map, from project: Project) throws -> SKNode? {
-        throw SceneLoadingError.obsolete("StandardObjectFactory.make")
+public extension Properties {
+    func hasProperty(in properties:[MappableProperty])->Bool {
+        return filter({properties.map(\.tiledPropertyName).contains($0.key)}).count > 0
     }
+}
 
+public extension ObjectProtocol {
+    func hasProperty(in properties:[MappableProperty])->Bool {
+        return self.properties.hasProperty(in: properties)
+    }
 }

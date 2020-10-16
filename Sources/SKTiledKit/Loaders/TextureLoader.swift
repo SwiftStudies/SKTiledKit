@@ -31,41 +31,7 @@ public struct TextureLoader : ResourceLoader {
     let     project : Project
     
     public func retrieve<R>(asType: R.Type, from url: URL) throws -> R where R : Loadable {
-        let provider : CGDataProvider
-        
-        if let directProvider = CGDataProvider(url: url as CFURL) {
-            provider = directProvider
-        } else {
-            // See if it has been processed into directly into the bundle resources
-            var bundleURL = Bundle.main.bundleURL
-            bundleURL.appendPathComponent(url.lastPathComponent)
-            guard let bundleProvider = CGDataProvider(url: bundleURL as CFURL) else {
-                // Perhaps it's from a atlas
-                guard let loadedResource = SKTexture(imageNamed: url.deletingPathExtension().lastPathComponent) as? R else {
-                    throw SceneLoadingError.textureCouldNotBeReturned
-                }
-                
-                return loadedResource
-            }
-            provider = bundleProvider
-        }
-        
-        guard let cgImageSource = CGImageSourceCreateWithDataProvider(provider, nil) else {
-            throw SKTiledKitError.couldNotLoadImage(url: url)
-        }
-        
-        guard let cgImage = CGImageSourceCreateImageAtIndex(cgImageSource, 0, nil) else {
-            throw SKTiledKitError.couldNotCreateImage(url: url)
-        }
-            
-            
-        let texture = SKTexture(cgImage: cgImage)
-
-        guard let loadedResource = texture as? R else {
-            throw SceneLoadingError.textureCouldNotBeReturned
-        }
-        
-        return loadedResource
+        throw SceneLoadingError.obsolete("TextureLoader.retrieve")
     }
     
 }

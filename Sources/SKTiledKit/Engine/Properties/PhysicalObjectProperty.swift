@@ -44,48 +44,57 @@ fileprivate extension SKPhysicsBody {
     }
 }
 
-public enum PhysicalObjectProperty : String, AutomaticallyMappableProperty,CaseIterable {
-    public typealias TargetObjectType = SKPhysicsBody
-    case physicsCategory, physicsCollisionMask, physicsContactMask, physicsPreciseCollisions
-    case affectedByGravity, allowsRotation, isDynamic, mass, friction, restitution, linearDamping, angularDamping
+public extension SKNode {
+    var guaranteedPhysicsBody : SKPhysicsBody {
+        get {
+            if let physicsBody = physicsBody {
+                return physicsBody
+            }
 
-    public var tiledPropertyName: String {
-        switch self {
-        default:
-            return rawValue
+            SceneLoader.warn("Attempting to apply physical property to a \(type(of: self)) with no physicsBody")
+
+            physicsBody = SKPhysicsBody()
+            return physicsBody!
         }
     }
+}
+
+public enum PhysicalObjectProperty : String, TiledEngineBridgableProperty, CaseIterable {
+    public typealias EngineObjectType = SKNode
     
-    public var tiledDefaultValue: PropertyValue {
+    case physicsCategory, physicsCollisionMask, physicsContactMask, physicsPreciseCollisions
+    case affectedByGravity, allowsRotation, isDynamic, mass, friction, restitution, linearDamping, angularDamping
+    
+    public var tiledDefault: PropertyValue {
         return Self.defaults[self] ?? .error(type: "Unknown", value: "Error")
     }
     
-    public var keyPath : PartialKeyPath<TargetObjectType> {
+    public var engineObjectProperty : PartialKeyPath<EngineObjectType> {
         switch self {
         case .physicsCategory:
-            return \TargetObjectType.physicsCategory
+            return \EngineObjectType.guaranteedPhysicsBody.physicsCategory
         case .physicsCollisionMask:
-            return \TargetObjectType.physicsCollisionMask
+            return \EngineObjectType.guaranteedPhysicsBody.physicsCollisionMask
         case .physicsContactMask:
-            return \TargetObjectType.physicsContactMask
+            return \EngineObjectType.guaranteedPhysicsBody.physicsContactMask
         case .physicsPreciseCollisions:
-            return \TargetObjectType.usesPreciseCollisionDetection
+            return \EngineObjectType.guaranteedPhysicsBody.usesPreciseCollisionDetection
         case .affectedByGravity:
-            return \TargetObjectType.affectedByGravity
+            return \EngineObjectType.guaranteedPhysicsBody.affectedByGravity
         case .allowsRotation:
-            return \TargetObjectType.allowsRotation
+            return \EngineObjectType.guaranteedPhysicsBody.allowsRotation
         case .isDynamic:
-            return \TargetObjectType.isDynamic
+            return \EngineObjectType.guaranteedPhysicsBody.isDynamic
         case .mass:
-            return \TargetObjectType.mass
+            return \EngineObjectType.guaranteedPhysicsBody.mass
         case .friction:
-            return \TargetObjectType.friction
+            return \EngineObjectType.guaranteedPhysicsBody.friction
         case .restitution:
-            return \TargetObjectType.restitution
+            return \EngineObjectType.guaranteedPhysicsBody.restitution
         case .linearDamping:
-            return \TargetObjectType.linearDamping
+            return \EngineObjectType.guaranteedPhysicsBody.linearDamping
         case .angularDamping:
-            return \TargetObjectType.angularDamping
+            return \EngineObjectType.guaranteedPhysicsBody.angularDamping
         }
     }
 

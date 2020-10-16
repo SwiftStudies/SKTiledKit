@@ -17,6 +17,13 @@ import TiledKit
 import SpriteKit
 
 extension SKScene : EngineMap {
+    public var cache : Bool {
+        return true
+    }
+    
+    public func newInstance() -> Self {
+        return copy() as! Self
+    }
 }
 
 public extension SpriteKitEngine {
@@ -24,13 +31,25 @@ public extension SpriteKitEngine {
 
     static func make(engineMapForTiled map: Map) throws -> SKScene {
         let scene = SKScene(size: map.pixelSize.cgSize)
-
-        scene.backgroundColor = map.backgroundColor?.skColor ?? SKColor.black
         
+        #warning("API Issue: How do we ensure scenes always have a userData property if other factories go first? Validation from the core or make like a processor?")
+        scene.userData = NSMutableDictionary()
+
+        scene.backgroundColor = map.backgroundColor?.skColor ?? SKColor.darkGray
+
+        scene.apply(propertiesFrom: map)
+
         return scene
     }
     
-    static func postProcess(_ specializedMap: SKScene, for map: Map, from project: Project) throws -> SKScene {
-        return specializedMap
+    static func postProcess(_ scene: SKScene, for map: Map, from project: Project) throws -> SKScene {
+        // Add a camera to apply the transform to the level
+        let camera = SKCameraNode()
+        camera.position = CGPoint(x: scene.size.width/2, y: scene.size.height / -2)
+
+        scene.addChild(camera)
+        scene.camera = camera
+
+        return scene
     }
 }

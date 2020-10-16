@@ -15,26 +15,21 @@
 import SpriteKit
 import TiledKit
 
-public enum ShapeProperty : String, AutomaticallyMappableProperty, CaseIterable {
-    public typealias TargetObjectType = SKShapeNode
+public enum ShapeProperty : String, TiledEngineBridgableProperty, CaseIterable {
+    public typealias EngineObjectType = SKShapeNode
     
     case fillColor, strokeColor
     
-    public var keyPath: PartialKeyPath<SKShapeNode> {
+    public var engineObjectProperty : PartialKeyPath<SKShapeNode> {
         switch self {
         case .fillColor:
-            return \TargetObjectType.fillColor
+            return \EngineObjectType.fillColor
         case .strokeColor:
-            return \TargetObjectType.strokeColor
+            return \EngineObjectType.strokeColor
         }
     }
     
-
-    public var tiledPropertyName: String {
-        return rawValue
-    }
-    
-    public var tiledDefaultValue: PropertyValue {
+    public var tiledDefault : PropertyValue {
         switch self {
         case .fillColor:
             return .color(.clear)

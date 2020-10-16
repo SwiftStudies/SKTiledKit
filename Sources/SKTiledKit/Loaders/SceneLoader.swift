@@ -16,31 +16,19 @@ import TiledKit
 import SpriteKit
 
 enum SceneLoadingError : Error {
+    case obsolete(String)
     case couldNotCreateTile(UInt32, tileSet:String)
+    case couldNotCreatePathForObject(ObjectProtocol)
     case sceneCouldNotReturned
     case textureCouldNotBeReturned
     case attemptToLoadInMemoryResourceFrom(URL)
     case tileNotFound(UInt32, tileSet:String)
 }
 
+#warning("ACTION: Delete file")
 public extension Project {
     func retrieve(scene name:String, in subdirectory:String? = nil) throws -> SKScene {
         return try retrieve(asType: SKScene.self, from: name, in: subdirectory, of: .tmx)
-    }
-}
-
-extension SKScene : Loadable {
-    
-    public static func loader(for project: Project) -> ResourceLoader {
-        return SceneLoader(project: project)
-    }
-    
-    public var cache : Bool {
-        return true
-    }
-    
-    public func newInstance() -> Self {
-        return copy() as! Self
     }
 }
 
@@ -49,21 +37,9 @@ public struct SceneLoader : ResourceLoader {
     static var tileProcessors = [TileProcessor]()
     
     public static var factories : [Factory] = [
-        LightFactory(),
-        StandardLayerFactory(),
-        StandardObjectFactory(),
-        StandardTexturePlant(),
-        StandardTilePlant(),
     ]
     
     public static var postProcessors : [PostProcessor] = [
-        StandardTilePlant(),
-        StandardTexturePlant(),
-        EdgeLoopProcessor(),
-        PhysicsPropertiesPostProcessor(),
-        PropertyPostProcessor<SKSpriteNode>(with: LitSpriteProperty.allCases),
-        PropertyPostProcessor<SKLightNode>(for:"SKLight",with: LightProperty.allCases),
-        CameraProcessor(),
     ]
     
     let project : Project
@@ -134,31 +110,7 @@ public struct SceneLoader : ResourceLoader {
     }
     
     public func retrieve<R>(asType: R.Type, from url: URL) throws -> R {
-        let map = try project.retrieve(asType: Map.self, from: url)
-
-        var scene : SKScene!
-        for mapProcessor in mapFactories {
-            if let createdScene = try mapProcessor.make(sceneFor: map, from: project) {
-                scene = createdScene
-                break
-            }
-        }
-        
-        if scene == nil {
-            scene = SKScene()
-        }
-                
-        try apply(map: map, to: scene)
-        
-        for mapProcessor in mapPostProcessors {
-            scene = try mapProcessor.process(scene, for: map, from: project)
-        }
-        
-        guard let generatedScene = scene as? R else {
-            throw SceneLoadingError.sceneCouldNotReturned
-        }
-        
-        return generatedScene
+        throw SceneLoadingError.obsolete("SceneLoader.retreive")
     }
     
     public func walk(_ objects: [Object], from layer:Layer, to container: SKNode, in map:Map) throws {
@@ -216,97 +168,15 @@ public struct SceneLoader : ResourceLoader {
     }
     
     internal func apply(map : Map, to scene:SKScene) throws {
-        scene.size = map.pixelSize.cgSize
-
-        scene.userData = NSMutableDictionary()
-
-        scene.apply(propertiesFrom: map)
-        if let mapBackgroundColor = map.backgroundColor {
-            scene.backgroundColor = mapBackgroundColor.skColor
-        }
-        
-        for tileSet in map.tileSets {
-            try load(tileSet)
-        }
-        
-        // Prepare the remaining layers
-        try walk(map.layers, in: map, with: scene)
-        
-        // Add a camera to apply the transform to the level
-        let camera = SKCameraNode()
-        camera.position = CGPoint(x: scene.size.width/2, y: scene.size.height / -2)
-        
-        scene.addChild(camera)
-        scene.camera = camera
+        throw SceneLoadingError.obsolete("SceneLoader.apply")
     }
     
     internal func makeTexture(for imageUrl:URL, with bounds:PixelBounds, and properties:Properties,  from project:Project) throws -> SKTexture{
-        // Make the texture
-        var builtTexture : SKTexture?
-        for textureFactory in textureFactories {
-            if let createdTexture = try textureFactory.make(textureFor: imageUrl, with: bounds, from: project) {
-                builtTexture = createdTexture
-                break
-            }
-        }
         
-        // Make sure we have a texture
-        guard var texture = builtTexture else {
-            throw SceneLoadingError.textureCouldNotBeReturned
-        }
-        
-        // Post process it
-        for texturePostProcessor in texturePostProcessors {
-            texture = try texturePostProcessor.process(texture, applying: properties, from: project)
-        }
-        
-        return texture
+        throw SceneLoadingError.obsolete("SceneLoader.makeTexture")
     }
     
     internal func load(_ tileset:TileSet) throws {
-        
-        var tileSpriteCache = [UInt32:SKSpriteNode]()
-        
-        for tileId : UInt32 in 0..<UInt32(tileset.count) {
-            guard let tile = tileset[tileId] else {
-                throw SceneLoadingError.tileNotFound(tileId, tileSet: tileset.name)
-            }
-            
-            let texture = try makeTexture(for: tile.imageSource, with: tile.bounds, and: tileset.properties.overridingWith(tile.properties), from: project)
-            
-            // Make and post process the tile
-            var builtSprite : SKSpriteNode?
-            for tileFactory in tileFactories {
-                if let createdSprite = try tileFactory.make(spriteFor: tile, id: tileId, in: tileset, with: texture, from: project, processingObjectsWith: objectPostProcessors) {
-                    builtSprite = createdSprite
-                    break
-                }
-            }
-            
-            if builtSprite == nil {
-                throw  SceneLoadingError.couldNotCreateTile(tileId, tileSet: tileset.name)
-            }
-            
-            tileSpriteCache[tileId] = builtSprite
-        }
-        
-        
-        //Post process tiles
-        for tileId : UInt32 in 0..<UInt32(tileset.count) {
-            guard let tile = tileset[tileId] else {
-                throw SceneLoadingError.tileNotFound(tileId, tileSet: tileset.name)
-            }
-            
-            guard var sprite = tileSpriteCache[tileId] else {
-                throw SceneLoadingError.couldNotCreateTile(tileId, tileSet: tileset.name)
-            }
-            
-            for postProcessor in tilePostProcessors {
-                sprite = try postProcessor.process(sprite, for: tile, in: tileset, from: project)
-            }
-
-            #warning("Error occurs here")
-            project.store(sprite, as: tile.cachingUrl)
-        }
+        throw SceneLoadingError.obsolete("SceneLoader.load(tileset)")
     }
 }

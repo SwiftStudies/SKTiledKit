@@ -20,20 +20,65 @@ public extension SpriteKitEngine {
     typealias GroupLayerType = SKNode
     typealias ObjectLayerType = SKNode
 
+    fileprivate static func configure(_ node:SKNode, for layer:LayerProtocol){
+        node.name = layer.name
+        node.isHidden = !layer.visible
+        node.alpha = layer.opacity.cgFloatValue
+        node.apply(propertiesFrom: layer)
+        node.position = layer.position.cgPoint.transform()
+    }
+    
+    #warning("API: I think this needs to be explictly an image layer")
     static func makeSpriteFrom(_ texture: SKTexture, for layer: LayerProtocol, in map: Map, from project: Project) throws -> SKSpriteNode? {
-        throw SKTiledKitError.notImplemented
+
+        texture.filteringMode = layer.properties["filteringMode"] == "nearest" ? .nearest : .linear
+
+        let spriteNode = SKSpriteNode(texture: texture)
+        configure(spriteNode, for: layer)
+        
+        // Position has to be adjusted because it has a different anchor
+        // THIS WAS image.size (from the imageRef) which is no longer passed
+        // make sure this is covered by testing
+        spriteNode.position = CGRect(origin: layer.position.cgPoint, size: texture.size()).transform(with: spriteNode.anchorPoint).origin
+        
+        return spriteNode
     }
     
     static func makeObjectContainer(_ layer: LayerProtocol, in map: Map, from project: Project) throws -> SKNode? {
-        throw SKTiledKitError.notImplemented
+        let layerNode = SKNode()
+        configure(layerNode, for: layer)
+        
+        return layerNode
     }
     
     static func makeGroupLayer(_ layer: LayerProtocol, in map: Map, from project: Project) throws -> SKNode? {
-        throw SKTiledKitError.notImplemented
+        let layerNode = SKNode()
+        configure(layerNode, for: layer)
+        
+        return layerNode
     }
     
     static func makeTileLayerFrom(_ tileGrid: TileGrid, for layer: LayerProtocol, with sprites: MapTiles<SpriteKitEngine>, in map: Map, from project: Project) throws -> SKNode? {
-        throw SKTiledKitError.notImplemented
+        let tileLayerNode = SKNode()
+        configure(tileLayerNode, for: layer)
+        
+        for x in 0..<tileGrid.size.width {
+            for y in 0..<tileGrid.size.height {
+                let tileGid = tileGrid[x,y]
+                
+                if tileGid.globalTileOffset > 0 {
+                    // TileSets were pre-loaded by the map before we got here
+                    guard let tileNode = sprites[tileGid] else {
+                        throw SKTiledKitError.tileNotFound
+                    }
+
+                    tileNode.position = CGRect(x: x * map.tileSize.width, y: y * map.tileSize.height, width: map.tileSize.width, height: map.tileSize.height).transform(with: tileNode.anchorPoint).origin
+                    
+                    tileLayerNode.addChild(tileNode)
+                }
+            }
+        }
+        return tileLayerNode
     }
     
 }

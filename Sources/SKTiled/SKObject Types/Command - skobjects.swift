@@ -27,8 +27,6 @@ extension ProjectCommand {
 
         mutating func run() throws {
             
-            let skNode  = SKObjectType("Node", color: .white).withProperties(NodeProperty.allCases)
-            let skShape = SKObjectType("Shape", color: .white).withProperties(ShapeProperty.allCases)
             let skPoint = SKObjectType("Point", color: .white)
             let skEdgeLoopPolygon = SKObjectType("Polygon", color:.clear)
 
@@ -39,30 +37,12 @@ extension ProjectCommand {
             let skLight = SKObjectType("Light", color: .clear).withProperties(LightProperty.allCases)
 
 
-            let skTypes = [
-                SKObjectType("Camera", color: .darkGrey).withProperties(CameraProperty.allCases),
-                SKObjectType("Shape", color: .green, inherits: skNode, skShape, skPhysical, skLit),
-                SKObjectType("Light", color: .yellow, inherits: skNode, skPoint, skLight),
-                SKObjectType("EdgeLoop", color: .white, inherits: skNode, skEdgeLoopPolygon, skPhysical),
-                SKObjectType("Sprite", color: .blue, inherits: skNode, skPhysical, skLit)
-            ]
+
                         
             do {
                 let project = try Project(from: URL(fileURLWithPath: options.path))
-                var objectTypes = ObjectTypes()
-
-                // Copy across any previous object types that aren't prefixed with SK
-                for name in project.objectTypes.allNames {
-                    if !name.hasPrefix("SK") {
-                        objectTypes[name] = project.objectTypes[name]
-                    }
-                }
                 
-                for skType in skTypes {
-                    objectTypes["SK\(skType.name)"] = skType.objectType
-                }
-                
-                try objectTypes.write(to: project.objectTypesUrl)
+                try SpriteKitEngine.objectTypes.write(to: project.objectTypesUrl)
                 
                 print("Wrote Objects to \(project.objectTypesUrl.standardized.path)")
             } catch {

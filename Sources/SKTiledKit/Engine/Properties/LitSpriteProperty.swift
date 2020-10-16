@@ -58,12 +58,12 @@ fileprivate extension SKSpriteNode {
     }
 }
 
-public enum LitSpriteProperty : String, AutomaticallyMappableProperty,CaseIterable {
-    public typealias TargetObjectType = SKSpriteNode
+public enum LitSpriteProperty : String, TiledEngineBridgableProperty ,CaseIterable {
+    public typealias EngineObjectType = SKSpriteNode
 
     case litByMask, shadowedByMask, castsShadowsByMask, normalImage
     
-    public var keyPath: PartialKeyPath<TargetObjectType> {
+    public var engineObjectProperty : PartialKeyPath<EngineObjectType> {
         switch self {
         
         case .litByMask:
@@ -86,11 +86,7 @@ public enum LitSpriteProperty : String, AutomaticallyMappableProperty,CaseIterab
         }
     }
     
-    public var tiledPropertyName: String {
-        return rawValue
-    }
-    
-    public var tiledDefaultValue: PropertyValue {
+    public var tiledDefault: PropertyValue {
         switch self {
         case .litByMask, .shadowedByMask, .castsShadowsByMask:
             return .int(0)

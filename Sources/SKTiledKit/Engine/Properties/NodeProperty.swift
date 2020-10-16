@@ -15,23 +15,19 @@
 import SpriteKit
 import TiledKit
 
-public enum NodeProperty : String, AutomaticallyMappableProperty, CaseIterable {
-    public typealias TargetObjectType = SKNode
+public enum NodeProperty : String, TiledEngineBridgableProperty, CaseIterable {
+    public typealias EngineObjectType = SKNode
     
     case zPosition
     
-    public var keyPath: PartialKeyPath<SKNode> {
+    public var engineObjectProperty: PartialKeyPath<SKNode>{
         switch self {
         case .zPosition:
             return \SKNode.zPosition
         }
     }
     
-    public var tiledPropertyName: String {
-        return rawValue
-    }
-    
-    public var tiledDefaultValue: PropertyValue {
+    public var tiledDefault: PropertyValue {
         return 0.0
     }
 }

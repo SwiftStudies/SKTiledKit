@@ -36,12 +36,12 @@ fileprivate extension SKLightNode {
     }
 }
 
-public enum LightProperty : String, AutomaticallyMappableProperty, CaseIterable {
-    public typealias TargetObjectType = SKLightNode
+public enum LightProperty : String, TiledEngineBridgableProperty, CaseIterable {
+    public typealias EngineObjectType = SKLightNode
     
     case lightCategory, ambientColor, lightColor, shadowColor, falloff, direction
 
-    public var keyPath: PartialKeyPath<SKLightNode> {
+    public var engineObjectProperty: PartialKeyPath<SKLightNode> {
         switch self {
         case .lightCategory:
             return \SKLightNode.lightCategory
@@ -58,11 +58,7 @@ public enum LightProperty : String, AutomaticallyMappableProperty, CaseIterable 
         }
     }
     
-    public var tiledPropertyName: String {
-        return rawValue
-    }
-    
-    public var tiledDefaultValue: PropertyValue {
+    public var tiledDefault : PropertyValue {
         switch self {
         
         case .lightCategory:
