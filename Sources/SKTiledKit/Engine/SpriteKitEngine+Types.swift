@@ -17,6 +17,10 @@ import TiledKit
 
 extension SKTexture : EngineTexture {
     public typealias EngineType = SpriteKitEngine
+
+    public func newInstance() -> Self {
+        return self
+    }    
 }
 
 extension SKNode : EngineObject, EngineLayerContainer, EngineObjectContainer {

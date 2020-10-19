@@ -101,7 +101,7 @@ public extension SpriteKitEngine {
     fileprivate static func make(shapeWith path:CGPath?, at angle:Double, for object: ObjectProtocol, in map:Map, from project: Project) throws -> SKShapeNode {
         
         guard let path = path else {
-            throw SceneLoadingError.couldNotCreatePathForObject(object)
+            throw SKTiledKitError.couldNotCreatePathForObject(object)
         }
         
         let node = shapeNode(with: path, position: object.position.cgPoint, rotation: angle, centered: true)

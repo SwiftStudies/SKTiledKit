@@ -25,7 +25,7 @@ public extension SpriteKitEngine {
         
         let texture = try make(textureFrom: tile.imageSource, with: tile.bounds, and: tileset.properties.overridingWith(tile.properties), in: project)
         
-        var sprite = SKSpriteNode(texture: texture)
+        let sprite = SKSpriteNode(texture: texture)
         #warning("API: Again, how do we ensure specializations don't miss this?")
         sprite.userData = NSMutableDictionary()
         
@@ -61,13 +61,13 @@ public extension SpriteKitEngine {
                 animationSteps.append(SKAction.setTexture(texture))
                 animationSteps.append(SKAction.wait(forDuration: frame.duration))
             } else {
-                SceneLoader.warn("No texture for \(tileSet.name).\(tile.uuid)")
+                SpriteKitEngine.warn("No texture for \(tileSet.name).\(tile.uuid)")
             }
         }
         
         // If we have frames add an animation action
         if animationSteps.count > 0 {
-            let currentTileSprite = try project.retrieve(asType: SKSpriteNode.self, from: tile.cachingUrl)
+            let currentTileSprite = sprite
             currentTileSprite.run(SKAction.repeatForever(SKAction.sequence(animationSteps)))
             
             return currentTileSprite

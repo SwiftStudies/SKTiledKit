@@ -29,7 +29,7 @@ extension SKScene : EngineMap {
 public extension SpriteKitEngine {
     typealias MapType = SKScene
 
-    public static func make(mapFor tiledMap: Map) throws -> SKScene {
+    static func make(mapFor tiledMap: Map) throws -> SKScene {
         let scene = SKScene(size: tiledMap.pixelSize.cgSize)
         
         #warning("API Issue: How do we ensure scenes always have a userData property if other factories go first? Validation from the core or make like a processor?")

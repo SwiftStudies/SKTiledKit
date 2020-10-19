@@ -53,18 +53,6 @@ final class SKTiledKitTests : XCTestCase {
             XCTFail("Could not create scene \(error)")
         }
     }
-
-    func testValidUrlEncoding(){
-        guard let imageUrl = moduleBundleProject.url(for: "4 Tiles", in: "Images", of: .png) else {
-            XCTFail("Could not create image URL")
-            return
-        }
-        let tile = Tile(imageUrl, bounds: PixelBounds(origin: .zero, size: Dimension(width:32,height:32)))
-        
-        let cachingUrl = tile.cachingUrl
-        
-        XCTAssertEqual(cachingUrl.absoluteString, "tkrc:///TileNode////Users/nhughes/Library/Developer/Xcode/DerivedData/SKTiledKit-ewgphuzitggjojazxlxlcnrlxdfh/Build/Products/Debug/SKTiledKitTests.xctest/Contents/Resources/SKTiledKit_SKTiledKitTests.bundle/Contents/Resources/Images/4%20Tiles.png/0/0/32/32")
-    }
     
     func testPhysicsProperties(){
         XCTFail("Needs reimplementing")

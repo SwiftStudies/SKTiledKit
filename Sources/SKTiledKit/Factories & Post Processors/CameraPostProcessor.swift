@@ -100,7 +100,7 @@ public class CameraProcessor : TiledKit.ObjectPostProcessor, TiledKit.MapPostPro
     
     public func process(_ node: SKNode, of type: String?, with properties: Properties) throws -> SKNode {
         if type ?? "" == "SKCamera" {
-            SceneLoader.warn("Tile nodes cannot be Cameras")
+            SpriteKitEngine.warn("Tile nodes cannot be Cameras")
         }
         return node
     }

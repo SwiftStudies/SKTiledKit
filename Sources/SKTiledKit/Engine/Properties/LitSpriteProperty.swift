@@ -50,7 +50,7 @@ fileprivate extension SKSpriteNode {
         }
         set {
             guard let userData = userData else {
-                SceneLoader.warn("No userData on sprite to store normalImage URL \(newValue?.path ?? "")")
+                SpriteKitEngine.warn("No userData on sprite to store normalImage URL \(newValue?.path ?? "")")
                 return
             }
             userData["normalImage"] = newValue

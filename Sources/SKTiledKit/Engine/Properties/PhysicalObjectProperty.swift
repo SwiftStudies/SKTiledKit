@@ -51,7 +51,7 @@ public extension SKNode {
                 return physicsBody
             }
 
-            SceneLoader.warn("Attempting to apply physical property to a \(type(of: self)) with no physicsBody")
+            SpriteKitEngine.warn("Attempting to apply physical property to a \(type(of: self)) with no physicsBody")
 
             physicsBody = SKPhysicsBody()
             return physicsBody!

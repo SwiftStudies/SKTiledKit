@@ -15,7 +15,7 @@
 import TiledKit
 import SpriteKit
 
-#warning("API: Promote to TiledKIt")
+#warning("API: Promote to TiledKit")
 
 public extension TiledEngineBridgableProperty where Self : RawRepresentable, Self.RawValue == String {
     var tiledName : String {
@@ -23,10 +23,9 @@ public extension TiledEngineBridgableProperty where Self : RawRepresentable, Sel
     }
 }
 
-#warning("API: Promote to TiledKits")
-public struct BridgedPropertyProcessor<TargetType:EngineObject> : MapPostProcessor, TiledKit.LayerPostProcessor, TiledKit.ObjectPostProcessor {
+#warning("API: Promote to TiledKit")
+public struct BridgedPropertyProcessor<TargetType:EngineObject> : TiledKit.MapPostProcessor, TiledKit.LayerPostProcessor, TiledKit.ObjectPostProcessor {
 
-    
     public typealias EngineType = TargetType.EngineType
     
     private struct AnyProperty<EngineObjectType:EngineObject> : TiledEngineBridgableProperty {
@@ -65,11 +64,11 @@ public struct BridgedPropertyProcessor<TargetType:EngineObject> : MapPostProcess
         
         return target
     }
-    
-    public func process(_ scene: SKScene, for map: Map, from project: Project) throws -> SKScene {
-        return process(target: scene, source: map)
+        
+    public func process(engineMap: TargetType.EngineType.MapType, for map: Map, from project: Project) throws -> TargetType.EngineType.MapType {
+        return process(target: engineMap, source: map)
     }
-    
+        
     public func process(objectLayer: EngineType.ObjectLayerType, from layer: LayerProtocol, for map: Map, in project: Project) throws -> EngineType.ObjectLayerType {
         return process(target: objectLayer, source: layer)
     }

@@ -32,7 +32,7 @@ public struct LightFactory : TiledKit.ObjectFactory {
     }
     
     fileprivate func warn(ofIncompatible object:ObjectProtocol){
-        SceneLoader.warn("Object \(object.name.isEmpty ? "\(object.id)" : object.name) is an SKLight, but is not a Point object. SKLight can only be applied to Tiled Point objects.")
+        SpriteKitEngine.warn("Object \(object.name.isEmpty ? "\(object.id)" : object.name) is an SKLight, but is not a Point object. SKLight can only be applied to Tiled Point objects.")
     }
     
     public func make(rectangleOf size: Size, at angle: Double, for object: ObjectProtocol, in map: Map, from project: Project) throws -> SKShapeNode? {
