@@ -15,7 +15,40 @@
 import TiledKit
 import SpriteKit
 
-#warning("ACTION: Delete file")
+public struct PhysicsPropertiesPostProcessor : TiledKit.ObjectPostProcessor {
+    public typealias EngineType = SpriteKitEngine
+    
+    let generic = BridgedPropertyProcessor<SKNode>(applies: PhysicalObjectProperty.allCases, to: [.anyObject, .objectLayer, .groupLayer])
+    
+    public func process(point: SKNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKNode {
+        return try generic.process(point: point, from: object, for: map, from: project)
+    }
+    
+    public func process(text: SKTKTextNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKTKTextNode {
+        return try generic.process(text: text, from: object, for: map, from: project)
+    }
+    
+    public func process(polygon shape: SKShapeNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKShapeNode {
+        return try generic.process(polygon: shape, from: object, for: map, from: project)
+    }
+    
+    public func process(polyline shape: SKShapeNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKShapeNode {
+        return try generic.process(polyline: shape, from: object, for: map, from: project)
+    }
+    
+    public func process(rectangle shape: SKShapeNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKShapeNode {
+        return try generic.process(rectangle: shape, from: object, for: map, from: project)
+    }
+    
+    public func process(ellipse shape: SKShapeNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKShapeNode {
+        return try generic.process(ellipse: shape, from: object, for: map, from: project)
+    }
+    
+    public func process(sprite: SKSpriteNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKSpriteNode {
+        return try generic.process(sprite: sprite, from: object, for: map, from: project)
+    }
+}
+
 //public struct PhysicsPropertiesPostProcessor : ObjectPostProcessor {
 //    private let genericProcessor : PropertyPostProcessor<SKPhysicsBody>
 //

@@ -66,11 +66,11 @@ public extension Engine {
         
         engineTypes["\(enginePrefix)Camera"] = ObjectType(.darkGrey,with: CameraProperty.allCases)
 
-        engineTypes["\(enginePrefix)Shape"] = ObjectType(.green,with: NodeProperty.allCases).and(ShapeProperty.allCases).and(PhysicalObjectProperty.allCases).and(LitSpriteProperty.allCases)
+        engineTypes["\(enginePrefix)Shape"] = ObjectType(.green,with: NodeProperty.allCases).and(ShapeProperty.allCases).and(PhysicalObjectProperty.allCases)
 
         engineTypes["\(enginePrefix)Light"] = ObjectType(.yellow, with: NodeProperty.allCases).and(LightProperty.allCases)
 
-        engineTypes["\(enginePrefix)EdgeLoop"] = ObjectType(.white, with: NodeProperty.allCases).and(PhysicalObjectProperty.allCases)
+        engineTypes["\(enginePrefix)EdgeLoop"] = ObjectType(.white, with: NodeProperty.allCases).and([PhysicalObjectProperty.physicsCategory, PhysicalObjectProperty.physicsCollisionMask, PhysicalObjectProperty.physicsContactMask, PhysicalObjectProperty.friction, PhysicalObjectProperty.restitution])
 
         engineTypes["\(enginePrefix)Sprite"] = ObjectType(.blue,
                                                           with:

@@ -26,18 +26,6 @@ extension ProjectCommand {
         
 
         mutating func run() throws {
-            
-            let skPoint = SKObjectType("Point", color: .white)
-            let skEdgeLoopPolygon = SKObjectType("Polygon", color:.clear)
-
-            let skPhysical = SKObjectType("Physical", color: Color.clear).withProperties(PhysicalObjectProperty.allCases)
-            
-            let skLit = SKObjectType("Lit", color: Color.clear).withProperties(LitSpriteProperty.allCases)
-            
-            let skLight = SKObjectType("Light", color: .clear).withProperties(LightProperty.allCases)
-
-
-
                         
             do {
                 let project = try Project(from: URL(fileURLWithPath: options.path))

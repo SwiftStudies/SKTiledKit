@@ -15,7 +15,7 @@
 import TiledKit
 
 #warning("API: Promote to TiledKit")
-public struct TiledType : OptionSet {
+public struct TiledType : OptionSet, CustomStringConvertible {
     public let rawValue : Int
     
     public init(rawValue:Int){
@@ -47,6 +47,47 @@ public struct TiledType : OptionSet {
     public static let anyShape : TiledType    = [
         .rectangleObject, ellipseObject, .polylineObject, .polygonObject
     ]
+    
+    internal func nameFor(rawValue:Int)->String?{
+        switch TiledType(rawValue: rawValue){
+        case .map:
+            return "Map"
+        case .tileLayer:
+            return "Tile Layer"
+        case .imageLayer:
+            return "Image Layer"
+        case .groupLayer:
+            return "Group"
+        case .pointObject:
+            return "Point"
+        case .rectangleObject:
+            return "Rectangle"
+        case .ellipseObject:
+            return "Ellipse"
+        case .polylineObject:
+            return "Polyline"
+        case .polygonObject:
+            return "Polygon"
+        case .tileObject:
+            return "Tile Instance"
+        case .textObject:
+            return "Text"
+        case .tile:
+            return "Tile Defintion"
+        default:
+            return "Unknown Type \(rawValue)"
+        }
+    }
+    
+    public var description: String {
+        var types = [String]()
+        for i in 0..<Int.bitWidth {
+            if let name = nameFor(rawValue: 1 << i), rawValue & (1 << i) != 0 {
+                types.append(name)
+            }
+        }
+        return types.joined(separator: "/")
+    }
 }
 
 public extension Propertied {

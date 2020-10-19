@@ -15,13 +15,13 @@
 import TiledKit
 
 public extension Properties {
-    func hasProperty(in properties:[MappableProperty])->Bool {
-        return filter({properties.map(\.tiledPropertyName).contains($0.key)}).count > 0
+    func hasProperty<TBP:TiledEngineBridgableProperty>(in properties:[TBP])->Bool {
+        return filter({properties.map(\.tiledName).contains($0.key)}).count > 0
     }
 }
 
 public extension ObjectProtocol {
-    func hasProperty(in properties:[MappableProperty])->Bool {
+    func hasProperty<TBP:TiledEngineBridgableProperty>(in properties:[TBP])->Bool {
         return self.properties.hasProperty(in: properties)
     }
 }

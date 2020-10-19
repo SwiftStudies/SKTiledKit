@@ -58,11 +58,6 @@ public struct PropertyPostProcessor<TargetObjectType> : ObjectPostProcessor {
             }
         }
         
-        //Don't bother if the object has none of the expected properties
-        guard properties.hasProperty(in: self.properties) else {
-            return node
-        }
-        
         //Validate that the supplied node is of the correct type
         let targetObject : TargetObjectType
         if let keyPath = keyPath {

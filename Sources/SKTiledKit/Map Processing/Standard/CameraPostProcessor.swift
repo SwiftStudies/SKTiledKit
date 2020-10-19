@@ -15,7 +15,80 @@
 import TiledKit
 import SpriteKit
 
-public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
+fileprivate extension ObjectProtocol {
+    var isTypedAsCamera : Bool {
+        return type ?? "" == "SKCamera"
+    }
+}
+
+public class CameraProcessor : TiledKit.ObjectPostProcessor, TiledKit.MapPostProcessor {
+    public typealias EngineType = SpriteKitEngine
+    
+
+
+    
+    public func makeCamera(_ rectangle: SKShapeNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKShapeNode {
+        guard object.type ?? "" == "SKCamera" else {
+            return rectangle
+        }
+
+        if let value = object.properties["trackObject"], case let PropertyValue.object(id: trackId) = value {
+            self.trackId = trackId
+        }
+        
+        self.cameraShape = rectangle
+        
+        frame = rectangle.calculateAccumulatedFrame()
+        
+        return rectangle
+    }
+    
+    public func warn<O>(_ kind:TiledType,object:O, typedAsCamera camera:Bool)->O{
+        
+        if camera {
+            EngineType.warn("\(kind) cannot be a camera")
+        }
+        
+        return object
+    }
+    
+    public func process(rectangle: SKShapeNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKShapeNode {
+        
+        return try makeCamera(rectangle, from: object, for: map, from: project)
+    }
+    
+    public func process(ellipse: SKShapeNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKShapeNode {
+        if object.isTypedAsCamera {
+            return warn(object.tiledType, object: ellipse, typedAsCamera: true)
+        }
+        return ellipse
+    }
+    
+    public func process(polygon: SKShapeNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKShapeNode {
+        if object.isTypedAsCamera {
+            return warn(object.tiledType, object: polygon, typedAsCamera: true)
+        }
+        return polygon
+    }
+    
+    public func process(polyline: SKShapeNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKShapeNode {
+        if object.isTypedAsCamera {
+            return warn(object.tiledType, object: polyline, typedAsCamera: true)
+        }
+        return polyline
+    }
+    
+    public func process(point: SKNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKNode {
+        return warn(.pointObject, object: point, typedAsCamera: object.isTypedAsCamera)
+    }
+    
+    public func process(sprite: SKSpriteNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKSpriteNode {
+        return warn(.tileObject, object: sprite, typedAsCamera: object.isTypedAsCamera)
+    }
+    
+    public func process(text: SKTKTextNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKTKTextNode {
+        return warn(.textObject, object: text, typedAsCamera: object.isTypedAsCamera)
+    }
 
     var frame : CGRect? = nil
     var cameraShape : SKShapeNode? = nil
@@ -53,7 +126,9 @@ public class CameraProcessor : ObjectPostProcessor, MapPostProcessor {
         return node
     }
     
-    public func process(_ scene: SKScene, for map: Map, from project: Project) throws -> SKScene {
+    public func process(engineMap: EngineType.MapType, for map: Map, from project: Project) throws -> EngineType.MapType {
+        let scene = engineMap
+        
         guard let frame = frame, let cameraShape = cameraShape else {
             return scene
         }
