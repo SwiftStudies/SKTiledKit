@@ -53,7 +53,7 @@ public extension SpriteKitEngine {
     }
     
     #warning("API: tileSet parameter misspelled, should be tileset (all lowercase)")
-    static func postProcess(_ sprite: SKSpriteNode, from tile: Tile, in tileSet: TileSet, with setSprites: [UInt32 : SKSpriteNode], for map: Map, from project: Project) throws -> SKSpriteNode {
+    static func process(_ sprite: SKSpriteNode, from tile: Tile, in tileSet: TileSet, with setSprites: [UInt32 : SKSpriteNode], for map: Map, from project: Project) throws -> SKSpriteNode {
         
         var animationSteps = [SKAction]()
         for frame in tile.frames ?? [] {

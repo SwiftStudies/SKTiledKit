@@ -29,7 +29,7 @@ public extension SpriteKitEngine {
     }
     
     #warning("API: I think this needs to be explictly an image layer")
-    static func makeSpriteFrom(_ texture: SKTexture, for layer: LayerProtocol, in map: Map, from project: Project) throws -> SKSpriteNode? {
+    static func make(spriteFrom texture: SKTexture, for layer: LayerProtocol, in map: Map, from project: Project) throws -> SKSpriteNode? {
 
         texture.filteringMode = layer.properties["filteringMode"] == "nearest" ? .nearest : .linear
 
@@ -44,21 +44,21 @@ public extension SpriteKitEngine {
         return spriteNode
     }
     
-    static func makeObjectContainer(_ layer: LayerProtocol, in map: Map, from project: Project) throws -> SKNode? {
+    static func make(objectContainerFrom  layer: LayerProtocol, in map: Map, from project: Project) throws -> SKNode? {
         let layerNode = SKNode()
         configure(layerNode, for: layer)
         
         return layerNode
     }
     
-    static func makeGroupLayer(_ layer: LayerProtocol, in map: Map, from project: Project) throws -> SKNode? {
+    static func make(groupFrom layer: LayerProtocol, in map: Map, from project: Project) throws -> SKNode? {
         let layerNode = SKNode()
         configure(layerNode, for: layer)
         
         return layerNode
     }
     
-    static func makeTileLayerFrom(_ tileGrid: TileGrid, for layer: LayerProtocol, with sprites: MapTiles<SpriteKitEngine>, in map: Map, from project: Project) throws -> SKNode? {
+    static func make(tileLayer tileGrid: TileGrid, for layer: LayerProtocol, with sprites: MapTiles<SpriteKitEngine>, in map: Map, from project: Project) throws -> SKNode? {
         let tileLayerNode = SKNode()
         configure(tileLayerNode, for: layer)
         
