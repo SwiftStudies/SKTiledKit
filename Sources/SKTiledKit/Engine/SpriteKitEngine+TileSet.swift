@@ -57,7 +57,7 @@ public extension SpriteKitEngine {
         
         var animationSteps = [SKAction]()
         for frame in tile.frames ?? [] {
-            if let tileId = tileSet.localId(of: tile), let texture = setSprites[tileId]?.texture {
+            if let tileId = tileSet.localId(of: frame.tile), let texture = setSprites[tileId]?.texture {
                 animationSteps.append(SKAction.setTexture(texture))
                 animationSteps.append(SKAction.wait(forDuration: frame.duration))
             } else {
