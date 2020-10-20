@@ -55,14 +55,24 @@ public struct BridgedPropertyProcessor<TargetType:EngineObject> : TiledKit.MapPo
     
 
     
-    func process<O:EngineObject>(target:O, source:Propertied)->O{
+    func process<O:EngineObject>(target engineObject:O, source:Propertied)->O{
         // If it's of the right target type, the right tiled source type, and has at least one of the properties, then apply it
         #warning("DEFECT: Not checking the type is right, probably need to include the type in the parameters")
-        if let target = target as? TargetType, source.is(a: applicableTiledTypes), source.properties.hasProperty(in: allBridgedProperties)  {
-            allBridgedProperties.apply(source.properties, to: target)
+        guard let target = engineObject as? TargetType else {
+            return engineObject
         }
         
-        return target
+        guard source.is(a: applicableTiledTypes) else {
+            return engineObject
+        }
+        
+        guard source.properties.hasProperty(in: allBridgedProperties) else {
+            return engineObject
+        }
+        
+        allBridgedProperties.apply(source.properties, to: target)
+        
+        return engineObject
     }
         
     public func process(engineMap: TargetType.EngineType.MapType, for map: Map, from project: Project) throws -> TargetType.EngineType.MapType {
@@ -85,37 +95,46 @@ public struct BridgedPropertyProcessor<TargetType:EngineObject> : TiledKit.MapPo
         return process(target: groupLayer, source: layer)
     }
     
+    
+    private func appliesTo(_ objectTypeName:String?)->Bool {
+        guard let applicableTypeName = applicableTypeName else {
+            return true
+        }
+        
+        return applicableTypeName == objectTypeName
+    }
+    
     public func process(point: TargetType.EngineType.PointObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> TargetType.EngineType.PointObjectType {
 
-        return applicableTypeName == object.type ? process(target: point, source: object) : point
+        return appliesTo(object.type) ? process(target: point, source: object) : point
     }
     
     public func process(rectangle: TargetType.EngineType.RectangleObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> TargetType.EngineType.RectangleObjectType {
-        return applicableTypeName == object.type ? process(target: rectangle, source: object) : rectangle
+        return appliesTo(object.type) ? process(target: rectangle, source: object) : rectangle
     }
     
     public func process(ellipse: TargetType.EngineType.EllipseObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> TargetType.EngineType.EllipseObjectType {
-        return applicableTypeName == object.type ? process(target: ellipse, source: object) : ellipse
+        return appliesTo(object.type) ? process(target: ellipse, source: object) : ellipse
 
     }
     
     public func process(sprite: TargetType.EngineType.SpriteType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> TargetType.EngineType.SpriteType {
-        return applicableTypeName == object.type ? process(target: sprite, source: object) : sprite
+        return appliesTo(object.type) ? process(target: sprite, source: object) : sprite
 
     }
     
     public func process(text: TargetType.EngineType.TextObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> TargetType.EngineType.TextObjectType {
-        return applicableTypeName == object.type ? process(target: text, source: object) : text
+        return appliesTo(object.type) ? process(target: text, source: object) : text
 
     }
     
     public func process(polyline: TargetType.EngineType.PolylineObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> TargetType.EngineType.PolylineObjectType {
-        return applicableTypeName == object.type ? process(target: polyline, source: object) : polyline
+        return appliesTo(object.type) ? process(target: polyline, source: object) : polyline
 
     }
     
     public func process(polygon: TargetType.EngineType.PolygonObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> TargetType.EngineType.PolygonObjectType {
-        return applicableTypeName == object.type ? process(target: polygon, source: object) : polygon
+        return appliesTo(object.type) ? process(target: polygon, source: object) : polygon
 
     }
 }

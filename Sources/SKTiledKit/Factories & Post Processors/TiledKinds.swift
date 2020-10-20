@@ -58,6 +58,8 @@ public struct TiledType : OptionSet, CustomStringConvertible {
             return "Image Layer"
         case .groupLayer:
             return "Group"
+        case .objectLayer:
+            return "Object Layer"
         case .pointObject:
             return "Point"
         case .rectangleObject:
