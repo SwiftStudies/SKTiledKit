@@ -12,15 +12,16 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-import SpriteKit
 import TiledKit
 
-internal extension SKTextureFilteringMode {
-    init(withPropertiesFrom propertied:Propertied){
-        if let property = propertied.properties["filteringMode"], property == "nearest" {
-            self = .nearest
-        } else {
-            self = .linear
-        }
+public extension Properties {
+    func hasProperty<TBP:TiledEngineBridgableProperty>(in properties:[TBP])->Bool {
+        return filter({properties.map(\.tiledName).contains($0.key)}).count > 0
+    }
+}
+
+public extension ObjectProtocol {
+    func hasProperty<TBP:TiledEngineBridgableProperty>(in properties:[TBP])->Bool {
+        return self.properties.hasProperty(in: properties)
     }
 }

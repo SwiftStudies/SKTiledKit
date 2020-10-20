@@ -12,25 +12,38 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-import SpriteKit
-import TiledKit
 
-extension Project {
-    internal func retrieve(textureFrom url:URL, filteringMode:PropertyValue?) throws -> SKTexture {
-        let texture = try retrieve(asType: SKTexture.self, from: url)
+import TiledKit
+import SpriteKit
+
+public extension SpriteKitEngine {
+    typealias TextureType = SKTexture
+
+    fileprivate static func scale(_ bounds:CGRect, to texture: SKTexture) -> CGRect {
+        return CGRect(x: bounds.origin.x / texture.size().width,
+                      y: bounds.origin.y / texture.size().height,
+                      width: bounds.size.width / texture.size().width,
+                      height: bounds.size.height / texture.size().height)
+    }
+    
+    static func make(texture: SKTexture, with bounds: PixelBounds?, and properties: Properties, in project: Project) throws -> SKTexture {
+
+        var texture = texture
+        if let bounds = bounds, bounds.size.cgSize != texture.size() {
+            var textureBounds = scale(bounds.cgRect, to: texture)
+            textureBounds.origin.y = (1 - textureBounds.origin.y) - textureBounds.size.height
+            texture = SKTexture(rect: textureBounds, in: texture)
+        }
         
-        if filteringMode == "nearest" {
+        if let filteringMode = properties["filteringMode"], filteringMode == "nearest" {
             texture.filteringMode = .nearest
         }
         
         return texture
     }
-}
-
-public struct SKTextureLoader : ResourceLoader {
-    let     project : Project
     
-    public func retrieve<R>(asType: R.Type, from url: URL) throws -> R where R : Loadable {
+    public static func load<LoaderType>(textureFrom url: URL, by loader: LoaderType) throws -> SKTexture where LoaderType : EngineImageLoader {
+        
         let provider : CGDataProvider
         
         if let directProvider = CGDataProvider(url: url as CFURL) {
@@ -41,12 +54,8 @@ public struct SKTextureLoader : ResourceLoader {
             bundleURL.appendPathComponent(url.lastPathComponent)
             guard let bundleProvider = CGDataProvider(url: bundleURL as CFURL) else {
                 // Perhaps it's from a atlas
-                guard let loadedResource = SKTexture(imageNamed: url.deletingPathExtension().lastPathComponent) as? R else {
-                    throw SceneLoadingError.textureCouldNotBeReturned
+                return SKTexture(imageNamed: url.deletingPathExtension().lastPathComponent) 
                 }
-                
-                return loadedResource
-            }
             provider = bundleProvider
         }
         
@@ -59,27 +68,6 @@ public struct SKTextureLoader : ResourceLoader {
         }
             
             
-        let texture = SKTexture(cgImage: cgImage)
-
-        guard let loadedResource = texture as? R else {
-            throw SceneLoadingError.textureCouldNotBeReturned
-        }
-        
-        return loadedResource
-    }
-    
-}
-
-extension SKTexture : Loadable {
-    public static func loader(for project: Project) -> ResourceLoader {
-        return SKTextureLoader(project: project)
-    }
-    
-    public var cache: Bool {
-        true
-    }
-    
-    public func newInstance() -> Self {
-        return self
+        return SKTexture(cgImage: cgImage)
     }
 }

@@ -12,9 +12,21 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-import ArgumentParser
+import TiledKit
+import Foundation
 
-struct SKTiled : ParsableCommand {
-    static var configuration =  CommandConfiguration(abstract:"Enables direct testing of levels and compilation of Tile Sets into XCode assets",subcommands: [Install.self, Run.self, ProjectCommand.self], defaultSubcommand: Run.self)
-    
+public enum SKTiledKitError : Error {
+    case obsolete(String)
+    case couldNotCreatePathForObject(ObjectProtocol)
+    case tileNodeDoesNotExist
+    case tileNotFound
+    case tileHasNoTileSet(tile:Tile)
+    case notImplemented
+    case missingPathForTile(tile:String)
+    case couldNotLoadImage(url:URL)
+    case imageFileNotFound(url:URL)
+    case couldNotCreateImage(url:URL)
+    case noPositionForTile(identifier:Int, tileSet:String)
+    case unexpectedTypeForProperty(tiledPropertyName:String, tiledPropertyType:String)
 }
+

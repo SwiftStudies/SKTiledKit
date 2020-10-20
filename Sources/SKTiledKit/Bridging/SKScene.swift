@@ -12,9 +12,20 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-import ArgumentParser
+import TiledKit
+import SpriteKit
 
-struct SKTiled : ParsableCommand {
-    static var configuration =  CommandConfiguration(abstract:"Enables direct testing of levels and compilation of Tile Sets into XCode assets",subcommands: [Install.self, Run.self, ProjectCommand.self], defaultSubcommand: Run.self)
-    
+public extension SKScene {
+    func child(withTiledObject id:Int)->SKNode?{
+        var foundNode : SKNode? = nil
+        
+        enumerateChildNodes(withName: "//*") { (node, stop) in
+            if node.userData?["tiledId"] as? Int ?? -1 == id {
+                foundNode = node
+                stop.initialize(to: true)
+            }
+        }
+        
+        return foundNode
+    }
 }

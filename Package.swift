@@ -21,7 +21,7 @@ let package = Package(
             targets: ["SKTiled"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/SwiftStudies/TiledKit", from: "0.4.4"),
+        .package(url: "https://github.com/SwiftStudies/TiledKit", from: "0.4.7"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.3"),
     ],
     targets: [
@@ -38,10 +38,11 @@ let package = Package(
             dependencies: ["SKTiledKit"],
             exclude: [
                 "Resources/PikoPixel",
-                "Resources/Test Project.tiled-session"
+                "Resources/SKTiled Tests.tiled-session"
             ],
             resources: [
-                .copy("Resources/Test Project.tiled-project"),
+                .copy("Resources/ObjectTypes.xml"),
+                .copy("Resources/SKTiled Tests.tiled-project"),
                 .copy("Resources/Maps"),
                 .copy("Resources/Tilesets"),
                 .copy("Resources/Images")]

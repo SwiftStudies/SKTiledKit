@@ -15,6 +15,12 @@
 import SpriteKit
 import TiledKit
 
+extension SKColor : ExpressibleAsTiledColor {
+    public static func instance(bridging color: Color) -> Self {
+        return color.skColor as! Self
+    }
+}
+
 public extension Color {
     var skColor : SKColor {
         let red = CGFloat(self.red) / 255

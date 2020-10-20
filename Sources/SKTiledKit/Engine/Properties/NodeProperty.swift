@@ -12,18 +12,22 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+import SpriteKit
 import TiledKit
-import Foundation
 
-public enum SKTiledKitError : Error {
-    case tileNodeDoesNotExist
-    case tileNotFound
-    case tileHasNoTileSet(tile:Tile)
-    case notImplemented
-    case missingPathForTile(tile:String)
-    case couldNotLoadImage(url:URL)
-    case imageFileNotFound(url:URL)
-    case couldNotCreateImage(url:URL)
-    case noPositionForTile(identifier:Int, tileSet:String)
+public enum NodeProperty : String, TiledEngineBridgableProperty, CaseIterable {
+    public typealias EngineObjectType = SKNode
+    
+    case zPosition
+    
+    public var engineObjectProperty: PartialKeyPath<SKNode>{
+        switch self {
+        case .zPosition:
+            return \SKNode.zPosition
+        }
+    }
+    
+    public var tiledDefault: PropertyValue {
+        return 0.0
+    }
 }
-
