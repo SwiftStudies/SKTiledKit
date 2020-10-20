@@ -58,7 +58,7 @@ fileprivate extension SKSpriteNode {
     }
 }
 
-public enum LitSpriteProperty : String, TiledEngineBridgableProperty ,CaseIterable {
+public enum LitSpriteProperty : String, BridgableProperty ,CaseIterable {
     public typealias EngineObjectType = SKSpriteNode
 
     case litByMask, shadowedByMask, castsShadowsByMask, normalImage

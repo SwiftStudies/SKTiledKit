@@ -15,7 +15,7 @@
 import SpriteKit
 import TiledKit
 
-public enum ShapeProperty : String, TiledEngineBridgableProperty, CaseIterable {
+public enum ShapeProperty : String, BridgableProperty, CaseIterable {
     public typealias EngineObjectType = SKShapeNode
     
     case fillColor, strokeColor

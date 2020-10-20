@@ -17,7 +17,7 @@ import TiledKit
 
 
 public extension ObjectType {
-    init<S:Sequence>(_ color:Color, with properties:S) where S.Element : TiledEngineBridgableProperty {
+    init<S:Sequence>(_ color:Color, with properties:S) where S.Element : BridgableProperty {
         self.init(color: color)
         
         
@@ -26,7 +26,7 @@ public extension ObjectType {
         }
     }
     
-    func and<S:Sequence>(_ properties:S) -> ObjectType where S.Element : TiledEngineBridgableProperty {
+    func and<S:Sequence>(_ properties:S) -> ObjectType where S.Element : BridgableProperty {
         
         var newType = ObjectType(color: color)
         
@@ -42,7 +42,7 @@ public extension ObjectType {
     }
 }
 
-public extension Sequence where Element : TiledEngineBridgableProperty {
+public extension Sequence where Element : BridgableProperty {
     var tiledProperties : Properties {
         var results = Properties()
         
