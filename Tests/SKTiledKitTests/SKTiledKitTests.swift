@@ -24,7 +24,19 @@ final class SKTiledKitTests : XCTestCase {
             print(scene)
         } catch {
             XCTFail("Could not create scene \(error)")
-        }
+        }        
+    }
+    
+    func testStandardProducers(){
+        SpriteKitEngine.registerProducers()
+        XCTAssertEqual(SpriteKitEngine.engineMapPostProcessors().count, 3)
+        XCTAssertEqual(SpriteKitEngine.engineMapFactories().count, 0)
+        XCTAssertEqual(SpriteKitEngine.tileFactories().count, 0)
+        XCTAssertEqual(SpriteKitEngine.engineTilePostProcessors().count, 0)
+        XCTAssertEqual(SpriteKitEngine.layerFactories().count, 0)
+        XCTAssertEqual(SpriteKitEngine.engineLayerPostProcessors().count, 2)
+        XCTAssertEqual(SpriteKitEngine.tileFactories().count, 0)
+        XCTAssertEqual(SpriteKitEngine.engineTilePostProcessors().count, 0)
     }
 
     func testTranslation(){

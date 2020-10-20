@@ -20,17 +20,23 @@ public class EdgeLoopProcessor : TiledKit.ObjectPostProcessor {
     public typealias EngineType = SpriteKitEngine
         
     public func process(point: EngineType.PointObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> EngineType.PointObjectType {
-        SpriteKitEngine.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        if object.type == "SKEdgeLoop" {
+            SpriteKitEngine.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        }
         return point
     }
     
     public func process(sprite: EngineType.SpriteType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> EngineType.SpriteType {
-        SpriteKitEngine.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        if object.type == "SKEdgeLoop" {
+            SpriteKitEngine.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        }
         return sprite
     }
     
     public func process(text: EngineType.TextObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> EngineType.TextObjectType {
-        SpriteKitEngine.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        if object.type == "SKEdgeLoop" {
+            SpriteKitEngine.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+        }
         return text
     }
     
@@ -57,7 +63,9 @@ public class EdgeLoopProcessor : TiledKit.ObjectPostProcessor {
         } else if [.polygonObject, .rectangleObject, .ellipseObject].contains(object.tiledType) {
             shape.physicsBody = SKPhysicsBody(edgeLoopFrom: shape.path!)
         } else {
-            SpriteKitEngine.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+            if object.type == "SKEdgeLoop" {
+                SpriteKitEngine.warn("Ignoring SKEdgeLoop on \(object.name)[\(object.id)]. Object type not supported \(object.tiledType)")
+            }
         }
         
         return shape
