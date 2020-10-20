@@ -36,7 +36,7 @@ fileprivate extension SKLightNode {
     }
 }
 
-public enum LightProperty : String, TiledEngineBridgableProperty, CaseIterable {
+public enum LightProperty : String, BridgableProperty, CaseIterable {
     public typealias EngineObjectType = SKLightNode
     
     case lightCategory, ambientColor, lightColor, shadowColor, falloff, direction

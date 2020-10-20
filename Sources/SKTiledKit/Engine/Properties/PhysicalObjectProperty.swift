@@ -59,7 +59,7 @@ public extension SKNode {
     }
 }
 
-public enum PhysicalObjectProperty : String, TiledEngineBridgableProperty, CaseIterable {
+public enum PhysicalObjectProperty : String, BridgableProperty, CaseIterable {
     public typealias EngineObjectType = SKNode
     
     case physicsCategory, physicsCollisionMask, physicsContactMask, physicsPreciseCollisions

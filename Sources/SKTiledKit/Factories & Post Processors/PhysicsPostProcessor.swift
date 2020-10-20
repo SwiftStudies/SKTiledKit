@@ -18,7 +18,7 @@ import SpriteKit
 public struct PhysicsPropertiesPostProcessor : TiledKit.ObjectPostProcessor {
     public typealias EngineType = SpriteKitEngine
     
-    let generic = BridgedPropertyProcessor<SKNode>(applies: PhysicalObjectProperty.allCases, to: [.anyObject, .objectLayer, .groupLayer])
+    let generic = BridgablePropertyProcessor<SKNode>(applies: PhysicalObjectProperty.allCases, to: [.anyObject, .objectLayer, .groupLayer])
     
     public func process(point: SKNode, from object: ObjectProtocol, for map: Map, from project: Project) throws -> SKNode {
         return try generic.process(point: point, from: object, for: map, from: project)

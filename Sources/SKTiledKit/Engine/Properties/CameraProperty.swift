@@ -30,7 +30,7 @@ internal extension SKShapeNode {
     }
 }
 
-public enum CameraProperty : String, TiledEngineBridgableProperty, CaseIterable {
+public enum CameraProperty : String, BridgableProperty, CaseIterable {
     public typealias EngineObjectType = SKShapeNode
     
     case trackObject

@@ -23,8 +23,8 @@ public final class SpriteKitEngine : Engine {
         register(producer: LightFactory())
         register(producer: EdgeLoopProcessor())
         register(producer: PhysicsPropertiesPostProcessor())
-        register(producer: BridgedPropertyProcessor<SKLightNode>(applies: LightProperty.allCases, to: .pointObject, with: "SKLight" ))
-        register(producer: BridgedPropertyProcessor<SKSpriteNode>(applies: LitSpriteProperty.allCases, to: [.tileObject, .imageLayer]))
+        register(producer: BridgablePropertyProcessor<SKLightNode>(applies: LightProperty.allCases, to: .pointObject, with: "SKLight" ))
+        register(producer: BridgablePropertyProcessor<SKSpriteNode>(applies: LitSpriteProperty.allCases, to: [.tileObject, .imageLayer]))
         register(producer: CameraProcessor())
     }
 }

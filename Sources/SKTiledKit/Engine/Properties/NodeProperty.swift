@@ -15,7 +15,7 @@
 import SpriteKit
 import TiledKit
 
-public enum NodeProperty : String, TiledEngineBridgableProperty, CaseIterable {
+public enum NodeProperty : String, BridgableProperty, CaseIterable {
     public typealias EngineObjectType = SKNode
     
     case zPosition
