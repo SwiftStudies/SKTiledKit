@@ -42,7 +42,7 @@ public extension SpriteKitEngine {
         return scene
     }
     
-    static func postProcess(_ scene: SKScene, for map: Map, from project: Project) throws -> SKScene {
+    static func process(engineMap scene: SKScene, for tiledMap: Map, in project: Project) throws -> SKScene {
         // Add a camera to apply the transform to the level
         let camera = SKCameraNode()
         camera.position = CGPoint(x: scene.size.width/2, y: scene.size.height / -2)
