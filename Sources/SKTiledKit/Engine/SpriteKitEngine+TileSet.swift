@@ -26,7 +26,7 @@ public extension SpriteKitEngine {
         let texture = try make(textureFrom: tile.imageSource, with: tile.bounds, and: tileset.properties.overridingWith(tile.properties), in: project)
         
         let sprite = SKSpriteNode(texture: texture)
-        #warning("API: Again, how do we ensure specializations don't miss this?")
+
         sprite.userData = NSMutableDictionary()
         
         // Make the basic tile
@@ -52,7 +52,6 @@ public extension SpriteKitEngine {
         return sprite
     }
     
-    #warning("API: tileSet parameter misspelled, should be tileset (all lowercase)")
     static func process(_ sprite: SKSpriteNode, from tile: Tile, in tileSet: TileSet, with setSprites: [UInt32 : SKSpriteNode], for map: Map, from project: Project) throws -> SKSpriteNode {
         
         var animationSteps = [SKAction]()

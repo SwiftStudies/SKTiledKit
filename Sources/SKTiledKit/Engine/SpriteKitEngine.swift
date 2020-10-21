@@ -27,6 +27,30 @@ public final class SpriteKitEngine : Engine {
         register(producer: BridgablePropertyProcessor<SKSpriteNode>(applies: LitSpriteProperty.allCases, to: [.tileObject, .imageLayer]))
         register(producer: CameraProcessor())
     }
+    
+    static var enginePrefix : String {
+        return "SK"
+    }
+    
+    public static var objectTypes : ObjectTypes {
+        var engineTypes = ObjectTypes()
+        
+        engineTypes["\(enginePrefix)Camera"] = ObjectType(.darkGrey,with: CameraProperty.allCases)
+
+        engineTypes["\(enginePrefix)Shape"] = ObjectType(.green,with: NodeProperty.allCases).and(ShapeProperty.allCases).and(PhysicalObjectProperty.allCases)
+
+        engineTypes["\(enginePrefix)Light"] = ObjectType(.yellow, with: NodeProperty.allCases).and(LightProperty.allCases)
+
+        engineTypes["\(enginePrefix)EdgeLoop"] = ObjectType(.white, with: NodeProperty.allCases).and([PhysicalObjectProperty.physicsCategory, PhysicalObjectProperty.physicsCollisionMask, PhysicalObjectProperty.physicsContactMask, PhysicalObjectProperty.friction, PhysicalObjectProperty.restitution])
+
+        engineTypes["\(enginePrefix)Sprite"] = ObjectType(.blue,
+                                                          with:
+                 NodeProperty.allCases)
+            .and(PhysicalObjectProperty.allCases)
+            .and(LitSpriteProperty.allCases)
+
+        return engineTypes
+    }
 }
 
 

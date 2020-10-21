@@ -37,7 +37,6 @@ extension SKNode {
             case .color(color: let color):
                 userData?.setValue(color.skColor, forKey: property.key)
             case .object(id: let id):
-                #warning("Should actually go an find the object")
                 userData?.setValue(id, forKey: property.key)
             case .error(type: _, value: _):
                 break

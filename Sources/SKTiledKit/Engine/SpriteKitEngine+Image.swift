@@ -42,7 +42,7 @@ public extension SpriteKitEngine {
         return texture
     }
     
-    public static func load<LoaderType>(textureFrom url: URL, by loader: LoaderType) throws -> SKTexture where LoaderType : EngineImageLoader {
+    static func load<LoaderType>(textureFrom url: URL, by loader: LoaderType) throws -> SKTexture where LoaderType : EngineImageLoader {
         
         let provider : CGDataProvider
         
