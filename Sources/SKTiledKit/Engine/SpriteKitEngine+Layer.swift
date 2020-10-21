@@ -28,7 +28,6 @@ public extension SpriteKitEngine {
         node.position = layer.position.cgPoint.transform()
     }
     
-    #warning("API: I think this needs to be explictly an image layer")
     static func make(spriteFrom texture: SKTexture, for layer: LayerProtocol, in map: Map, from project: Project) throws -> SKSpriteNode? {
 
         texture.filteringMode = layer.properties["filteringMode"] == "nearest" ? .nearest : .linear

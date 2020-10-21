@@ -30,7 +30,9 @@ extension ProjectCommand {
             do {
                 let project = try Project(from: URL(fileURLWithPath: options.path))
                 
-                try SpriteKitEngine.objectTypes.write(to: project.objectTypesUrl)
+                let newObjectTypes = project.objectTypes.extendedWith(SpriteKitEngine.self)
+                
+                try newObjectTypes.write(to: project.objectTypesUrl)
                 
                 print("Wrote Objects to \(project.objectTypesUrl.standardized.path)")
             } catch {

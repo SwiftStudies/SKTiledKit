@@ -25,6 +25,19 @@ fileprivate extension ObjectProtocol {
     }
 }
 
+public extension SKNode {
+    internal static var tiledIdKey : String = "tiledId"
+    var tiledId : Int? {
+        get {
+            return userData?[SKNode.tiledIdKey] as? Int
+        }
+        
+        set {
+            userData?[SKNode.tiledIdKey] = newValue
+        }
+    }
+}
+
 public extension SpriteKitEngine {
     typealias PointObjectType = SKNode
     typealias RectangleObjectType = SKShapeNode
