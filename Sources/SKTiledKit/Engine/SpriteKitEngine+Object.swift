@@ -15,6 +15,14 @@
 import TiledKit
 import SpriteKit
 
+extension SKNode {
+    public func verify() throws {
+        guard let userData = userData else {
+            throw SKTiledKitError.userDataNotCreatedFor(name ?? "\(self)")
+        }
+    }
+}
+
 fileprivate extension ObjectProtocol {
     var cgPath : CGPath? {
         if let object = self as? Object {
@@ -49,7 +57,9 @@ public extension SpriteKitEngine {
     fileprivate static func configure(_ node:SKNode, for object:ObjectProtocol){
         node.name = object.name
         node.isHidden = !object.visible
+        node.userData = NSMutableDictionary()
         node.apply(propertiesFrom: object)
+        node.userData?["tiledId"] = object.id
         
         if case let PropertyValue.color(strokeColor) = object.properties["strokeColor"] ?? .bool(false), let shapeNode = node as? SKShapeNode {
             shapeNode.strokeColor = strokeColor.skColor
@@ -58,6 +68,8 @@ public extension SpriteKitEngine {
     
     static func make(pointFor object: ObjectProtocol, in map: Map, from project: Project) throws -> SKNode {
         let pointNode = SKShapeNode(circleOfRadius: 1)
+        
+        configure(pointNode, for: object)
         
         pointNode.position = object.position.cgPoint.transform()
 
@@ -85,6 +97,8 @@ public extension SpriteKitEngine {
                         
         let size = tile.calculateAccumulatedFrame().size
         
+        configure(tile, for: object)
+        
         tile.anchorPoint = .zero
         tile.position = object.position.cgPoint.transform()
         tile.zRotation = object.zRotation
@@ -100,6 +114,8 @@ public extension SpriteKitEngine {
 
         let textNode = SKTKTextNode(path: CGPath(rect: rect, transform: nil))
 
+        configure(textNode, for: object)
+        
         textNode.add(string, applying: style)
         if object.properties["showTextNodePath"] == true {
             textNode.strokeColor = SKColor.white
@@ -118,6 +134,8 @@ public extension SpriteKitEngine {
         }
         
         let node = shapeNode(with: path, position: object.position.cgPoint, rotation: angle, centered: true)
+        
+        configure(node, for: object)
         
         if object.hasProperty(in: PhysicalObjectProperty.allCases) {
             let size = node.calculateAccumulatedFrame().size

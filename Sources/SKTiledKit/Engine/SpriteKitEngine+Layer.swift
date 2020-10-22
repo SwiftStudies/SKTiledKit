@@ -26,6 +26,7 @@ public extension SpriteKitEngine {
         node.alpha = layer.opacity.cgFloatValue
         node.apply(propertiesFrom: layer)
         node.position = layer.position.cgPoint.transform()
+        node.userData = NSMutableDictionary()
     }
     
     static func make(spriteFrom texture: SKTexture, for layer: LayerProtocol, in map: Map, from project: Project) throws -> SKSpriteNode? {

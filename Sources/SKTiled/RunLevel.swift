@@ -57,14 +57,14 @@ fileprivate class ApplicationDelegate: NSObject, NSApplicationDelegate {
         
         skView.presentScene(scene)
         
-        scene.enumerateChildNodes(withName: "//*") { (node, shouldStop) in
-            print("\(type(of: node)).\(node.name ?? "null") @ \(node.calculateAccumulatedFrame().origin)")
-            if let sprite = node as? SKSpriteNode {
-                print("\tLit By: \(sprite.lightingBitMask)")
-            } else if let light = node as? SKLightNode {
-                print("\tCategory: \(light.categoryBitMask)")
-            }
-        }
+//        scene.enumerateChildNodes(withName: "//*") { (node, shouldStop) in
+//            print("\(type(of: node)).\(node.name ?? "null") @ \(node.calculateAccumulatedFrame().origin)")
+//            if let sprite = node as? SKSpriteNode {
+//                print("\tLit By: \(sprite.lightingBitMask)")
+//            } else if let light = node as? SKLightNode {
+//                print("\tCategory: \(light.categoryBitMask)")
+//            }
+//        }
     }
     
 }
