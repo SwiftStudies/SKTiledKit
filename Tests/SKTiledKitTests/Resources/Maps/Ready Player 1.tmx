@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="12">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="16">
+ <properties>
+  <property name="impulseMagnitude" type="float" value="3"/>
+ </properties>
  <tileset firstgid="1" source="../Tilesets/Retro.tsx"/>
  <layer id="1" name="Floor" width="10" height="10">
   <data encoding="csv">
 101,101,101,101,101,101,101,101,101,101,
-211,51,51,51,51,51,51,51,51,51,
-51,51,51,51,51,51,51,51,51,51,
+4,71,53,18,37,53,18,37,71,21,
+33,87,33,34,35,35,35,35,87,35,
 51,51,51,51,51,51,51,51,51,51,
 51,51,51,97,98,99,100,51,51,51,
-51,51,51,113,114,115,116,51,97,51,
-51,51,51,129,130,131,132,51,129,51,
+51,51,51,113,114,115,116,51,97,100,
+51,51,51,129,130,131,132,51,129,132,
 51,51,51,51,51,51,51,51,51,51,
 51,51,51,51,51,51,51,51,51,51,
 51,51,51,51,51,51,51,51,51,51
 </data>
  </layer>
  <objectgroup id="3" name="Objects">
-  <object id="1" gid="105" x="16.0799" y="95.859" width="16" height="16"/>
-  <object id="2" gid="189" x="119.124" y="69.6098" width="16" height="16"/>
-  <object id="4" x="36.708" y="71.101" width="89.5469" height="18.8438">
+  <object id="1" name="Weapon" type="SKSprite" gid="105" x="11.8299" y="97.609" width="16" height="16">
+   <properties>
+    <property name="castsShadowsByMask" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="2" name="Potion" gid="189" x="119.124" y="69.6098" width="16" height="16"/>
+  <object id="4" name="Get Ready" x="36.708" y="71.101" width="89.5469" height="18.8438">
    <text fontfamily="Courier New" pixelsize="8" wrap="1" color="#ffffff" halign="center" valign="center">Ready Player One</text>
   </object>
-  <object id="5" x="0.106724" y="143.868" width="159.917" height="19.0617">
+  <object id="5" name="Credits" x="0.106724" y="143.868" width="159.917" height="19.0617">
    <text fontfamily="Courier New" pixelsize="7" wrap="1" color="#ffffff" halign="center" valign="center">Tileset from: https://0x72.itch.io/16x16-dungeon-tileset</text>
   </object>
-  <object id="6" gid="64" x="102.993" y="134.525" width="16" height="16"/>
+  <object id="6" name="Bomb" gid="64" x="102.993" y="134.525" width="16" height="16"/>
   <object id="7" name="Player One" type="SKSprite" gid="253" x="72.66" y="96.4893" width="16" height="16">
    <properties>
     <property name="affectedByGravity" type="bool" value="true"/>
@@ -72,15 +79,53 @@
  <layer id="2" name="Level" width="10" height="10">
   <data encoding="csv">
 18,71,80,8,77,78,8,80,71,37,
-4,71,19,19,53,19,19,19,71,21,
-34,87,34,34,34,34,34,34,87,34,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
 0,0,153,0,0,0,0,0,0,0,
 0,0,169,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,153,100,
-0,0,0,103,102,102,0,0,169,132,
+0,0,0,0,0,0,0,0,153,0,
+0,0,0,103,102,102,0,0,169,0,
 0,50,0,119,118,118,0,0,0,0,
 2,55,2,2,2,49,2,2,55,2,
 19,71,19,19,19,65,19,19,71,19
 </data>
  </layer>
+ <objectgroup id="4" name="User Interface">
+  <object id="12" name="Player Down" type="SKUserInterface" x="17.659" y="27.3458" rotation="180">
+   <properties>
+    <property name="actionTarget" type="object" value="7"/>
+    <property name="fillColor" type="color" value="#ffffffff"/>
+    <property name="interactionBeganActionKey" value="impulseDown"/>
+    <property name="userInteraction" type="bool" value="true"/>
+   </properties>
+   <polygon points="0.478261,0.0434783 -3.27738,6.37269 4.36984,6.37269"/>
+  </object>
+  <object id="13" name="Player Up" type="SKUserInterface" x="16.4659" y="5.38636">
+   <properties>
+    <property name="actionTarget" type="object" value="7"/>
+    <property name="fillColor" type="color" value="#ffffffff"/>
+    <property name="interactionBeganActionKey" value="impulseUp"/>
+    <property name="userInteraction" type="bool" value="true"/>
+   </properties>
+   <polygon points="0.478261,0.0434783 -3.27738,6.37269 4.36984,6.37269"/>
+  </object>
+  <object id="14" name="Player Left" type="SKUserInterface" x="6.125" y="16.8409" rotation="270">
+   <properties>
+    <property name="actionTarget" type="object" value="7"/>
+    <property name="fillColor" type="color" value="#ffffffff"/>
+    <property name="interactionBeganActionKey" value="impulseLeft"/>
+    <property name="userInteraction" type="bool" value="true"/>
+   </properties>
+   <polygon points="0.478261,0.0434783 -3.27738,6.37269 4.36984,6.37269"/>
+  </object>
+  <object id="15" name="Player Right" type="SKUserInterface" x="27.9318" y="15.7159" rotation="90">
+   <properties>
+    <property name="actionTarget" type="object" value="7"/>
+    <property name="fillColor" type="color" value="#ffffffff"/>
+    <property name="interactionBeganActionKey" value="impulseRight"/>
+    <property name="userInteraction" type="bool" value="true"/>
+   </properties>
+   <polygon points="0.478261,0.0434783 -3.27738,6.37269 4.36984,6.37269"/>
+  </object>
+ </objectgroup>
 </map>

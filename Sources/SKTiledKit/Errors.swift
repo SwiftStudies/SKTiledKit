@@ -16,6 +16,7 @@ import TiledKit
 import Foundation
 
 public enum SKTiledKitError : Error {
+    case userDataNotCreatedFor(String)
     case obsolete(String)
     case couldNotCreatePathForObject(ObjectProtocol)
     case tileNodeDoesNotExist

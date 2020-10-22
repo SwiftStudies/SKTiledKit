@@ -18,8 +18,8 @@ Tile layers are supported and use [`SKNode`s](https://developer.apple.com/docume
  - __Locked__ Not supported
  - __Opacity__ Supported. `alpha` is set appropriately on the created [`SKNode`](https://developer.apple.com/documentation/spritekit/sknode?language=swift)
  - __Tint Color__ Not supported 
- - __Horizontal Offset__ Not supported
- - __Vertical Offset__ Not supported
+ - __Horizontal Offset__ Supported
+ - __Vertical Offset__ Supported
 
 ### Support for user specified properties
 
@@ -54,8 +54,8 @@ Object layers are supported, and by default result in an [`SKNode`](https://deve
 - __Opacity__ Supported. `alpha` is set appropriately 
 - __Tint Color__ Not supported 
 - __Color__ Not supported 
-- __Horizontal Offset__ Not supported
-- __Vertical Offset__ Not supported
+- __Horizontal Offset__ Supported
+- __Vertical Offset__ Supported
 - __Drawing Order__ Not supported
 
 ### Support for user specified properties

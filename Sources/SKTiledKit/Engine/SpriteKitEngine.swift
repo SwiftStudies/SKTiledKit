@@ -19,12 +19,20 @@ public final class SpriteKitEngine : Engine {
     public typealias FloatType = CGFloat
     public typealias ColorType = SKColor
     
+    static var registeredActions = [String:SKAction]()
+    
+    public static func registerAction(key: String, action: SKAction){
+        registeredActions[key] = action
+    }
+    
     public static func registerProducers() {
+        registerStandardActions()
+        register(producer: PhysicsPropertiesPostProcessor())
         register(producer: LightFactory())
         register(producer: EdgeLoopProcessor())
-        register(producer: PhysicsPropertiesPostProcessor())
-        register(producer: BridgablePropertyProcessor<SKLightNode>(applies: LightProperty.allCases, to: .pointObject, with: "SKLight" ))
+        register(producer: BridgablePropertyProcessor<SKNode>(applies: Interactable.allCases, to: .anyObject, with: "SKUserInterface"))
         register(producer: BridgablePropertyProcessor<SKSpriteNode>(applies: LitSpriteProperty.allCases, to: [.tileObject, .imageLayer]))
+        register(producer: BridgablePropertyProcessor<SKLightNode>(applies: LightProperty.allCases, to: .pointObject, with: "SKLight" ))
         register(producer: CameraProcessor())
     }
     
@@ -34,6 +42,8 @@ public final class SpriteKitEngine : Engine {
     
     public static var objectTypes : ObjectTypes {
         var engineTypes = ObjectTypes()
+        
+        engineTypes["\(enginePrefix)UserInterface"] = ObjectType(.lightGrey, with: Interactable.allCases)
         
         engineTypes["\(enginePrefix)Camera"] = ObjectType(.darkGrey,with: CameraProperty.allCases)
 

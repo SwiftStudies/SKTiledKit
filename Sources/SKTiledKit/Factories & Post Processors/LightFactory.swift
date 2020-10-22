@@ -26,6 +26,8 @@ public struct LightFactory : TiledKit.ObjectFactory {
         
         let lightNode = SKLightNode()
         
+        lightNode.userData = NSMutableDictionary()
+        
         lightNode.position = object.position.cgPoint.transform()
         
         return lightNode

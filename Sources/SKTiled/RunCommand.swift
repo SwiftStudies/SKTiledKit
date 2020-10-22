@@ -40,7 +40,7 @@ struct Run : ParsableCommand {
     func run() throws {
         do {
             let sceneUrl = URL(fileURLWithPath: level)
-            let project = Project(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+            let project = Project(at: sceneUrl.deletingLastPathComponent())
                         
             let scene = try project.retrieve(asType: SKScene.self, from: sceneUrl)
             
