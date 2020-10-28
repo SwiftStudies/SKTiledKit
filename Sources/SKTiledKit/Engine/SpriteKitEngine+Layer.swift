@@ -58,27 +58,16 @@ public extension SpriteKitEngine {
         return layerNode
     }
     
-    static func make(tileLayer tileGrid: TileGrid, for layer: LayerProtocol, with sprites: MapTiles<SpriteKitEngine>, in map: Map, from project: Project) throws -> SKNode? {
+    static func make(tileLayer layer: LayerProtocol, with sprites: MapTiles<SpriteKitEngine>, in map: Map, from project: Project) throws -> SKNode? {
         let tileLayerNode = SKNode()
         configure(tileLayerNode, for: layer)
         
-        for x in 0..<tileGrid.size.width {
-            for y in 0..<tileGrid.size.height {
-                let tileGid = tileGrid[x,y]
-                
-                if tileGid.globalTileOffset > 0 {
-                    // TileSets were pre-loaded by the map before we got here
-                    guard let tileNode = sprites[tileGid] else {
-                        throw SKTiledKitError.tileNotFound
-                    }
-
-                    tileNode.position = CGRect(x: x * map.tileSize.width, y: y * map.tileSize.height, width: map.tileSize.width, height: map.tileSize.height).transform(with: tileNode.anchorPoint).origin
-                    
-                    tileLayerNode.addChild(tileNode)
-                }
-            }
-        }
         return tileLayerNode
     }
     
+    static func make(tileWith tile: SKSpriteNode, at position: Position, for tileLayer: LayerProtocol, in map: Map, from project: Project) throws -> SKSpriteNode {
+        tile.position = CGRect(origin: position.cgPoint, size: map.tileSize.cgSize).transform(with: tile.anchorPoint).origin
+        
+        return tile
+    }    
 }

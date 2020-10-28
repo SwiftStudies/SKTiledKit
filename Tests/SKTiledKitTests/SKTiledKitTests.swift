@@ -4,6 +4,19 @@ import XCTest
 import SpriteKit
 @testable import SKTiledKit
 
+#warning("Temporary Solution until https://bugs.swift.org/browse/SR-13714 is fixed and I can reference TiledResources from here")
+enum Projects {
+    case genericTiled
+    
+    var url : URL {
+        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent(".build/checkouts/TiledResources/Sources/TiledResources")
+        switch self {
+        case .genericTiled:
+            return root.appendingPathComponent("Generic Tiled Project/")
+        }
+    }
+}
+
 final class SKTiledKitTests : XCTestCase {
     lazy var moduleBundleProject : Project = {
         Project(using: Bundle.module)
@@ -63,6 +76,20 @@ final class SKTiledKitTests : XCTestCase {
         
         } catch {
             XCTFail("Could not create scene \(error)")
+        }
+    }
+    
+    func testIsometric(){
+        do {
+            let project = Project(at: Projects.genericTiled.url)
+            let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
+
+            let scene = try project.retrieve(SpriteKitEngine.self, mapNamed: "Isometric", in: "Maps")
+
+            view.presentScene(scene)
+
+        } catch {
+            return XCTFail("Unexpected error: \(error)")
         }
     }
     

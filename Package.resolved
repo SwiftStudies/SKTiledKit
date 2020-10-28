@@ -15,8 +15,17 @@
         "repositoryURL": "https://github.com/SwiftStudies/TiledKit",
         "state": {
           "branch": null,
-          "revision": "ce22abe8e781361a6a75f15a6b361bef74f48807",
-          "version": "0.5.10"
+          "revision": "ec6fbb868f5d77a6f0d95c80170dc8fc33fae96c",
+          "version": "0.6.4"
+        }
+      },
+      {
+        "package": "TiledResources",
+        "repositoryURL": "https://github.com/SwiftStudies/TiledResources",
+        "state": {
+          "branch": null,
+          "revision": "f2aa9d172c06313ad7da2dd8f267f02f714e4e45",
+          "version": "0.1.0"
         }
       },
       {

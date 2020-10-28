@@ -24,24 +24,43 @@ extension SKTexture : EngineTexture {
 }
 
 extension SKNode : EngineObject, EngineLayerContainer, EngineObjectContainer {
-    public typealias EngineType = SpriteKitEngine
-    
-    public func add(child layer: SKNode) {
+    public func add(layer: SKNode) {
         addChild(layer)
     }
-        
-    public func add(child shape: SKShapeNode) {
-        addChild(shape)
-    }
     
-    public func add(child sprite: SKSpriteNode) {
+    
+    public func add(sprite: SKSpriteNode) {
         addChild(sprite)
     }
+        
+    public func add(point: SKNode) {
+        addChild(point)
+    }
     
-    public func add(child text: SKTKTextNode) {
+    public func add(rectangle: SKShapeNode) {
+        addChild(rectangle)
+    }
+    
+    public func add(ellipse: SKShapeNode) {
+        addChild(ellipse)
+    }
+    
+    public func add(text: SKTKTextNode) {
         addChild(text)
     }
-
+    
+    public func add(polyline: SKShapeNode) {
+        addChild(polyline)
+    }
+    
+    public func add(polygon: SKShapeNode) {
+        addChild(polygon)
+    }
+    
+    
+    public typealias EngineType = SpriteKitEngine
+    
+    
 }
 
 extension SKSpriteNode : DeepCopyable {
