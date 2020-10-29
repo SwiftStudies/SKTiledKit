@@ -21,8 +21,9 @@ let package = Package(
             targets: ["SKTiled"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/SwiftStudies/TiledKit", from: "0.4.7"),
+        .package(url: "https://github.com/SwiftStudies/TiledKit", .branch("development")),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.3"),
+        .package(url: "https://github.com/SwiftStudies/TiledResources", from: "0.1.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -35,7 +36,7 @@ let package = Package(
             dependencies: ["SKTiledKit",.product(name: "ArgumentParser", package: "swift-argument-parser")]),
         .testTarget(
             name: "SKTiledKitTests",
-            dependencies: ["SKTiledKit"],
+            dependencies: ["SKTiledKit","TiledResources"],
             exclude: [
                 "Resources/PikoPixel",
                 "Resources/SKTiled Tests.tiled-session"

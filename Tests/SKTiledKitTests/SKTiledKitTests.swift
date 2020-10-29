@@ -3,25 +3,22 @@ import XCTest
 @testable import TiledKit
 import SpriteKit
 @testable import SKTiledKit
+import TiledResources
 
 final class SKTiledKitTests : XCTestCase {
-    lazy var moduleBundleProject : Project = {
-        Project(using: Bundle.module)
-    }()
     
     func testResources() {
-        XCTAssertNotNil(Bundle.module.path(forResource: "Test Map 1", ofType: "tmx", inDirectory: "Maps"))
+        XCTAssertTrue(try TiledResources.GenericTiledProject.Maps.testMap1.url.checkResourceIsReachable())
     }
     
     func testSceneCreation(){
         do {
             let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
 
-            let scene : SKScene = try
-                moduleBundleProject.retrieve(SpriteKitEngine.self, mapNamed: "Test Map 1", in: "Maps")
+            let scene : SKScene = try TiledResources.GenericTiledProject.Maps.testMap1.load(for: SpriteKitEngine.self)
                         
             view.presentScene(scene)
-            print(scene)
+            XCTFail("Implement test")
         } catch {
             XCTFail("Could not create scene \(error)")
         }        
@@ -41,12 +38,11 @@ final class SKTiledKitTests : XCTestCase {
 
     func testTranslation(){
         do {
-            let scene = try moduleBundleProject.retrieve(asType: SKScene.self, from: moduleBundleProject.url(for: "Simple Map", in: "Maps", of: .tmx)!)
-
+            let scene = try TiledResources.SpriteKit.Maps.lightTest.load(for: SpriteKitEngine.self)
             let view = SKView(frame: NSRect(x: 0, y: 0, width: scene.size.width, height: scene.size.height))
+
             view.presentScene(scene)
-            
-            print(scene)
+            XCTFail("Implement test")
         } catch {
             XCTFail("Could not create scene \(error)")
         }
@@ -56,13 +52,23 @@ final class SKTiledKitTests : XCTestCase {
         do {
             
             let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
-            let scene = try moduleBundleProject.retrieve(asType: SKScene.self, from: moduleBundleProject.url(for: "Ready Player 1", in: "Maps", of: .tmx)!)
+            let scene = try TiledResources.SpriteKit.Maps.readyPlayerOne.load(for: SpriteKitEngine.self)
             view.presentScene(scene)
             
             print(scene)
         
         } catch {
             XCTFail("Could not create scene \(error)")
+        }
+    }
+    
+    func testIsometric(){
+        do {
+            let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
+            let scene = try TiledResources.GenericTiledProject.Maps.isometric.load(for: SpriteKitEngine.self)
+            view.presentScene(scene)
+        } catch {
+            return XCTFail("Unexpected error: \(error)")
         }
     }
     
