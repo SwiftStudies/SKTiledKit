@@ -15,7 +15,7 @@ final class SKTiledKitTests : XCTestCase {
         do {
             let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
 
-            let scene : SKScene = try TiledResources.GenericTiledProject.Maps.testMap1.load(for: SpriteKitEngine.self)
+            let scene : SKScene = try TiledResources.GenericTiledProject.Maps.testMap1.loadMap(for: SpriteKitEngine.self)
                         
             view.presentScene(scene)
             XCTFail("Implement test")
@@ -26,19 +26,19 @@ final class SKTiledKitTests : XCTestCase {
     
     func testStandardProducers(){
         SpriteKitEngine.registerProducers()
-        XCTAssertEqual(SpriteKitEngine.engineMapPostProcessors().count, 3)
+        XCTAssertEqual(SpriteKitEngine.engineMapPostProcessors().count, 8)
         XCTAssertEqual(SpriteKitEngine.engineMapFactories().count, 0)
         XCTAssertEqual(SpriteKitEngine.tileFactories().count, 0)
         XCTAssertEqual(SpriteKitEngine.engineTilePostProcessors().count, 0)
         XCTAssertEqual(SpriteKitEngine.layerFactories().count, 0)
-        XCTAssertEqual(SpriteKitEngine.engineLayerPostProcessors().count, 2)
+        XCTAssertEqual(SpriteKitEngine.engineLayerPostProcessors().count, 6)
         XCTAssertEqual(SpriteKitEngine.tileFactories().count, 0)
         XCTAssertEqual(SpriteKitEngine.engineTilePostProcessors().count, 0)
     }
 
     func testTranslation(){
         do {
-            let scene = try TiledResources.SpriteKit.Maps.lightTest.load(for: SpriteKitEngine.self)
+            let scene = try TiledResources.SpriteKit.Maps.lightTest.loadMap(for: SpriteKitEngine.self)
             let view = SKView(frame: NSRect(x: 0, y: 0, width: scene.size.width, height: scene.size.height))
 
             view.presentScene(scene)
@@ -52,11 +52,11 @@ final class SKTiledKitTests : XCTestCase {
         do {
             
             let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
-            let scene = try TiledResources.SpriteKit.Maps.readyPlayerOne.load(for: SpriteKitEngine.self)
+            let scene = try TiledResources.SpriteKit.Maps.readyPlayerOne.loadMap(for: SpriteKitEngine.self)
             view.presentScene(scene)
             
             print(scene)
-        
+            XCTFail("Implement test")        
         } catch {
             XCTFail("Could not create scene \(error)")
         }
@@ -65,8 +65,10 @@ final class SKTiledKitTests : XCTestCase {
     func testIsometric(){
         do {
             let view = SKView(frame: NSRect(x: 0, y: 0, width: 160, height: 160))
-            let scene = try TiledResources.GenericTiledProject.Maps.isometric.load(for: SpriteKitEngine.self)
+            let scene = try TiledResources.GenericTiledProject.Maps.isometric.loadMap(for: SpriteKitEngine.self)
             view.presentScene(scene)
+            XCTFail("Implement test")
+
         } catch {
             return XCTFail("Unexpected error: \(error)")
         }
