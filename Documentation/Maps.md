@@ -4,14 +4,14 @@ Not all kinds of map, or standard properties of maps are supported yet. The foll
 
 ## Support for standard Tiled Properties
 
- - __Orientation__ Only `orthogonal` is currently supported
+ - __Orientation__ Supported
  - __Tile Width__ Supported
  - __Tile Height__ Supported
  - __Infinite__ Not supported
- - __Tile Side Hex__ Not supported 
- - __Stagger Axis__ Not supported
- - __Tile Layer Format__ Only `csv` is currently supported
- - __Compression Level__ Not supported
+ - __Tile Side Hex__ Support 
+ - __Stagger Axis__ Supported
+ - __Tile Layer Format__ Supported 
+ - __Compression Level__ Supported
  - __Background Color__ Not supported
 
 ## Support for user specified properties
