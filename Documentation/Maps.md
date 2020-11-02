@@ -1,6 +1,7 @@
 #  Maps
 
-Not all kinds of map, or standard properties of maps are supported yet. The following are supported
+Everything except infinite maps are supported at this point (support for Tiled features is really driven by TiledKit, so if you would like support for infinite maps
+please open an enhancement issue there). 
 
 ## Support for standard Tiled Properties
 
