@@ -23,22 +23,22 @@ The remainder of the documentation is organized around the three approaches desc
 
 ## Testing SKTiledKit within Tiled
 
-Please read the instructions on [`sk-tiled`](/sk-tiled.md) to understand how to set up a keyboard shortcut to directly run any Tiled level in SKTiledKit. 
+Please read the instructions on [`sk-tiled`](sk-tiled.md) to understand how to set up a keyboard shortcut to directly run any Tiled level in SKTiledKit. 
 
 ## Default Interpretation of Tiled entities
 
 The pages below will confirm what is, and isn't supported from Tiled. Almost everything is supported with few exceptions (for example setting underline style for text), but any gaps are made clear in these pages. They capture the default behaviour for SKTiledKit, or rather what you get for free out of the box.
 
- - [Maps](/Maps.md)
- - [Tile Sets](/Tile%20Sets.md)
- - [Layers](/Layers.md)
- - [Objects](/Objects.md)
- - [Properties](/Properties.md)
+ - [Maps](Maps.md)
+ - [Tile Sets](Tile%20Sets.md)
+ - [Layers](Layers.md)
+ - [Objects](Objects.md)
+ - [Properties](Properties.md)
  
  ## Using SKTiledKit Object Types in Tiled
  
   - SKSprite  _To do_
-  - [SKShape](/SKShape.md)
+  - [SKShape](SKShape.md)
   - SKEdgeLoop _To do_
   - SKCamera _To do_
   - SKLight _To do_
