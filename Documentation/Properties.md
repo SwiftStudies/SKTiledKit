@@ -12,13 +12,24 @@ All types of properties are supported, but the following should be noted about s
 
 Node properties apply to all objects
 
-__Used by__ SKShape, SKLight, SKEdgeLoop, SKSprite  
+__Used by__ 
+ - [SKShape](SKShape.md) 
+ - [SKLight](SKLight.md)
+ - [SKEdgeLoop](SKEdgeLoop.md)
+ - [SKSprite](SKSprite.md)
+ 
+__Properties__
+
  - `zPosition (Float, 0.0)` → `SKNode.zPosition` 
  Sets the zPosition in SpriteKit. 
 
-### <a id="interactable" />Interactable 
+### Interactable 
+Interactible can be applied to all objects
 
-Node properties apply to all objects
+__Used by__ 
+ - [SKUserInterface](SKUserInterface.md) 
+ 
+__Properties__
 
  - `userInteraction (Bool, false)` → `SKNode.isUserInteractionEnabled`   
  If set to to true interaction event will trigger the specified actions on the specified target.
@@ -36,12 +47,22 @@ Node properties apply to all objects
 
 Camera properties apply to Rectangle objects (typically only one, see [SKCamera Object Type](SKCamera.md))
 
+__Used by__ 
+ - [SKCamera](SKCamera.md) 
+ 
+__Properties__
+
 - `trackObject (Object, 0)` → `SKConstraint.disatance(0...0, targetObject)`  
 Enables you to specify an object the camera should track, ensuring that they remain in the center of the screen (a very easy way to achieve scrolling)
 
 ### <a id="shape" />Shape
 
 Shape properties apply to rectangles, ellipses, polylines, and polygons
+
+__Used by__ 
+ - [SKShape](SKShape.md) 
+ 
+__Properties__
 
  - `fillColor (Color, RGBA(0,0,0,0))` → `SKShapeNode.fillColor`  
  The color used to fill the shape, defaults to clear
@@ -94,6 +115,11 @@ How much velocity is lost when the object rotates in space
 
 Edge loops are polylines or polygons that are not part of the dynamic physic simulation (typically form the edges of the scene). They support a sub-set of Physics Properties that are enumerated here for convience and full descriptions can be found above
 
+__Used by__ 
+ - [SKEdgeLoop](SKEdgeLoop.md) 
+ 
+__Properties__
+
  - `physicsCategory`
  - `physicsCollisionMask`
  - `physicsContactMask`
@@ -103,6 +129,12 @@ Edge loops are polylines or polygons that are not part of the dynamic physic sim
 ### <a id="light" />Light Object
 
 Lights are captured as Tiled points only, and support the following properties
+
+
+__Used by__ 
+ - [SKLight](SKLight.md) 
+ 
+__Properties__
 
 - `lightCategory (Integer, 0)` → `SKLightNode.categoryBitMask`  
 A 32bit bit mask used to set the category of the light object. 
@@ -123,6 +155,11 @@ The rate of decay of the light
 
 SpriteKit only lights sprites, although as SKTiledKit using sprites to represent the tiles in tile sets it is very easy to 
 fully light your scene without further work needing to be done. 
+
+__Used by__ 
+ - [SKSprite](SKSprite.md)
+ 
+__Properties__
 
 - `litByMask (Integer, 0)` → `SKSpriteNode.lightingBitMask`  
 The `lightCategory`'s that light this sprite
