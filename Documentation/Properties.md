@@ -34,7 +34,7 @@ Node properties apply to all objects
  
 ### <a id="camera" />Camera
 
-Camera properties apply to Rectangle objects (typically only one, see [SKCamera Object Type](/SKCamera.md))
+Camera properties apply to Rectangle objects (typically only one, see [SKCamera Object Type](SKCamera.md))
 
 - `trackObject (Object, 0)` → `SKConstraint.disatance(0...0, targetObject)`  
 Enables you to specify an object the camera should track, ensuring that they remain in the center of the screen (a very easy way to achieve scrolling)
