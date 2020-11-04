@@ -12,12 +12,12 @@ Out of the box (with no specialisation for your particular game) the only code n
     let view  = SKView(frame: scene.frame)
     view.presentScene(scene)
 
-You can find more information in the [SKTIledKIt Documentation](Documentation/). You can actually explore this default behaviour using sktiled, a command line utility included in the package that can be configured as a command in tiled. Here's it running, note that debugging of SpriteKit physics objects is turned on so you can see the collision body for the bomb being translated into the generated `SKSprite` node. 
+You can find more information in the [SKTIledKIt Documentation](Documentation/README.md). You can actually explore this default behaviour using sktiled, a command line utility included in the package that can be configured as a command in tiled. Here's it running, note that debugging of SpriteKit physics objects is turned on so you can see the collision body for the bomb being translated into the generated `SKSprite` node. 
 
 <img src="Documentation/Images/sktiled-loop.gif" />
 
 ## Documentation
 
  - [`sk-tiled`](Documentation/sk-tiled.md) More documentation on the command line utility
- - [Documentation](Documentation/) All documentation on how different Tiled entities are used/interpretted
+ - [Documentation](Documentation/README.md) All documentation on how different Tiled entities are used/interpretted
 
