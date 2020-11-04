@@ -17,7 +17,7 @@ import ArgumentParser
 struct Install : ParsableCommand {
     static var configuration =  CommandConfiguration(abstract:"Copies the binary to a specified location or /usr/local/bin if no location specified")
     
-    @Option(name:.shortAndLong, help:"Location to install the command in. Default is XXX")
+    @Option(name:.shortAndLong, help:"Location to install the command in. Default is /usr/local/bin/sktiled")
     var path : String?
     static let defaultPath = "/usr/local/bin"
     static let executableName = "sktiled"
