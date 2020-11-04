@@ -11,7 +11,7 @@ All of the different object types supported by Tiled are created as part of the 
  - [Image](#image) 
 
 ## <a name="point">Point</a>
-Created as an  `SKTKShape` which is a circle with a transparent center. As SpriteKit doesn't have a native representation of a point this is really to allow you to parse this object as you see fit.  
+Created as an  `SKShapeNode` which is a circle with a transparent center. As SpriteKit doesn't have a native representation of a point this is really to allow you to parse this object as you see fit.  
 
 ### Supported Properties
 
@@ -26,7 +26,7 @@ No special interpretation of user specified properties is done at this time, how
 
 ## <a name="polyline">Polyline</a>
 
-Created as an  `SKTKShape`.
+Created as an  `SKShapeNode`.
 
 ### Supported Properties
 
@@ -45,7 +45,7 @@ All properties are copied to the [`userData`](https://developer.apple.com/docume
 No special interpretation of user specified properties is done at this time, however all properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
 
 ## <a name="polygon">Polygon</a>
-Created as an  `SKTKShape`.
+Created as an  `SKShapeNode`.
 
 ### Supported Properties
 
@@ -62,7 +62,7 @@ All properties are copied to the [`userData`](https://developer.apple.com/docume
  - `strokeColor : Color` is converted to an `SKColor` and set on the node's `strokeColor` property
 
  ## <a name="elipse">Elipse</a>
- Created as an  [`SKShape`](https://developer.apple.com/documentation/spritekit/skshape). 
+ Created as an  [`SKShapeNode`](https://developer.apple.com/documentation/spritekit/skshape). 
 
  ### Supported Properties
 
@@ -81,7 +81,7 @@ All properties are copied to the [`userData`](https://developer.apple.com/docume
  - `strokeColor : Color` is converted to an `SKColor` and set on the node's `strokeColor` property
 
 ## <a name="rectangle">Rectangle</a>
-Created as an  [`SKShape`](https://developer.apple.com/documentation/spritekit/skshape). 
+Created as an  [`SKShapeNode`](https://developer.apple.com/documentation/spritekit/skshape). 
 
 ### Supported Properties
 
@@ -131,7 +131,7 @@ In order to support the text alignment options and origin behavior of the TiledK
 All other properties are added to the  [`SKNode`](https://developer.apple.com/documentation/spritekit/skscene) [`userData`](https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata?language=swift) and converted to the appropriate type (see [Properties](Properties.md)). 
 
 ## <a name="image">Image</a>
-Created as an `SKTKSpriteNode` 
+Created as an `SKSpriteNode` 
 
 ### Supported Properties
 
