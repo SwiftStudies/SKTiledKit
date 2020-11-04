@@ -37,12 +37,12 @@ The pages below will confirm what is, and isn't supported from Tiled. Almost eve
  
  ## Using SKTiledKit Object Types in Tiled
  
-  - SKSprite  _To do_
+  - [SKSprite](SKSprite.md)
   - [SKShape](SKShape.md)
-  - SKEdgeLoop _To do_
-  - SKCamera _To do_
-  - SKLight _To do_
-  - SKUserInterface _To do_
+  - [SKEdgeLoop](SKEdgeLoop.md)
+  - [SKCamera](SKCamera.md)
+  - [SKLight](SKLight.md)
+  - [SKUserInterface](SKUserInterface.md)
   - SKEmitter _Not yet implemented_
  
  ## Specializing for your game
