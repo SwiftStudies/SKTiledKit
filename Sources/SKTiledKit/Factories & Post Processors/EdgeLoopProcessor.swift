@@ -58,6 +58,7 @@ public class EdgeLoopProcessor : TiledKit.ObjectPostProcessor {
     
     public func process(shape: EngineType.PolylineObjectType, from object: ObjectProtocol, for map: Map, from project: Project) throws -> EngineType.PolylineObjectType {
         
+        if object.type = 
         if object.tiledType == .polylineObject {
             shape.physicsBody = SKPhysicsBody(edgeChainFrom: shape.path!)
         } else if [.polygonObject, .rectangleObject, .ellipseObject].contains(object.tiledType) {

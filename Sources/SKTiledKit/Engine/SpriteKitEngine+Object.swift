@@ -61,9 +61,11 @@ public extension SpriteKitEngine {
         node.apply(propertiesFrom: object)
         node.userData?["tiledId"] = object.id
         
-        if case let PropertyValue.color(strokeColor) = object.properties["strokeColor"] ?? .bool(false), let shapeNode = node as? SKShapeNode {
-            shapeNode.strokeColor = strokeColor.skColor
+        
+        if let shapeNode = node as? SKShapeNode {
+            ShapeProperty.apply(object.properties, to: shapeNode)
         }
+        
     }
     
     static func make(pointFor object: ObjectProtocol, in map: Map, from project: Project) throws -> SKNode {
